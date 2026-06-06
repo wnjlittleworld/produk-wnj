@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PREVIEW — Mikroorganisme 🦠 | WNJ Little W🌏rld</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#00050d;--mid:#001a2e;--light:#003a5c;
+  --neon:#00f5ff;--green:#00ff88;--pink:#ff006e;
+  --purple:#9b5de5;--yellow:#f9ca24;--orange:#f15bb5;
+  --bio:#39d353;--virus:#ff4d6d;--fungi:#c77dff;
+  --protozoa:#4cc9f0;--bacteria:#06d6a0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(180deg,#00050d 0%,#001020 30%,#001a2e 60%,#003a5c 100%);
+  min-height:100vh;color:white;overflow-x:hidden;
+}
+
+/* MICRO BG */
+.micro-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+
+/* Grid lines (microscope grid) */
+.micro-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,245,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,245,255,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+
+/* Floating cells */
+.cell{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(0,245,255,.2);
+  animation:cellFloat ease-in-out infinite;
+}
+@keyframes cellFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(var(--cx),var(--cy)) scale(1.1)}
+  66%{transform:translate(calc(var(--cx)*-0.5),calc(var(--cy)*1.5)) scale(.9)}
+}
+
+/* DNA helix */
+.dna-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  animation:dnaPulse ease-in-out infinite;
+}
+@keyframes dnaPulse{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:.8;transform:scale(1.3)}}
+
+/* Neon scan line */
+.scan-line{
+  position:absolute;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+  opacity:.15;animation:scanLine 4s linear infinite;
+}
+@keyframes scanLine{0%{top:-2px}100%{top:100%}}
+
+/* Petri dish glow */
+.petri-glow{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,245,255,.06) 0%,transparent 70%);
+  animation:petriPulse 4s ease-in-out infinite;
+}
+@keyframes petriPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.2);opacity:.8}}
+
+/* Floating emojis */
+.micro-deco{position:fixed;pointer-events:none;z-index:0;opacity:.07;animation:microDrift ease-in-out infinite}
+@keyframes microDrift{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(var(--dx),var(--dy)) rotate(180deg)}}
+
+/* LAYOUT */
+.container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:14px 14px 110px}
+
+/* MUSIC FAB */
+.music-fab{position:fixed;bottom:20px;right:20px;z-index:100;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#001a2e,#003a5c);border:2px solid rgba(0,245,255,.3);color:white;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,245,255,.2);transition:all .3s}
+.music-fab:hover{transform:scale(1.1)}
+.music-fab.playing{background:linear-gradient(135deg,var(--neon),var(--purple));color:#00050d;animation:musicPulse 1.5s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 4px 20px rgba(0,245,255,.3)}50%{box-shadow:0 4px 30px rgba(0,245,255,.8),0 0 0 8px rgba(0,245,255,.1)}}
+.music-panel{position:fixed;bottom:86px;right:14px;z-index:99;background:rgba(0,5,13,.95);backdrop-filter:blur(12px);border:1px solid rgba(0,245,255,.15);border-radius:20px;padding:14px;width:220px;box-shadow:0 8px 32px rgba(0,0,0,.6);display:none}
+.music-panel.show{display:block;animation:slideUp .25s ease-out}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.music-panel h4{font-family:'Fredoka One',cursive;font-size:16px;margin-bottom:10px;color:var(--neon)}
+.music-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:all .2s;margin-bottom:4px;font-size:13px;font-weight:700}
+.music-option:hover{background:rgba(0,245,255,.08)}
+.music-option.active{background:rgba(0,245,255,.15);color:var(--neon)}
+.music-option .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+.music-option.active .dot{background:var(--neon);box-shadow:0 0 6px var(--neon)}
+.vol-row{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--neon)}
+.vol-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:rgba(0,245,255,.2);outline:none;cursor:pointer}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--neon);cursor:pointer}
+.now-playing{display:none;align-items:center;gap:8px;background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);border-radius:10px;padding:6px 10px;margin-bottom:10px;font-size:12px;font-weight:700;color:var(--neon)}
+.now-playing.show{display:flex}
+.eq-bars{display:flex;align-items:flex-end;gap:2px;height:14px}
+.eq-bar{width:3px;border-radius:1px;background:var(--neon);animation:eqAnim .5s ease-in-out infinite alternate}
+.eq-bar:nth-child(1){height:4px}.eq-bar:nth-child(2){height:10px;animation-delay:.15s}.eq-bar:nth-child(3){height:6px;animation-delay:.3s}.eq-bar:nth-child(4){height:12px;animation-delay:.1s}.eq-bar:nth-child(5){height:5px;animation-delay:.25s}
+@keyframes eqAnim{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+/* HEADER */
+.header{text-align:center;padding:14px 0 10px}
+.header-emojis{font-size:26px;letter-spacing:3px;margin-bottom:2px}
+.header h1{font-family:'Fredoka One',cursive;font-size:36px;background:linear-gradient(135deg,#fff 0%,var(--neon) 40%,var(--purple) 80%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{font-size:13px;color:var(--neon);font-weight:700;opacity:.8}
+
+.now-playing-top{display:none;justify-content:center;align-items:center;gap:8px;background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.15);border-radius:10px;padding:5px 12px;margin-bottom:8px;font-size:12px;font-weight:700;color:var(--neon)}
+
+/* TABS */
+.tabs-wrapper{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:12px 0 8px}
+.tab{background:rgba(0,245,255,.08);border:1.5px solid rgba(0,245,255,.2);color:rgba(255,255,255,.8);padding:5px 11px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab:hover{background:rgba(0,245,255,.15);transform:translateY(-1px)}
+.tab.active{background:var(--neon);border-color:var(--neon);color:#00050d}
+
+/* MODE */
+.mode-tabs{display:flex;gap:8px;justify-content:center;margin:8px 0 14px}
+.mode-btn{background:rgba(0,245,255,.08);border:2px solid rgba(0,245,255,.2);color:white;padding:7px 16px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.mode-btn.active{background:var(--pink);border-color:var(--pink)}
+.mode-btn:hover{transform:translateY(-1px)}
+
+/* PROGRESS */
+.category-label{text-align:center;font-size:13px;color:var(--neon);font-weight:700;margin-bottom:8px;opacity:.8}
+.progress-bar{width:100%;height:7px;background:rgba(0,245,255,.1);border-radius:4px;margin-bottom:12px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--neon),var(--purple),var(--pink));border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* CARD */
+.card-container{perspective:1200px;margin:0 auto 12px;width:100%;max-width:340px;height:420px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,0,.2,1)}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px}
+
+.card-front{
+  background:linear-gradient(145deg,#001525,#002040);
+  box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(0,245,255,.15),0 0 30px rgba(0,245,255,.05);
+}
+/* Microscope circle overlay */
+.card-front::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(0,245,255,.1);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none}
+.card-front::after{content:'';position:absolute;width:240px;height:240px;border-radius:50%;border:1px dashed rgba(0,245,255,.06);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none}
+.card-back{background:linear-gradient(145deg,#000a14,#001525);transform:rotateY(180deg);box-shadow:0 12px 40px rgba(0,0,0,.7);border:1.5px solid rgba(155,93,229,.25)}
+
+/* Type badge */
+.type-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:800;padding:3px 9px;border-radius:8px;letter-spacing:.3px}
+.type-virus{background:rgba(255,77,109,.9);color:white}
+.type-bakteri{background:rgba(6,214,160,.9);color:#00050d}
+.type-jamur{background:rgba(199,125,255,.9);color:#00050d}
+.type-protozoa{background:rgba(76,201,240,.9);color:#00050d}
+.type-alga{background:rgba(57,211,83,.9);color:#00050d}
+.type-lain{background:rgba(249,202,36,.9);color:#00050d}
+
+/* Danger level */
+.danger-level{position:absolute;top:14px;left:14px;font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px}
+.danger-berbahaya{background:rgba(255,0,0,.7);color:white}
+.danger-berguna{background:rgba(0,255,136,.7);color:#00050d}
+.danger-netral{background:rgba(0,245,255,.5);color:#00050d}
+
+.animal-stage{width:155px;height:155px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:4px}
+.animal-main{font-size:100px;line-height:1;display:inline-block;transform-origin:center;filter:drop-shadow(0 0 20px rgba(0,245,255,.3))}
+
+/* Rotating ring around organism */
+.orbit-ring{
+  position:absolute;width:140px;height:140px;border-radius:50%;
+  border:1px solid rgba(0,245,255,.15);
+  animation:orbitSpin 6s linear infinite;
+}
+.orbit-ring::before{content:'•';position:absolute;top:-5px;left:50%;transform:translateX(-50%);color:var(--neon);font-size:8px;opacity:.6}
+.orbit-ring-2{
+  position:absolute;width:160px;height:160px;border-radius:50%;
+  border:1px dashed rgba(155,93,229,.1);
+  animation:orbitSpin 10s linear infinite reverse;
+}
+@keyframes orbitSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.animal-name-id{font-family:'Fredoka One',cursive;font-size:21px;color:white;margin-bottom:2px;text-align:center;text-shadow:0 0 10px rgba(0,245,255,.3)}
+.animal-name-en{font-size:12px;color:var(--neon);font-weight:700;text-align:center;opacity:.8}
+.animal-tag{font-size:11px;font-weight:800;padding:4px 12px;border-radius:10px;margin-top:6px;color:white;border:1px solid rgba(255,255,255,.1)}
+.size-info{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-top:4px;text-align:center;font-family:'Courier New',monospace}
+.tap-hint{margin-top:9px;font-size:11px;color:rgba(0,245,255,.5);font-weight:700;display:flex;align-items:center;gap:4px;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+.back-content{text-align:center;color:white;width:100%}
+.back-emoji-sm{font-size:44px;margin-bottom:4px;display:block}
+.back-name{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:1px;color:white}
+.back-latin{font-size:11px;color:var(--neon);font-style:italic;margin-bottom:3px;opacity:.8}
+.back-size{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:8px;font-family:'Courier New',monospace}
+.back-desc{font-size:11.5px;line-height:1.6;color:#a8d8ff;margin-bottom:8px;background:rgba(0,245,255,.04);border-radius:12px;padding:9px;border:1px solid rgba(0,245,255,.08)}
+.fun-fact{background:rgba(155,93,229,.12);border:1px solid rgba(155,93,229,.3);border-radius:12px;padding:8px 10px;font-size:11px;color:var(--purple);font-weight:700;text-align:left}
+.fun-fact span{color:#c8a0ff}
+
+/* Animations */
+.anim-pulse{animation:pulse 2s ease-in-out infinite}
+.anim-spin{animation:spin 3s linear infinite}
+.anim-wobble{animation:wobble 1.5s ease-in-out infinite}
+.anim-split{animation:split 2.5s ease-in-out infinite}
+.anim-swim{animation:swim 2s ease-in-out infinite}
+.anim-bounce{animation:bounce 1.5s ease-in-out infinite}
+.anim-drift{animation:drift 4s ease-in-out infinite}
+.anim-shake{animation:shake 1s ease-in-out infinite}
+.anim-grow{animation:grow 2s ease-in-out infinite}
+.anim-rotate{animation:rotate 4s linear infinite}
+.anim-float{animation:float 3s ease-in-out infinite}
+.anim-jelly{animation:jelly 1.8s ease-in-out infinite}
+
+@keyframes pulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px rgba(0,245,255,.3))}50%{transform:scale(1.15);filter:drop-shadow(0 0 30px rgba(0,245,255,.6))}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes wobble{0%,100%{transform:skewX(0) skewY(0)}25%{transform:skewX(-5deg) skewY(3deg)}75%{transform:skewX(5deg) skewY(-3deg)}}
+@keyframes split{0%,100%{transform:scale(1)}40%{transform:scaleX(1.2) scaleY(.8)}60%{transform:scaleX(.8) scaleY(1.15)}80%{transform:scaleX(1.1) scaleY(.95)}}
+@keyframes swim{0%,100%{transform:translateX(-8px) rotate(-5deg)}50%{transform:translateX(8px) rotate(5deg)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-16px)}60%{transform:translateY(-10px)}}
+@keyframes drift{0%{transform:translate(-8px,4px)}33%{transform:translate(8px,-8px)}66%{transform:translate(4px,8px)}100%{transform:translate(-8px,4px)}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+@keyframes grow{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+@keyframes rotate{from{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}to{transform:rotate(360deg) scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes jelly{0%,100%{transform:scaleX(1) scaleY(1)}25%{transform:scaleX(1.15) scaleY(.85)}50%{transform:scaleX(.9) scaleY(1.1)}75%{transform:scaleX(1.08) scaleY(.95)}}
+
+/* NAVIGATION */
+.card-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:8px}
+.nav-btn{background:rgba(0,245,255,.08);border:2px solid rgba(0,245,255,.2);color:white;width:46px;height:46px;border-radius:50%;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.nav-btn:hover:not(:disabled){background:rgba(0,245,255,.15);transform:scale(1.08)}
+.nav-btn:disabled{opacity:.2;cursor:not-allowed}
+.card-counter{font-family:'Fredoka One',cursive;font-size:17px;color:white;min-width:58px;text-align:center}
+
+/* AUDIO */
+.audio-btn{background:rgba(0,245,255,.08);border:1.5px solid rgba(0,245,255,.2);color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .2s}
+.audio-btn:hover{background:rgba(0,245,255,.15);transform:scale(1.1)}
+.audio-btn.speaking{background:var(--neon);color:#00050d}
+.sound-wave{display:inline-flex;align-items:flex-end;gap:2px;height:14px;vertical-align:middle}
+.sound-bar{width:3px;background:currentColor;border-radius:2px;animation:soundBar .5s ease-in-out infinite alternate}
+.sound-bar:nth-child(1){height:4px}.sound-bar:nth-child(2){height:9px;animation-delay:.1s}.sound-bar:nth-child(3){height:6px;animation-delay:.2s}.sound-bar:nth-child(4){height:12px;animation-delay:.05s}.sound-bar:nth-child(5){height:5px;animation-delay:.15s}
+@keyframes soundBar{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+/* QUIZ */
+#quiz-mode{display:none}
+.quiz-score{display:flex;justify-content:space-around;background:rgba(0,245,255,.06);border-radius:16px;padding:12px;margin-bottom:12px;border:1px solid rgba(0,245,255,.1)}
+.score-item{text-align:center}
+.score-num{font-family:'Fredoka One',cursive;font-size:26px}
+.score-label{font-size:10px;color:var(--neon);font-weight:700;opacity:.7}
+.quiz-question{background:rgba(0,245,255,.06);border-radius:22px;padding:18px;text-align:center;margin-bottom:12px;border:1px solid rgba(0,245,255,.12)}
+.quiz-big-emoji{font-size:76px;display:inline-block;filter:drop-shadow(0 0 15px rgba(0,245,255,.4))}
+.quiz-q{font-size:15px;font-weight:800;color:var(--neon);margin-top:6px;opacity:.8}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.quiz-opt{background:rgba(0,245,255,.06);border:2px solid rgba(0,245,255,.15);border-radius:14px;padding:12px 8px;color:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.quiz-opt:hover:not(:disabled){background:rgba(0,245,255,.12);transform:translateY(-2px)}
+.quiz-opt.correct{background:var(--green)!important;border-color:var(--green)!important;color:#00050d!important;animation:correctPop .4s cubic-bezier(.4,0,.2,1)}
+.quiz-opt.wrong{background:var(--virus)!important;border-color:var(--virus)!important;animation:wrongShake .4s ease-in-out}
+@keyframes correctPop{0%{transform:scale(.95)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.quiz-opt:disabled{cursor:not-allowed}
+.quiz-feedback{text-align:center;font-size:13px;font-weight:800;min-height:20px;margin-bottom:10px;line-height:1.4}
+.quiz-next{width:100%;background:linear-gradient(135deg,var(--neon),var(--purple));border:none;border-radius:14px;padding:13px;font-family:'Fredoka One',cursive;font-size:18px;color:#00050d;cursor:pointer;transition:all .2s;display:none;box-shadow:0 4px 16px rgba(0,245,255,.2)}
+.quiz-next:hover{transform:translateY(-2px)}
+.result-screen{display:none;text-align:center;padding:10px}
+.result-emoji{font-size:76px;margin-bottom:10px;animation:pulse 1.5s ease-in-out infinite}
+.result-title{font-family:'Fredoka One',cursive;font-size:30px;margin-bottom:6px}
+.result-sub{font-size:13px;color:var(--neon);margin-bottom:16px;line-height:1.5;opacity:.8}
+.result-score-box{background:rgba(0,245,255,.06);border-radius:20px;padding:14px;margin-bottom:14px;border:1px solid rgba(0,245,255,.15)}
+.result-big{font-family:'Fredoka One',cursive;font-size:50px;color:var(--neon)}
+.result-stars{font-size:28px;letter-spacing:3px;margin-top:4px}
+.restart-btn{background:linear-gradient(135deg,var(--pink),var(--purple));border:none;border-radius:14px;padding:12px 26px;font-family:'Fredoka One',cursive;font-size:19px;color:white;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(255,0,110,.3)}
+.restart-btn:hover{transform:translateY(-2px)}
+
+/* LICENSE */
+.license-footer{text-align:center;margin-top:28px;padding:18px 16px 8px;border-top:1px solid rgba(0,245,255,.08)}
+.license-logo{font-family:'Fredoka One',cursive;font-size:18px;background:linear-gradient(135deg,var(--neon),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.license-text{font-size:10.5px;color:rgba(255,255,255,.25);font-weight:600;line-height:1.7}
+.license-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.1);border-radius:20px;padding:5px 12px;margin-top:8px;font-size:11px;font-weight:800;color:rgba(255,255,255,.35)}
+.watermark{position:fixed;bottom:78px;left:12px;z-index:98;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(0,245,255,.1);pointer-events:none;letter-spacing:.3px;line-height:1.4}
+.particle{position:fixed;pointer-events:none;z-index:999;font-size:22px;animation:particleFly .8s ease-out forwards}
+@keyframes particleFly{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(0);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="micro-bg">
+  <div class="micro-grid"></div>
+  <div class="scan-line"></div>
+</div>
+
+<div class="watermark">WNJ Little W🌏rld<br>© 2026</div>
+<button class="music-fab" id="musicFab" onclick="toggleMusicPanel()">🎵</button>
+
+<div class="music-panel" id="musicPanel">
+  <h4>🎵 Lab Sounds</h4>
+  <div class="now-playing" id="nowPlaying">
+    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    <span id="nowPlayingText">Lab Neon</span>
+  </div>
+  <div class="music-option active" id="opt0" onclick="selectTrack(0)"><div class="dot"></div>🔬 Lab Neon</div>
+  <div class="music-option" id="opt1" onclick="selectTrack(1)"><div class="dot"></div>🧬 DNA Ambient</div>
+  <div class="music-option" id="opt2" onclick="selectTrack(2)"><div class="dot"></div>🌌 Micro Space</div>
+  <div class="music-option" id="opt3" onclick="selectTrack(3)"><div class="dot"></div>🎮 Beat Kuis</div>
+  <div class="music-option" id="opt-off" onclick="stopMusic()"><div class="dot"></div>🔇 Mati</div>
+  <div class="vol-row">🔈<input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="40" oninput="setVolume(this.value)">🔊</div>
+</div>
+
+<div class="container">
+  <div class="now-playing-top" id="nowPlayingTop">
+    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    <span id="nowPlayingTopText">♫ Lab Neon</span>
+  </div>
+
+  <div class="header">
+    <div class="header-emojis">🦠🧫🧬🔬💉🧪⚗️🫧</div>
+    <h1>Mikro-<br>organisme</h1>
+    <p>🔬 Dunia Kecil yang Mengubah Segalanya!</p>
+  </div>
+
+  <div class="tabs-wrapper" id="catTabs"></div>
+  <div class="mode-tabs">
+    <button class="mode-btn active" id="btnFlash" onclick="setMode('flashcard')">📚 Flashcard</button>
+    <button class="mode-btn" id="btnQuiz" onclick="setMode('quiz')">🎮 Kuis</button>
+  </div>
+
+  <div id="flashcard-mode">
+    <div class="category-label" id="catLabel">🦠 Semua Mikroorganisme</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="card-container" onclick="flipCard()">
+      <div class="card-inner" id="cardInner">
+        <div class="card-face card-front">
+          <div class="type-badge type-virus" id="typeBadge">🦠 Virus</div>
+          <div class="danger-level danger-berbahaya" id="dangerBadge">☠️ Berbahaya</div>
+          <div class="animal-stage">
+            <div class="orbit-ring"></div>
+            <div class="orbit-ring-2"></div>
+            <span class="animal-main anim-pulse" id="animalEmoji">🦠</span>
+          </div>
+          <div class="animal-name-id" id="animalNameId">Virus COVID-19</div>
+          <div class="animal-name-en" id="animalNameEn">SARS-CoV-2</div>
+          <div class="animal-tag" id="animalTag" style="background:rgba(255,77,109,.4);border-color:rgba(255,77,109,.4)">💊 Virus Corona</div>
+          <div class="size-info" id="sizeInfo">📏 Ukuran: 0.1 mikrometer</div>
+          <div class="tap-hint">👆 Tap untuk info lengkap</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-content">
+            <span class="back-emoji-sm anim-pulse" id="backEmoji">🦠</span>
+            <div class="back-name" id="backName">Virus COVID-19</div>
+            <div class="back-latin" id="backLatin">SARS-CoV-2</div>
+            <div class="back-size" id="backSize">📏 0.1 μm | Ditemukan: 2019</div>
+            <div class="back-desc" id="backDesc">Virus penyebab pandemi COVID-19 yang mengubah dunia.</div>
+            <div class="fun-fact">💡 <span id="backFact">Satu tetes air liur bisa mengandung jutaan partikel virus!</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-nav">
+      <button class="nav-btn" id="prevBtn" onclick="prevCard()">◀</button>
+      <div class="card-counter" id="cardCounter">1/1</div>
+      <button class="nav-btn" id="nextBtn" onclick="nextCard()">▶</button>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:8px">
+      <button class="audio-btn" id="audioBtn" onclick="speakCurrent(event)">🔊</button>
+    </div>
+  </div>
+
+  <div id="quiz-mode">
+    <div class="quiz-score">
+      <div class="score-item"><div class="score-num" id="qCorrect" style="color:#00ff88">0</div><div class="score-label">✅ Benar</div></div>
+      <div class="score-item"><div class="score-num" id="qTotal">0</div><div class="score-label">📝 Soal</div></div>
+      <div class="score-item"><div class="score-num" id="qWrong" style="color:#ff4d6d">0</div><div class="score-label">❌ Salah</div></div>
+    </div>
+    <div class="quiz-question" id="quizQuestion">
+      <span class="quiz-big-emoji anim-pulse" id="quizEmoji">🦠</span>
+      <div class="quiz-q">Mikroorganisme apa ini?</div>
+      <button class="audio-btn" id="quizAudioBtn" onclick="speakQuizHint(event)" style="margin:8px auto 0">🔊</button>
+    </div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="quiz-next" id="quizNext" onclick="nextQuiz()">Soal Berikutnya ▶</button>
+    <div class="result-screen" id="resultScreen">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-title" id="resultTitle">Luar Biasa!</div>
+      <div class="result-sub" id="resultSub"></div>
+      <div class="result-score-box"><div class="result-big" id="resultBig">0/0</div><div class="result-stars" id="resultStars">⭐</div></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Main Lagi</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW BANNER -->
+  <div style="background:linear-gradient(135deg,#0f3460,#533483,#00b4d8);border-radius:20px;padding:20px 18px;margin:20px 0;text-align:center;box-shadow:0 8px 30px rgba(0,180,216,.3);">
+    <div style="font-size:2rem;margin-bottom:8px;">🔓</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:1rem;color:#fff;margin-bottom:6px;">PREVIEW — 5 dari 25 Mikroorganisme!</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.9);font-family:'Nunito',sans-serif;line-height:1.6;margin-bottom:14px;">
+      Versi lengkap berisi <strong>25 mikroorganisme</strong> dari 5 kategori:<br>
+      🦠 Virus · 🧫 Bakteri · 🍄 Fungi · 🔬 Protozoa · 🌿 Alga<br>
+      + Info bahaya, ukuran mikro, Mode Kuis & Musik! 🎵
+    </div>
+    <a href="https://wa.me/6289630486382?text=Halo%20kak%20WNJ%20Little%20World!%20Saya%20mau%20beli%20Flashcard%20Mikroorganisme%20versi%20lengkap%20%F0%9F%A6%A0"
+       target="_blank"
+       style="display:inline-block;background:#fff;color:#0f3460;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:900;
+       padding:12px 24px;border-radius:20px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);">
+      💬 Beli Versi Lengkap via WhatsApp
+    </a>
+  </div>
+
+  <div class="license-footer">
+    <div class="license-logo">WNJ Little W🌏rld</div>
+    <div class="license-text">© 2026 WNJ Little W🌏rld · All Rights Reserved<br>Flashcard Mikroorganisme — Versi 1.0</div>
+    <div class="license-badge"><span>🌏</span> Dibuat dengan ❤️ oleh WNJ Little W🌏rld</div>
+    <div class="license-text" style="margin-top:8px">Dilarang memperbanyak atau mendistribusikan<br>tanpa izin tertulis dari WNJ Little W🌏rld.</div>
+  </div>
+</div>
+
+<script>
+// ─── AUDIO ───
+let audioCtx=null,masterGain=null,currentTrack=0,musicNodes=[],musicPlaying=false;
+function getCtx(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.gain.value=0.4;masterGain.connect(audioCtx.destination);}return audioCtx;}
+function setVolume(v){if(masterGain)masterGain.gain.value=v/100;}
+
+// TRACK 0: Lab Neon
+function playLabNeon(){
+  const ctx=getCtx(),nodes=[];
+  // Low synth pad
+  [55,110,165].forEach(freq=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq;g.gain.value=0.04;o.connect(g);g.connect(masterGain);o.start();nodes.push(o);});
+  // Slow LFO
+  const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=0.05;lg.gain.value=0.03;lfo.connect(lg);lg.connect(masterGain.gain);lfo.start();nodes.push(lfo);
+  // Electronic beeps
+  function beep(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='square';o.frequency.value=800+Math.random()*400;
+    g.gain.setValueAtTime(0.04,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.06);
+    o.connect(g);g.connect(masterGain);o.start();o.stop(ctx.currentTime+.07);
+    setTimeout(beep,600+Math.random()*1500);
+  }
+  beep();
+  // Neon hum
+  const hum=ctx.createOscillator(),hg=ctx.createGain(),hp=ctx.createBiquadFilter();
+  hum.type='sawtooth';hum.frequency.value=60;hp.type='highpass';hp.frequency.value=400;hg.gain.value=0.015;
+  hum.connect(hp);hp.connect(hg);hg.connect(masterGain);hum.start();nodes.push(hum);
+  // Arpeggio
+  const arp=[261.6,329.6,392,523.3,659.3];let ai=0,at=ctx.currentTime+.2;
+  function arpNote(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='triangle';o.frequency.value=arp[ai%arp.length];
+    g.gain.setValueAtTime(.04,at);g.gain.exponentialRampToValueAtTime(.0001,at+.25);
+    o.connect(g);g.connect(masterGain);o.start(at);o.stop(at+.28);
+    ai++;at+=.28;setTimeout(arpNote,(at-ctx.currentTime-.05)*1000);
+  }
+  arpNote();
+  return nodes;
+}
+
+// TRACK 1: DNA Ambient
+function playDNA(){
+  const ctx=getCtx(),nodes=[];
+  // Base drone
+  const d=ctx.createOscillator(),dg=ctx.createGain();d.type='sine';d.frequency.value=40;dg.gain.value=0.08;d.connect(dg);dg.connect(masterGain);d.start();nodes.push(d);
+  // Modulated pad
+  [220,330,440,550].forEach((f,i)=>{
+    const o=ctx.createOscillator(),g=ctx.createGain(),lfo=ctx.createOscillator(),lg=ctx.createGain();
+    o.type='sine';o.frequency.value=f;g.gain.value=0.025;
+    lfo.frequency.value=.08+i*.03;lg.gain.value=f*.02;
+    lfo.connect(lg);lg.connect(o.frequency);o.connect(g);g.connect(masterGain);o.start();lfo.start();nodes.push(o,lfo);
+  });
+  // DNA sequence tones
+  const dnaSeq=[261.6,293.7,261.6,329.6,261.6,246.9,261.6,293.7];let di=0,dt=ctx.currentTime+.3;
+  function dnaTone(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='triangle';o.frequency.value=dnaSeq[di%dnaSeq.length]*2;
+    g.gain.setValueAtTime(.05,dt);g.gain.exponentialRampToValueAtTime(.0001,dt+.8);
+    o.connect(g);g.connect(masterGain);o.start(dt);o.stop(dt+.9);
+    di++;dt+=.7+Math.random()*.3;setTimeout(dnaTone,(dt-ctx.currentTime-.05)*1000);
+  }
+  dnaTone();
+  return nodes;
+}
+
+// TRACK 2: Micro Space
+function playMicroSpace(){
+  const ctx=getCtx(),nodes=[];
+  // Space ambience
+  [30,45,60,90].forEach(f=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.value=0.035;o.connect(g);g.connect(masterGain);o.start();nodes.push(o);});
+  // Cosmic pings
+  function ping(){
+    if(!musicPlaying)return;
+    const f=400+Math.random()*1600;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.setValueAtTime(f,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(f*.5,ctx.currentTime+1);
+    g.gain.setValueAtTime(.08,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+1.2);
+    o.connect(g);g.connect(masterGain);o.start();o.stop(ctx.currentTime+1.3);
+    setTimeout(ping,800+Math.random()*2000);
+  }
+  ping();
+  // White noise space
+  const buf=ctx.createBuffer(1,4096,ctx.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<4096;i++)d[i]=(Math.random()*2-1)*.3;
+  const wn=ctx.createBufferSource(),wg=ctx.createGain(),bp=ctx.createBiquadFilter();
+  wn.buffer=buf;wn.loop=true;bp.type='bandpass';bp.frequency.value=800;bp.Q.value=.2;wg.gain.value=.03;
+  wn.connect(bp);bp.connect(wg);wg.connect(masterGain);wn.start();nodes.push(wn);
+  return nodes;
+}
+
+// TRACK 3: Beat Kuis
+function playQuizBeat(){
+  const ctx=getCtx(),nodes=[];const bpm=128,beat=60/bpm;let t=ctx.currentTime+.05;
+  function kick(tm){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(160,tm);o.frequency.exponentialRampToValueAtTime(.001,tm+.3);g.gain.setValueAtTime(.5,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+.35);o.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+.35);}
+  function snare(tm){const buf=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);const s=ctx.createBufferSource(),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=1000;s.buffer=buf;g.gain.value=.14;s.connect(hp);hp.connect(g);g.connect(masterGain);s.start(tm);}
+  function hihat(tm){const buf=ctx.createBuffer(1,ctx.sampleRate*.02,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=ctx.createBufferSource(),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=9000;s.buffer=buf;g.gain.value=.035;s.connect(hp);hp.connect(g);g.connect(masterGain);s.start(tm);}
+  const bass=[65.4,82.4,65.4,73.4];let bi=0;
+  function bassN(tm){const o=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();o.type='sawtooth';o.frequency.value=bass[bi%bass.length];lp.type='lowpass';lp.frequency.value=260;g.gain.setValueAtTime(.12,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+beat*.9);o.connect(lp);lp.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+beat);bi++;}
+  const lead=[523,0,659,784,0,523,659,0];let li=0;
+  function leadN(tm){if(!lead[li%lead.length]){li++;return;}const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=lead[li%lead.length];g.gain.setValueAtTime(.04,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+beat*.7);o.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+beat*.8);li++;}
+  function bar(){if(!musicPlaying)return;for(let i=0;i<8;i++){if(i%2===0)kick(t+i*beat*.5);if(i%2===1)snare(t+i*beat*.5);hihat(t+i*beat*.5);bassN(t+i*beat*.5);leadN(t+i*beat*.5);}t+=beat*4;setTimeout(bar,(beat*4-.1)*1000);}
+  bar();return nodes;
+}
+
+const trackNames=["🔬 Lab Neon","🧬 DNA Ambient","🌌 Micro Space","🎮 Beat Kuis"];
+const trackFns=[playLabNeon,playDNA,playMicroSpace,playQuizBeat];
+function stopMusic(){musicPlaying=false;musicNodes.forEach(n=>{try{n.stop&&n.stop();n.disconnect&&n.disconnect()}catch(e){}});musicNodes=[];document.getElementById("musicFab").classList.remove("playing");document.getElementById("musicFab").textContent="🎵";document.getElementById("nowPlaying").classList.remove("show");document.getElementById("nowPlayingTop").style.display="none";document.querySelectorAll(".music-option").forEach(o=>o.classList.remove("active"));document.getElementById("opt-off").classList.add("active");}
+function selectTrack(idx){stopMusic();currentTrack=idx;getCtx();if(audioCtx.state==='suspended')audioCtx.resume();musicPlaying=true;musicNodes=trackFns[idx]();document.getElementById("musicFab").classList.add("playing");document.getElementById("nowPlaying").classList.add("show");document.getElementById("nowPlayingText").textContent=trackNames[idx];document.getElementById("nowPlayingTop").style.display="flex";document.getElementById("nowPlayingTopText").textContent="♫ "+trackNames[idx];document.querySelectorAll(".music-option").forEach((o,i)=>o.classList.toggle("active",i===idx));document.getElementById("opt-off").classList.remove("active");}
+function toggleMusicPanel(){document.getElementById("musicPanel").classList.toggle("show");}
+document.addEventListener("click",e=>{const p=document.getElementById("musicPanel"),f=document.getElementById("musicFab");if(p.classList.contains("show")&&!p.contains(e.target)&&!f.contains(e.target))p.classList.remove("show");});
+function sfxFlip(){const ctx=getCtx(),o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(600,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(1200,ctx.currentTime+.06);g.gain.setValueAtTime(.1,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.1);o.connect(g);g.connect(masterGain||ctx.destination);o.start();o.stop(ctx.currentTime+.12);}
+function sfxNext(){const ctx=getCtx();[0,.05].forEach((d,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=i===0?400:600;g.gain.setValueAtTime(.08,ctx.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+d+.08);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.1);});}
+function sfxCorrect(){const ctx=getCtx();[659,880,1047].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.15,ctx.currentTime+i*.09);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.09+.2);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+i*.09);o.stop(ctx.currentTime+i*.09+.24);});}
+function sfxWrong(){const ctx=getCtx();[300,200].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.value=f;g.gain.setValueAtTime(.1,ctx.currentTime+i*.12);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.12+.15);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+i*.12);o.stop(ctx.currentTime+i*.12+.18);});}
+
+// ─── DATA ───
+const typeClasses={virus:"type-virus",bakteri:"type-bakteri",jamur:"type-jamur",protozoa:"type-protozoa",alga:"type-alga",lain:"type-lain"};
+const dangerClasses={berbahaya:"danger-berbahaya",berguna:"danger-berguna",netral:"danger-netral"};
+const tagBgs={
+  virus:"rgba(255,77,109,.4)",bakteri:"rgba(6,214,160,.3)",
+  jamur:"rgba(199,125,255,.3)",protozoa:"rgba(76,201,240,.3)",
+  alga:"rgba(57,211,83,.3)",lain:"rgba(249,202,36,.3)"
+};
+
+const animals=[
+  // VIRUS
+  {id:1,emoji:"🦠",nameId:"Virus COVID-19",nameEn:"SARS-CoV-2",latin:"SARS-CoV-2",category:"virus",tag:"💊 Virus Corona",size:"0.1 μm | Ditemukan: 2019",desc:"Virus penyebab pandemi COVID-19 yang mengubah seluruh kehidupan manusia di dunia.",fact:"SARS-CoV-2 bermutasi ratusan kali — itulah mengapa varian terus bermunculan!",danger:"berbahaya",dangerLabel:"☠️ Berbahaya",typeLabel:"🦠 Virus",anim:"anim-pulse"},
+  {id:2,emoji:"🦠",nameId:"Virus Influenza",nameEn:"Influenza Virus",latin:"Orthomyxoviridae",category:"virus",tag:"🤧 Virus Flu",size:"0.08-0.12 μm | Ditemukan: 1933",desc:"Virus penyebab flu musiman yang menginfeksi ratusan juta orang setiap tahunnya.",fact:"Virus flu bermutasi sangat cepat — itulah mengapa vaksin flu harus diperbarui tiap tahun!",danger:"berbahaya",dangerLabel:"⚠️ Bahaya Sedang",typeLabel:"🦠 Virus",anim:"anim-spin"},
+  {id:3,emoji:"🦠",nameId:"Bakteriofag",nameEn:"Bacteriophage",latin:"Caudovirales",category:"virus",tag:"🔬 Virus Pemangsa",size:"0.02-0.2 μm",desc:"Virus yang memangsa bakteri! Dipakai dalam terapi fag untuk melawan infeksi bakteri.",fact:"Bakteriofag adalah makhluk paling banyak di Bumi — 10 juta triliun di lautan!",danger:"berguna",dangerLabel:"✅ Berguna",typeLabel:"🦠 Virus",anim:"anim-wobble"},
+  {id:4,emoji:"🦠",nameId:"Virus Ebola",nameEn:"Ebola Virus",latin:"Orthoebolavirus",category:"virus",tag:"🚨 Virus Berbahaya",size:"0.8-1.0 μm panjang | 1976",desc:"Salah satu virus paling mematikan yang pernah ada dengan tingkat kematian hingga 90%.",fact:"Virus Ebola berbentuk seperti tanda tanya atau angka 6 — unik di antara semua virus!",danger:"berbahaya",dangerLabel:"☠️ Sangat Berbahaya",typeLabel:"🦠 Virus",anim:"anim-shake"},
+  {id:5,emoji:"🦠",nameId:"Virus HIV",nameEn:"HIV",latin:"Human Immunodeficiency Virus",category:"virus",tag:"🎗️ Retrovirus",size:"0.12 μm | Ditemukan: 1983",desc:"Virus yang menyerang sistem imun manusia dan menyebabkan AIDS jika tidak diobati.",fact:"HIV menyembunyikan DNA-nya di dalam sel imun manusia untuk menghindari deteksi!",danger:"berbahaya",dangerLabel:"☠️ Berbahaya",typeLabel:"🦠 Virus",anim:"anim-pulse"},
+  // BAKTERI
+];
+
+const categories=[
+  {id:"all",label:"🦠 Semua (5 Preview)"},
+  {id:"virus",label:"🔴 Virus"},
+];
+
+let currentCat="all",filteredAnimals=[...animals],currentIndex=0,isFlipped=false;
+let quizAnimals=[],quizIndex=0,qCorrect=0,qWrong=0,quizAnswered=false,currentMode="flashcard";
+let currentQuizAnimal=null,synth=window.speechSynthesis;
+
+// BG elements
+for(let i=0;i<12;i++){
+  const c=document.createElement("div");c.className="cell";
+  const s=20+Math.random()*80,cx=(Math.random()*30-15)+'px',cy=(Math.random()*30-15)+'px';
+  c.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--cx:${cx};--cy:${cy};animation-duration:${5+Math.random()*8}s;animation-delay:${Math.random()*5}s`;
+  document.querySelector(".micro-bg").appendChild(c);
+}
+const neonColors=["#00f5ff","#00ff88","#ff006e","#9b5de5","#f9ca24"];
+for(let i=0;i<20;i++){
+  const d=document.createElement("div");d.className="dna-dot";
+  const c=neonColors[Math.floor(Math.random()*neonColors.length)];
+  d.style.cssText=`background:${c};box-shadow:0 0 4px ${c};left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
+  document.querySelector(".micro-bg").appendChild(d);
+}
+["🦠","🧬","🧫","🔬"].forEach((f,i)=>{
+  const el=document.createElement("div");el.className="micro-deco";el.textContent=f;
+  const dx=(Math.random()*40-20)+'px',dy=(Math.random()*40-20)+'px';
+  el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--dx:${dx};--dy:${dy};font-size:${20+Math.random()*20}px;animation-duration:${5+Math.random()*6}s;animation-delay:${Math.random()*4}s`;
+  document.body.appendChild(el);
+});
+
+// TABS
+const tabsEl=document.getElementById("catTabs");
+categories.forEach(cat=>{const btn=document.createElement("button");btn.className="tab"+(cat.id==="all"?" active":"");btn.textContent=cat.label;btn.onclick=()=>selectCat(cat.id,btn,cat.label);tabsEl.appendChild(btn);});
+
+function selectCat(catId,btn,label){currentCat=catId;document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));btn.classList.add("active");filteredAnimals=catId==="all"?[...animals]:animals.filter(a=>a.category===catId);currentIndex=0;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");document.getElementById("catLabel").textContent=label;updateCard();if(currentMode==="quiz")startQuiz();}
+
+function updateCard(){
+  if(!filteredAnimals.length)return;
+  const a=filteredAnimals[currentIndex];
+  const emoji=document.getElementById("animalEmoji");emoji.textContent=a.emoji;emoji.className="animal-main";void emoji.offsetWidth;emoji.classList.add(a.anim);
+  document.getElementById("typeBadge").textContent=a.typeLabel;document.getElementById("typeBadge").className="type-badge "+typeClasses[a.category];
+  document.getElementById("dangerBadge").textContent=a.dangerLabel;document.getElementById("dangerBadge").className="danger-level "+dangerClasses[a.danger];
+  const tag=document.getElementById("animalTag");tag.textContent=a.tag;tag.style.background=tagBgs[a.category];
+  document.getElementById("animalNameId").textContent=a.nameId;
+  document.getElementById("animalNameEn").textContent=a.nameEn;
+  document.getElementById("sizeInfo").textContent="📏 "+a.size;
+  document.getElementById("backEmoji").textContent=a.emoji;
+  const be=document.getElementById("backEmoji");be.className="back-emoji-sm "+a.anim;
+  document.getElementById("backName").textContent=a.nameId;
+  document.getElementById("backLatin").textContent=a.latin;
+  document.getElementById("backSize").textContent="📏 "+a.size;
+  document.getElementById("backDesc").textContent=a.desc;
+  document.getElementById("backFact").textContent=a.fact;
+  document.getElementById("cardCounter").textContent=`${currentIndex+1}/${filteredAnimals.length}`;
+  document.getElementById("progressFill").style.width=`${((currentIndex+1)/filteredAnimals.length)*100}%`;
+  document.getElementById("prevBtn").disabled=currentIndex===0;
+  document.getElementById("nextBtn").disabled=currentIndex===filteredAnimals.length-1;
+}
+
+function flipCard(){sfxFlip();isFlipped=!isFlipped;document.getElementById("cardInner").classList.toggle("flipped",isFlipped);if(isFlipped)setTimeout(()=>speakCurrent(null,true),300);}
+function prevCard(){if(currentIndex>0){sfxNext();currentIndex--;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");updateCard();}}
+function nextCard(){if(currentIndex<filteredAnimals.length-1){sfxNext();currentIndex++;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");updateCard();}}
+
+function speak(text,lang,onEnd){if(!synth)return;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang||"id-ID";u.rate=.85;u.pitch=1;u.onend=()=>{if(onEnd)onEnd()};synth.speak(u);}
+function speakCurrent(e){if(e)e.stopPropagation();const a=filteredAnimals[currentIndex];if(!a)return;const btn=document.getElementById("audioBtn");btn.classList.add("speaking");btn.innerHTML="<span class='sound-wave'><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span></span>";speak(`${a.nameId}. ${a.nameEn}.`,"id-ID",()=>{btn.classList.remove("speaking");btn.innerHTML="🔊";});}
+function speakQuizHint(e){if(e)e.stopPropagation();if(!currentQuizAnimal)return;const btn=document.getElementById("quizAudioBtn");btn.classList.add("speaking");btn.innerHTML="<span class='sound-wave'><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span></span>";speak(`Petunjuk: ${currentQuizAnimal.typeLabel}`,"id-ID",()=>{btn.classList.remove("speaking");btn.innerHTML="🔊";});}
+
+function setMode(mode){currentMode=mode;document.getElementById("btnFlash").classList.toggle("active",mode==="flashcard");document.getElementById("btnQuiz").classList.toggle("active",mode==="quiz");document.getElementById("flashcard-mode").style.display=mode==="flashcard"?"block":"none";document.getElementById("quiz-mode").style.display=mode==="quiz"?"block":"none";if(mode==="quiz"){if(musicPlaying&&currentTrack!==3)selectTrack(3);startQuiz();}else{if(musicPlaying&&currentTrack===3)selectTrack(0);}}
+
+function startQuiz(){quizAnimals=[...filteredAnimals].sort(()=>Math.random()-.5);quizIndex=0;qCorrect=0;qWrong=0;quizAnswered=false;document.getElementById("resultScreen").style.display="none";document.getElementById("quizQuestion").style.display="block";document.getElementById("quizOptions").style.display="grid";document.getElementById("quizNext").style.display="none";document.getElementById("quizFeedback").textContent="";updateQuizScore();showQuestion();}
+function updateQuizScore(){document.getElementById("qCorrect").textContent=qCorrect;document.getElementById("qTotal").textContent=quizIndex;document.getElementById("qWrong").textContent=qWrong;}
+function showQuestion(){
+  if(quizIndex>=quizAnimals.length){showResult();return;}
+  const cur=quizAnimals[quizIndex];currentQuizAnimal=cur;
+  const e=document.getElementById("quizEmoji");e.textContent=cur.emoji;e.className="quiz-big-emoji "+cur.anim;
+  document.getElementById("quizFeedback").textContent="";document.getElementById("quizNext").style.display="none";document.getElementById("quizAudioBtn").innerHTML="🔊";document.getElementById("quizAudioBtn").classList.remove("speaking");quizAnswered=false;
+  const pool=animals.filter(a=>a.id!==cur.id).sort(()=>Math.random()-.5).slice(0,3);
+  const opts=[...pool,cur].sort(()=>Math.random()-.5);
+  const optEl=document.getElementById("quizOptions");optEl.innerHTML="";
+  opts.forEach(opt=>{const btn=document.createElement("button");btn.className="quiz-opt";btn.innerHTML=`${opt.emoji}<br>${opt.nameId}`;btn.onclick=()=>answerQuiz(btn,opt.id===cur.id,cur);optEl.appendChild(btn);});
+}
+function answerQuiz(btn,isCorrect,cur){
+  if(quizAnswered)return;quizAnswered=true;quizIndex++;
+  document.querySelectorAll(".quiz-opt").forEach(b=>{b.disabled=true;if(b.innerHTML.includes(cur.nameId))b.classList.add("correct");});
+  if(isCorrect){qCorrect++;btn.classList.add("correct");sfxCorrect();document.getElementById("quizFeedback").textContent="✅ Benar! "+cur.fact;document.getElementById("quizFeedback").style.color="#00ff88";speak(`Benar! ${cur.nameId}.`,"id-ID");spawnParticles(btn,"🎉","⭐","🔬","🧬","✨");}
+  else{qWrong++;btn.classList.add("wrong");sfxWrong();document.getElementById("quizFeedback").textContent="❌ Salah! Itu adalah "+cur.nameId;document.getElementById("quizFeedback").style.color="#ff4d6d";speak(`Salah. Jawaban benar: ${cur.nameId}`,"id-ID");}
+  updateQuizScore();document.getElementById("quizNext").style.display="block";document.getElementById("quizNext").textContent=quizIndex>=quizAnimals.length?"Lihat Hasil 🏆":"Soal Berikutnya ▶";
+}
+function nextQuiz(){sfxNext();showQuestion();}
+function showResult(){
+  synth&&synth.cancel();document.getElementById("quizQuestion").style.display="none";document.getElementById("quizOptions").style.display="none";document.getElementById("quizNext").style.display="none";document.getElementById("quizFeedback").textContent="";
+  const total=quizAnimals.length,pct=Math.round((qCorrect/total)*100);
+  let emoji="😅",title="Terus Belajar!",stars="⭐";
+  if(pct>=90){emoji="🏆";title="Luar Biasa!";stars="⭐⭐⭐⭐⭐";}else if(pct>=75){emoji="🥇";title="Keren Banget!";stars="⭐⭐⭐⭐";}else if(pct>=60){emoji="⭐";title="Bagus Sekali!";stars="⭐⭐⭐";}else if(pct>=40){emoji="💪";title="Lumayan!";stars="⭐⭐";}
+  document.getElementById("resultEmoji").textContent=emoji;document.getElementById("resultTitle").textContent=title;document.getElementById("resultSub").textContent=`Kamu menjawab ${qCorrect} dari ${total} soal benar (${pct}%)`;document.getElementById("resultBig").textContent=`${qCorrect}/${total}`;document.getElementById("resultStars").textContent=stars;document.getElementById("resultScreen").style.display="block";
+  speak(`${title}! Kamu mendapat nilai ${qCorrect} dari ${total}!`,"id-ID");
+  if(pct>=60)for(let i=0;i<3;i++)setTimeout(()=>spawnParticles(document.getElementById("resultScreen"),"🎉","🏆","⭐","🔬","🦠"),i*300);
+}
+function restartQuiz(){startQuiz();}
+function spawnParticles(el,...emojis){const rect=el.getBoundingClientRect();for(let i=0;i<6;i++){const p=document.createElement("div");p.className="particle";p.textContent=emojis[Math.floor(Math.random()*emojis.length)];p.style.cssText=`left:${rect.left+Math.random()*rect.width}px;top:${rect.top+rect.height*.3}px;animation-delay:${Math.random()*.4}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),1000);}}
+
+updateCard();
+</script>
+</body>
+</html>
