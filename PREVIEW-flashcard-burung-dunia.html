@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PREVIEW — Burung Dunia 🐦 | WNJ Little W🌏rld</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#020d1a;--mid:#0a2540;--light:#1a6fa8;
+  --sky:#7dd3fc;--dawn:#fbbf24;--dusk:#f97316;
+  --green:#4ade80;--pink:#f472b6;--purple:#a78bfa;
+  --coral:#ff6b6b;--white:#ffffff;--cream:#fefce8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(180deg,#020d1a 0%,#0a2540 20%,#1a4a7a 50%,#2d7ab5 75%,#7dd3fc 100%);
+  min-height:100vh;color:white;overflow-x:hidden;
+}
+
+/* SKY BG */
+.sky-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+
+/* Clouds */
+.cloud{position:absolute;border-radius:50px;background:rgba(255,255,255,.08);filter:blur(8px);animation:cloudDrift linear infinite}
+@keyframes cloudDrift{0%{transform:translateX(-200px)}100%{transform:translateX(110vw)}}
+
+/* Sun/Dawn glow */
+.dawn-glow{position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:500px;height:200px;background:radial-gradient(ellipse,rgba(251,191,36,.15) 0%,rgba(249,115,22,.08) 40%,transparent 70%);animation:dawnPulse 5s ease-in-out infinite}
+@keyframes dawnPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* Flying birds deco */
+.deco-bird{position:fixed;pointer-events:none;z-index:0;opacity:.1;animation:birdFly linear infinite}
+@keyframes birdFly{
+  0%{transform:translateX(-100px) translateY(0)}
+  30%{transform:translateX(30vw) translateY(-20px)}
+  60%{transform:translateX(60vw) translateY(10px)}
+  100%{transform:translateX(calc(100vw+100px)) translateY(-15px)}
+}
+
+/* Feather particles */
+.feather{position:absolute;font-size:12px;opacity:.1;animation:featherFall linear infinite}
+@keyframes featherFall{0%{transform:translateY(-20px) rotate(0) translateX(0);opacity:0}20%{opacity:.15}100%{transform:translateY(110vh) rotate(360deg) translateX(30px);opacity:0}}
+
+/* Tree silhouettes */
+.tree{position:absolute;bottom:0;font-size:60px;opacity:.06;animation:treeSway ease-in-out infinite alternate}
+@keyframes treeSway{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
+
+/* LAYOUT */
+.container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:14px 14px 110px}
+
+/* MUSIC FAB */
+.music-fab{position:fixed;bottom:20px;right:20px;z-index:100;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a2540,#1a6fa8);border:2px solid rgba(125,211,252,.3);color:white;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.4);transition:all .3s}
+.music-fab:hover{transform:scale(1.1)}
+.music-fab.playing{background:linear-gradient(135deg,var(--dawn),var(--dusk));color:#020d1a;animation:musicPulse 1.5s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 4px 20px rgba(251,191,36,.3)}50%{box-shadow:0 4px 30px rgba(251,191,36,.7),0 0 0 8px rgba(251,191,36,.1)}}
+.music-panel{position:fixed;bottom:86px;right:14px;z-index:99;background:rgba(2,13,26,.95);backdrop-filter:blur(12px);border:1px solid rgba(125,211,252,.15);border-radius:20px;padding:14px;width:220px;box-shadow:0 8px 32px rgba(0,0,0,.6);display:none}
+.music-panel.show{display:block;animation:slideUp .25s ease-out}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.music-panel h4{font-family:'Fredoka One',cursive;font-size:16px;margin-bottom:10px;color:var(--dawn)}
+.music-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:all .2s;margin-bottom:4px;font-size:13px;font-weight:700}
+.music-option:hover{background:rgba(125,211,252,.08)}
+.music-option.active{background:rgba(251,191,36,.15);color:var(--dawn)}
+.music-option .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+.music-option.active .dot{background:var(--dawn);box-shadow:0 0 6px var(--dawn)}
+.vol-row{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sky)}
+.vol-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:rgba(125,211,252,.2);outline:none;cursor:pointer}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--dawn);cursor:pointer}
+.now-playing{display:none;align-items:center;gap:8px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);border-radius:10px;padding:6px 10px;margin-bottom:10px;font-size:12px;font-weight:700;color:var(--dawn)}
+.now-playing.show{display:flex}
+.eq-bars{display:flex;align-items:flex-end;gap:2px;height:14px}
+.eq-bar{width:3px;border-radius:1px;background:var(--dawn);animation:eqAnim .5s ease-in-out infinite alternate}
+.eq-bar:nth-child(1){height:4px}.eq-bar:nth-child(2){height:10px;animation-delay:.15s}.eq-bar:nth-child(3){height:6px;animation-delay:.3s}.eq-bar:nth-child(4){height:12px;animation-delay:.1s}.eq-bar:nth-child(5){height:5px;animation-delay:.25s}
+@keyframes eqAnim{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+/* HEADER */
+.header{text-align:center;padding:14px 0 10px}
+.header-emojis{font-size:26px;letter-spacing:3px;margin-bottom:2px}
+.header h1{font-family:'Fredoka One',cursive;font-size:38px;background:linear-gradient(135deg,#fff 0%,var(--sky) 35%,var(--dawn) 70%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{font-size:13px;color:var(--sky);font-weight:700;opacity:.9}
+.now-playing-top{display:none;justify-content:center;align-items:center;gap:8px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.15);border-radius:10px;padding:5px 12px;margin-bottom:8px;font-size:12px;font-weight:700;color:var(--dawn)}
+
+/* TABS */
+.tabs-wrapper{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:12px 0 8px}
+.tab{background:rgba(125,211,252,.1);border:1.5px solid rgba(125,211,252,.2);color:rgba(255,255,255,.85);padding:5px 11px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab:hover{background:rgba(125,211,252,.18);transform:translateY(-1px)}
+.tab.active{background:var(--dawn);border-color:var(--dawn);color:#020d1a}
+
+/* MODE */
+.mode-tabs{display:flex;gap:8px;justify-content:center;margin:8px 0 14px}
+.mode-btn{background:rgba(125,211,252,.1);border:2px solid rgba(125,211,252,.2);color:white;padding:7px 16px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.mode-btn.active{background:var(--coral);border-color:var(--coral)}
+.mode-btn:hover{transform:translateY(-1px)}
+
+/* PROGRESS */
+.category-label{text-align:center;font-size:13px;color:var(--sky);font-weight:700;margin-bottom:8px}
+.progress-bar{width:100%;height:7px;background:rgba(125,211,252,.1);border-radius:4px;margin-bottom:12px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--sky),var(--dawn),var(--dusk));border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* CARD */
+.card-container{perspective:1200px;margin:0 auto 12px;width:100%;max-width:340px;height:420px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,0,.2,1)}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px}
+.card-front{
+  background:linear-gradient(145deg,#e0f2fe,#bae6fd);
+  box-shadow:0 12px 40px rgba(0,0,0,.3),0 0 0 2px rgba(125,211,252,.2),inset 0 1px 0 rgba(255,255,255,.9);
+}
+.card-back{
+  background:linear-gradient(145deg,#020d1a,#0a2540);
+  transform:rotateY(180deg);
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+  border:1.5px solid rgba(125,211,252,.15);
+}
+
+/* Status badge */
+.status-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:800;padding:3px 9px;border-radius:8px}
+.status-kritis{background:rgba(239,68,68,.9);color:white}
+.status-rentan{background:rgba(249,115,22,.9);color:white}
+.status-aman{background:rgba(74,222,128,.9);color:#020d1a}
+.status-punah{background:rgba(107,114,128,.9);color:white}
+
+/* Region badge */
+.region-badge{position:absolute;top:14px;left:14px;font-size:10px;font-weight:800;padding:3px 9px;border-radius:8px;background:rgba(125,211,252,.25);border:1px solid rgba(125,211,252,.3);color:#0a2540}
+
+.animal-stage{width:155px;height:155px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:4px}
+.animal-main{font-size:105px;line-height:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,.15));display:inline-block;transform-origin:center}
+
+/* Wind lines under flying bird */
+.wind-line{position:absolute;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(125,211,252,.3),transparent);animation:windAnim 1.5s ease-in-out infinite}
+.wind-line:nth-child(1){width:40px;bottom:25px;left:10px;animation-delay:0s}
+.wind-line:nth-child(2){width:25px;bottom:32px;left:20px;animation-delay:.3s}
+.wind-line:nth-child(3){width:35px;bottom:18px;left:5px;animation-delay:.6s}
+@keyframes windAnim{0%,100%{opacity:0;transform:translateX(0)}50%{opacity:.6;transform:translateX(-8px)}}
+
+.bird-name-id{font-family:'Fredoka One',cursive;font-size:22px;color:#0a2540;margin-bottom:2px;text-align:center}
+.bird-name-en{font-size:12px;color:#1a6fa8;font-weight:700;text-align:center}
+.bird-tag{font-size:11px;font-weight:800;padding:4px 12px;border-radius:10px;margin-top:6px;color:white}
+.bird-habitat{font-size:10px;color:#1a6fa8;font-weight:700;margin-top:4px;text-align:center}
+.tap-hint{margin-top:9px;font-size:11px;color:#1a6fa8;font-weight:700;display:flex;align-items:center;gap:4px;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+.back-content{text-align:center;color:white;width:100%}
+.back-emoji-sm{font-size:44px;margin-bottom:4px;display:block}
+.back-name{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:2px;color:white}
+.back-latin{font-size:11px;color:var(--sky);font-style:italic;margin-bottom:3px;opacity:.8}
+.back-region{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:8px}
+.back-desc{font-size:12px;line-height:1.6;color:#bae6fd;margin-bottom:8px;background:rgba(125,211,252,.05);border-radius:12px;padding:9px;border:1px solid rgba(125,211,252,.08)}
+.fun-fact{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:8px 10px;font-size:11px;color:var(--dawn);font-weight:700;text-align:left}
+
+/* ANIMATIONS */
+.anim-fly{animation:fly 2s ease-in-out infinite}
+.anim-flap{animation:flap .7s ease-in-out infinite}
+.anim-soar{animation:soar 3s ease-in-out infinite}
+.anim-hop{animation:hop 1.2s ease-in-out infinite}
+.anim-sway{animation:sway 2.5s ease-in-out infinite}
+.anim-strut{animation:strut 1.5s ease-in-out infinite}
+.anim-dive{animation:dive 2s ease-in-out infinite}
+.anim-spin{animation:spin 4s ease-in-out infinite}
+.anim-bob{animation:bob 1.8s ease-in-out infinite}
+.anim-glide{animation:glide 4s ease-in-out infinite}
+.anim-dance{animation:dance 1s ease-in-out infinite}
+.anim-float{animation:float 3s ease-in-out infinite}
+
+@keyframes fly{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
+@keyframes flap{0%,100%{transform:scaleY(1) rotate(0)}50%{transform:scaleY(.85) rotate(-8deg)}}
+@keyframes soar{0%{transform:translateX(-10px) translateY(0) rotate(-4deg)}50%{transform:translateX(10px) translateY(-16px) rotate(4deg)}100%{transform:translateX(-10px) translateY(0) rotate(-4deg)}}
+@keyframes hop{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(-18px) rotate(-5deg)}60%{transform:translateY(-12px) rotate(3deg)}}
+@keyframes sway{0%,100%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(8deg) scale(1.05)}}
+@keyframes strut{0%,100%{transform:translateX(-6px) rotate(-3deg)}50%{transform:translateX(6px) rotate(3deg)}}
+@keyframes dive{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(-12px) rotate(-15deg)}80%{transform:translateY(8px) rotate(10deg)}}
+@keyframes spin{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.08)}}
+@keyframes bob{0%,100%{transform:translateY(0) scaleY(1)}40%{transform:translateY(-10px) scaleY(1.05)}60%{transform:translateY(-6px) scaleY(.95)}}
+@keyframes glide{0%{transform:translateX(-12px) translateY(0) rotate(-2deg)}33%{transform:translateX(6px) translateY(-10px) rotate(2deg)}66%{transform:translateX(10px) translateY(6px) rotate(-1deg)}100%{transform:translateX(-12px) translateY(0) rotate(-2deg)}}
+@keyframes dance{0%,100%{transform:translateX(-6px) rotate(-8deg)}50%{transform:translateX(6px) rotate(8deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* NAVIGATION */
+.card-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:8px}
+.nav-btn{background:rgba(125,211,252,.1);border:2px solid rgba(125,211,252,.2);color:white;width:46px;height:46px;border-radius:50%;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.nav-btn:hover:not(:disabled){background:rgba(125,211,252,.2);transform:scale(1.08)}
+.nav-btn:disabled{opacity:.22;cursor:not-allowed}
+.card-counter{font-family:'Fredoka One',cursive;font-size:17px;color:white;min-width:58px;text-align:center}
+
+/* AUDIO */
+.audio-btn{background:rgba(125,211,252,.1);border:1.5px solid rgba(125,211,252,.2);color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .2s}
+.audio-btn:hover{background:rgba(125,211,252,.2);transform:scale(1.1)}
+.audio-btn.speaking{background:var(--dawn);color:#020d1a}
+.sound-wave{display:inline-flex;align-items:flex-end;gap:2px;height:14px;vertical-align:middle}
+.sound-bar{width:3px;background:currentColor;border-radius:2px;animation:soundBar .5s ease-in-out infinite alternate}
+.sound-bar:nth-child(1){height:4px}.sound-bar:nth-child(2){height:9px;animation-delay:.1s}.sound-bar:nth-child(3){height:6px;animation-delay:.2s}.sound-bar:nth-child(4){height:12px;animation-delay:.05s}.sound-bar:nth-child(5){height:5px;animation-delay:.15s}
+@keyframes soundBar{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+/* QUIZ */
+#quiz-mode{display:none}
+.quiz-score{display:flex;justify-content:space-around;background:rgba(125,211,252,.08);border-radius:16px;padding:12px;margin-bottom:12px;border:1px solid rgba(125,211,252,.1)}
+.score-item{text-align:center}
+.score-num{font-family:'Fredoka One',cursive;font-size:26px}
+.score-label{font-size:10px;color:var(--sky);font-weight:700}
+.quiz-question{background:rgba(125,211,252,.08);border-radius:22px;padding:18px;text-align:center;margin-bottom:12px;border:1px solid rgba(125,211,252,.12)}
+.quiz-big-emoji{font-size:76px;display:inline-block}
+.quiz-q{font-size:15px;font-weight:800;color:var(--sky);margin-top:6px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.quiz-opt{background:rgba(125,211,252,.08);border:2px solid rgba(125,211,252,.15);border-radius:14px;padding:12px 8px;color:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.quiz-opt:hover:not(:disabled){background:rgba(125,211,252,.15);transform:translateY(-2px)}
+.quiz-opt.correct{background:var(--green)!important;border-color:var(--green)!important;color:#020d1a!important;animation:correctPop .4s cubic-bezier(.4,0,.2,1)}
+.quiz-opt.wrong{background:var(--coral)!important;border-color:var(--coral)!important;animation:wrongShake .4s ease-in-out}
+@keyframes correctPop{0%{transform:scale(.95)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.quiz-opt:disabled{cursor:not-allowed}
+.quiz-feedback{text-align:center;font-size:13px;font-weight:800;min-height:20px;margin-bottom:10px;line-height:1.4}
+.quiz-next{width:100%;background:linear-gradient(135deg,var(--dawn),var(--dusk));border:none;border-radius:14px;padding:13px;font-family:'Fredoka One',cursive;font-size:18px;color:#020d1a;cursor:pointer;transition:all .2s;display:none;box-shadow:0 4px 16px rgba(251,191,36,.25)}
+.quiz-next:hover{transform:translateY(-2px)}
+.result-screen{display:none;text-align:center;padding:10px}
+.result-emoji{font-size:76px;margin-bottom:10px;animation:fly 1.5s ease-in-out infinite}
+.result-title{font-family:'Fredoka One',cursive;font-size:30px;margin-bottom:6px}
+.result-sub{font-size:13px;color:var(--sky);margin-bottom:16px;line-height:1.5}
+.result-score-box{background:rgba(125,211,252,.08);border-radius:20px;padding:14px;margin-bottom:14px;border:1px solid rgba(251,191,36,.2)}
+.result-big{font-family:'Fredoka One',cursive;font-size:50px;color:var(--dawn)}
+.result-stars{font-size:28px;letter-spacing:3px;margin-top:4px}
+.restart-btn{background:linear-gradient(135deg,var(--coral),#e05555);border:none;border-radius:14px;padding:12px 26px;font-family:'Fredoka One',cursive;font-size:19px;color:white;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(255,107,107,.3)}
+.restart-btn:hover{transform:translateY(-2px)}
+
+/* LICENSE */
+.license-footer{text-align:center;margin-top:28px;padding:18px 16px 8px;border-top:1px solid rgba(125,211,252,.08)}
+.license-logo{font-family:'Fredoka One',cursive;font-size:18px;background:linear-gradient(135deg,var(--dawn),var(--sky),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.license-text{font-size:10.5px;color:rgba(255,255,255,.25);font-weight:600;line-height:1.7}
+.license-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(125,211,252,.05);border:1px solid rgba(125,211,252,.1);border-radius:20px;padding:5px 12px;margin-top:8px;font-size:11px;font-weight:800;color:rgba(255,255,255,.35)}
+.watermark{position:fixed;bottom:78px;left:12px;z-index:98;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(125,211,252,.12);pointer-events:none;letter-spacing:.3px;line-height:1.4}
+.particle{position:fixed;pointer-events:none;z-index:999;font-size:22px;animation:particleFly .8s ease-out forwards}
+@keyframes particleFly{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(0);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="sky-bg">
+  <div class="dawn-glow"></div>
+</div>
+
+<div class="watermark">WNJ Little W🌏rld<br>© 2026</div>
+<button class="music-fab" id="musicFab" onclick="toggleMusicPanel()">🎵</button>
+
+<div class="music-panel" id="musicPanel">
+  <h4>🎵 Suara Alam Burung</h4>
+  <div class="now-playing" id="nowPlaying">
+    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    <span id="nowPlayingText">Fajar Hutan</span>
+  </div>
+  <div class="music-option active" id="opt0" onclick="selectTrack(0)"><div class="dot"></div>🌅 Fajar Hutan</div>
+  <div class="music-option" id="opt1" onclick="selectTrack(1)"><div class="dot"></div>🌊 Pantai & Angin</div>
+  <div class="music-option" id="opt2" onclick="selectTrack(2)"><div class="dot"></div>🌙 Malam Hutan</div>
+  <div class="music-option" id="opt3" onclick="selectTrack(3)"><div class="dot"></div>🎮 Beat Kuis</div>
+  <div class="music-option" id="opt-off" onclick="stopMusic()"><div class="dot"></div>🔇 Mati</div>
+  <div class="vol-row">🔈<input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="40" oninput="setVolume(this.value)">🔊</div>
+</div>
+
+<div class="container">
+  <div class="now-playing-top" id="nowPlayingTop">
+    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    <span id="nowPlayingTopText">♫ Fajar Hutan</span>
+  </div>
+
+  <div class="header">
+    <div class="header-emojis">🦅🦜🦚🦩🦉🐧🦆🦢</div>
+    <h1>Burung<br>Dunia</h1>
+    <p>🐦 10.000+ Spesies Keindahan Alam!</p>
+  </div>
+
+  <div class="tabs-wrapper" id="catTabs"></div>
+  <div class="mode-tabs">
+    <button class="mode-btn active" id="btnFlash" onclick="setMode('flashcard')">📚 Flashcard</button>
+    <button class="mode-btn" id="btnQuiz" onclick="setMode('quiz')">🎮 Kuis</button>
+  </div>
+
+  <div id="flashcard-mode">
+    <div class="category-label" id="catLabel">🐦 Semua Burung Dunia</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="card-container" onclick="flipCard()">
+      <div class="card-inner" id="cardInner">
+        <div class="card-face card-front">
+          <div class="status-badge status-aman" id="statusBadge">✅ Aman</div>
+          <div class="region-badge" id="regionBadge">🌍 Afrika</div>
+          <div class="animal-stage">
+            <div class="wind-line"></div><div class="wind-line"></div><div class="wind-line"></div>
+            <span class="animal-main anim-soar" id="animalEmoji">🦅</span>
+          </div>
+          <div class="bird-name-id" id="animalNameId">Elang Botak</div>
+          <div class="bird-name-en" id="animalNameEn">Bald Eagle</div>
+          <div class="bird-tag" id="animalTag" style="background:linear-gradient(135deg,#1a6fa8,#0a2540)">🦅 Elang</div>
+          <div class="bird-habitat" id="habitatInfo">🌲 Hutan & Tepi Sungai</div>
+          <div class="tap-hint">👆 Tap untuk info lengkap</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-content">
+            <span class="back-emoji-sm anim-soar" id="backEmoji">🦅</span>
+            <div class="back-name" id="backName">Elang Botak</div>
+            <div class="back-latin" id="backLatin">Haliaeetus leucocephalus</div>
+            <div class="back-region" id="backRegion">🌍 Amerika Utara</div>
+            <div class="back-desc" id="backDesc">Simbol nasional Amerika Serikat dengan penglihatan 8x lebih tajam dari manusia.</div>
+            <div class="fun-fact">💡 <span id="backFact">Elang botak menyelam menangkap ikan dengan kecepatan 120 km/jam!</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-nav">
+      <button class="nav-btn" id="prevBtn" onclick="prevCard()">◀</button>
+      <div class="card-counter" id="cardCounter">1/1</div>
+      <button class="nav-btn" id="nextBtn" onclick="nextCard()">▶</button>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:8px">
+      <button class="audio-btn" id="audioBtn" onclick="speakCurrent(event)">🔊</button>
+    </div>
+  </div>
+
+  <div id="quiz-mode">
+    <div class="quiz-score">
+      <div class="score-item"><div class="score-num" id="qCorrect" style="color:#4ade80">0</div><div class="score-label">✅ Benar</div></div>
+      <div class="score-item"><div class="score-num" id="qTotal">0</div><div class="score-label">📝 Soal</div></div>
+      <div class="score-item"><div class="score-num" id="qWrong" style="color:#ff6b6b">0</div><div class="score-label">❌ Salah</div></div>
+    </div>
+    <div class="quiz-question" id="quizQuestion">
+      <span class="quiz-big-emoji anim-fly" id="quizEmoji">🐦</span>
+      <div class="quiz-q">Burung apa ini?</div>
+      <button class="audio-btn" id="quizAudioBtn" onclick="speakQuizHint(event)" style="margin:8px auto 0">🔊</button>
+    </div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="quiz-next" id="quizNext" onclick="nextQuiz()">Soal Berikutnya ▶</button>
+    <div class="result-screen" id="resultScreen">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-title" id="resultTitle">Luar Biasa!</div>
+      <div class="result-sub" id="resultSub"></div>
+      <div class="result-score-box"><div class="result-big" id="resultBig">0/0</div><div class="result-stars" id="resultStars">⭐</div></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Main Lagi</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW BANNER -->
+  <div style="background:linear-gradient(135deg,#0369a1,#0ea5e9,#38bdf8);border-radius:20px;padding:20px 18px;margin:20px 0;text-align:center;box-shadow:0 8px 30px rgba(14,165,233,.35);">
+    <div style="font-size:2rem;margin-bottom:8px;">🔓</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#fff;margin-bottom:6px;">Ini versi PREVIEW — 5 dari 30 Burung Dunia!</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.9);font-family:'Nunito',sans-serif;line-height:1.6;margin-bottom:14px;">
+      Versi lengkap berisi <strong>30 burung dari seluruh dunia</strong> dari 6 kategori:<br>
+      🦅 Elang & Raptor · 🦜 Beo & Kakatua · 🦚 Burung Eksotis<br>
+      🐧 Burung Tidak Terbang · 🦢 Burung Air · 🌏 Endemik Indonesia<br>
+      + Status konservasi, Mode Kuis & Musik! 🎵
+    </div>
+    <a href="https://wa.me/6289630486382?text=Halo%20kak%20WNJ%20Little%20World!%20Saya%20mau%20beli%20Flashcard%20Burung%20Dunia%20versi%20lengkap%20%F0%9F%90%A6"
+       target="_blank"
+       style="display:inline-block;background:#fff;color:#0369a1;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:900;
+       padding:12px 24px;border-radius:20px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.2);">
+      💬 Beli Versi Lengkap via WhatsApp
+    </a>
+  </div>
+
+  <div class="license-footer">
+    <div class="license-logo">WNJ Little W🌏rld</div>
+    <div class="license-text">© 2026 WNJ Little W🌏rld · All Rights Reserved<br>Flashcard Burung Dunia — Versi 1.0</div>
+    <div class="license-badge"><span>🌏</span> Dibuat dengan ❤️ oleh WNJ Little W🌏rld</div>
+    <div class="license-text" style="margin-top:8px">Dilarang memperbanyak atau mendistribusikan<br>tanpa izin tertulis dari WNJ Little W🌏rld.</div>
+  </div>
+</div>
+
+<script>
+// ─── AUDIO ───
+let audioCtx=null,masterGain=null,currentTrack=0,musicNodes=[],musicPlaying=false;
+function getCtx(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.gain.value=0.4;masterGain.connect(audioCtx.destination);}return audioCtx;}
+function setVolume(v){if(masterGain)masterGain.gain.value=v/100;}
+
+// TRACK 0: Fajar Hutan
+function playDawn(){
+  const ctx=getCtx(),nodes=[];
+  // Dawn wind
+  const buf=ctx.createBuffer(1,4096,ctx.sampleRate),d=buf.getChannelData(0);
+  let b0=0,b1=0,b2=0;for(let i=0;i<4096;i++){const w=Math.random()*2-1;b0=.99*b0+w*.04;b1=.95*b1+w*.07;b2=.85*b2+w*.09;d[i]=(b0+b1+b2)*.05;}
+  const wn=ctx.createBufferSource(),wg=ctx.createGain(),wlp=ctx.createBiquadFilter();
+  wn.buffer=buf;wn.loop=true;wlp.type='lowpass';wlp.frequency.value=900;wg.gain.value=0;
+  wn.connect(wlp);wlp.connect(wg);wg.connect(masterGain);wn.start();nodes.push(wn);
+  const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=0.12;lg.gain.value=0.28;lfo.connect(lg);lg.connect(wg.gain);lfo.start();nodes.push(lfo);
+  // Rich bird chorus
+  const birdCalls=[
+    [880,1320,2],[660,1100,3],[1200,1800,2],[550,900,4],[1400,2000,2]
+  ];
+  function birdCall(){
+    if(!musicPlaying)return;
+    const [f1,f2,reps]=birdCalls[Math.floor(Math.random()*birdCalls.length)];
+    for(let i=0;i<reps;i++){
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type='sine';o.frequency.setValueAtTime(f1,ctx.currentTime+i*.18);
+      o.frequency.exponentialRampToValueAtTime(f2,ctx.currentTime+i*.18+.12);
+      g.gain.setValueAtTime(.07,ctx.currentTime+i*.18);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.18+.16);
+      o.connect(g);g.connect(masterGain);o.start(ctx.currentTime+i*.18);o.stop(ctx.currentTime+i*.18+.18);
+    }
+    setTimeout(birdCall,600+Math.random()*1800);
+  }
+  birdCall();
+  // Warbler melody
+  const warble=[1047,1319,1175,1047,880,1047,1319,1568];let wi=0,wt=ctx.currentTime+.5;
+  function warbler(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain(),vib=ctx.createOscillator(),vg=ctx.createGain();
+    o.type='sine';o.frequency.value=warble[wi%warble.length];
+    vib.frequency.value=8;vg.gain.value=warble[wi%warble.length]*.02;
+    vib.connect(vg);vg.connect(o.frequency);
+    g.gain.setValueAtTime(.06,wt);g.gain.exponentialRampToValueAtTime(.0001,wt+.3);
+    o.connect(g);g.connect(masterGain);vib.start(wt);o.start(wt);o.stop(wt+.35);vib.stop(wt+.35);
+    wi++;wt+=.28+Math.random()*.2;setTimeout(warbler,(wt-ctx.currentTime-.04)*1000);
+  }
+  warbler();
+  return nodes;
+}
+
+// TRACK 1: Pantai & Angin
+function playBeach(){
+  const ctx=getCtx(),nodes=[];
+  // Waves
+  function makeNoise(){const buf=ctx.createBuffer(1,4096,ctx.sampleRate),d=buf.getChannelData(0);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;for(let i=0;i<4096;i++){const w=Math.random()*2-1;b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.08;b6=w*.115926;}const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;return s;}
+  const n=makeNoise(),g=ctx.createGain(),lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=600;g.gain.value=0;n.connect(lp);lp.connect(g);g.connect(masterGain);n.start();nodes.push(n);
+  const wlfo=ctx.createOscillator(),wlg=ctx.createGain();wlfo.frequency.value=0.1;wlg.gain.value=0.45;wlfo.connect(wlg);wlg.connect(g.gain);wlfo.start();nodes.push(wlfo);
+  // Seagull
+  function gull(){if(!musicPlaying)return;const o=ctx.createOscillator(),g2=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(700,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(1400,ctx.currentTime+.25);o.frequency.exponentialRampToValueAtTime(900,ctx.currentTime+.6);g2.gain.setValueAtTime(.06,ctx.currentTime);g2.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.7);o.connect(g2);g2.connect(masterGain);o.start();o.stop(ctx.currentTime+.75);setTimeout(gull,3000+Math.random()*4000);}
+  gull();
+  // Marimba-ish melody over waves
+  const notes=[523,659,784,1047,784,659,523,440];let ni=0,nt=ctx.currentTime+.5;
+  function mel(){if(!musicPlaying)return;const o=ctx.createOscillator(),g2=ctx.createGain();o.type='triangle';o.frequency.value=notes[ni%notes.length];g2.gain.setValueAtTime(.05,nt);g2.gain.exponentialRampToValueAtTime(.0001,nt+.5);o.connect(g2);g2.connect(masterGain);o.start(nt);o.stop(nt+.55);ni++;nt+=.55+Math.random()*.3;setTimeout(mel,(nt-ctx.currentTime-.04)*1000);}
+  mel();
+  return nodes;
+}
+
+// TRACK 2: Malam Hutan
+function playNight(){
+  const ctx=getCtx(),nodes=[];
+  // Crickets
+  function cricket(){if(!musicPlaying)return;for(let i=0;i<4;i++){const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=2800+i*150+Math.random()*80;const t=ctx.currentTime+i*.05;g.gain.setValueAtTime(.01,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04);o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+.05);}setTimeout(cricket,120+Math.random()*280);}
+  cricket();
+  // Owl
+  function owl(){if(!musicPlaying)return;[0,.38].forEach((delay)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(280,ctx.currentTime+delay);o.frequency.exponentialRampToValueAtTime(200,ctx.currentTime+delay+.35);g.gain.setValueAtTime(.08,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+.42);o.connect(g);g.connect(masterGain);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+.48);});setTimeout(owl,5000+Math.random()*6000);}
+  setTimeout(owl,1500);
+  // Night whippoorwill
+  function whip(){if(!musicPlaying)return;[[600,400],[800,600],[1000,700]].forEach(([f1,f2],i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(f1,ctx.currentTime+i*.12);o.frequency.exponentialRampToValueAtTime(f2,ctx.currentTime+i*.12+.1);g.gain.setValueAtTime(.05,ctx.currentTime+i*.12);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.12+.14);o.connect(g);g.connect(masterGain);o.start(ctx.currentTime+i*.12);o.stop(ctx.currentTime+i*.12+.16);});setTimeout(whip,3000+Math.random()*4000);}
+  setTimeout(whip,2500);
+  // Low drone
+  const d=ctx.createOscillator(),dg=ctx.createGain();d.type='sine';d.frequency.value=45;dg.gain.value=0.06;d.connect(dg);dg.connect(masterGain);d.start();nodes.push(d);
+  return nodes;
+}
+
+// TRACK 3: Beat Kuis
+function playQuizBeat(){
+  const ctx=getCtx(),nodes=[];const bpm=126,beat=60/bpm;let t=ctx.currentTime+.05;
+  function kick(tm){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(155,tm);o.frequency.exponentialRampToValueAtTime(.001,tm+.3);g.gain.setValueAtTime(.5,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+.35);o.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+.35);}
+  function snare(tm){const buf=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);const s=ctx.createBufferSource(),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=1000;s.buffer=buf;g.gain.value=.13;s.connect(hp);hp.connect(g);g.connect(masterGain);s.start(tm);}
+  function hihat(tm){const buf=ctx.createBuffer(1,ctx.sampleRate*.02,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=ctx.createBufferSource(),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=9000;s.buffer=buf;g.gain.value=.035;s.connect(hp);hp.connect(g);g.connect(masterGain);s.start(tm);}
+  const bass=[65.4,82.4,65.4,73.4];let bi=0;
+  function bassN(tm){const o=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();o.type='sawtooth';o.frequency.value=bass[bi%bass.length];lp.type='lowpass';lp.frequency.value=260;g.gain.setValueAtTime(.12,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+beat*.9);o.connect(lp);lp.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+beat);bi++;}
+  const lead=[880,0,1047,1175,0,1047,880,0];let li=0;
+  function leadN(tm){if(!lead[li%lead.length]){li++;return;}const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=lead[li%lead.length];g.gain.setValueAtTime(.05,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+beat*.7);o.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+beat*.8);li++;}
+  function bar(){if(!musicPlaying)return;for(let i=0;i<8;i++){if(i%2===0)kick(t+i*beat*.5);if(i%2===1)snare(t+i*beat*.5);hihat(t+i*beat*.5);bassN(t+i*beat*.5);leadN(t+i*beat*.5);}t+=beat*4;setTimeout(bar,(beat*4-.1)*1000);}
+  bar();return nodes;
+}
+
+const trackNames=["🌅 Fajar Hutan","🌊 Pantai & Angin","🌙 Malam Hutan","🎮 Beat Kuis"];
+const trackFns=[playDawn,playBeach,playNight,playQuizBeat];
+function stopMusic(){musicPlaying=false;musicNodes.forEach(n=>{try{n.stop&&n.stop();n.disconnect&&n.disconnect()}catch(e){}});musicNodes=[];document.getElementById("musicFab").classList.remove("playing");document.getElementById("musicFab").textContent="🎵";document.getElementById("nowPlaying").classList.remove("show");document.getElementById("nowPlayingTop").style.display="none";document.querySelectorAll(".music-option").forEach(o=>o.classList.remove("active"));document.getElementById("opt-off").classList.add("active");}
+function selectTrack(idx){stopMusic();currentTrack=idx;getCtx();if(audioCtx.state==='suspended')audioCtx.resume();musicPlaying=true;musicNodes=trackFns[idx]();document.getElementById("musicFab").classList.add("playing");document.getElementById("nowPlaying").classList.add("show");document.getElementById("nowPlayingText").textContent=trackNames[idx];document.getElementById("nowPlayingTop").style.display="flex";document.getElementById("nowPlayingTopText").textContent="♫ "+trackNames[idx];document.querySelectorAll(".music-option").forEach((o,i)=>o.classList.toggle("active",i===idx));document.getElementById("opt-off").classList.remove("active");}
+function toggleMusicPanel(){document.getElementById("musicPanel").classList.toggle("show");}
+document.addEventListener("click",e=>{const p=document.getElementById("musicPanel"),f=document.getElementById("musicFab");if(p.classList.contains("show")&&!p.contains(e.target)&&!f.contains(e.target))p.classList.remove("show");});
+function sfxFlip(){const ctx=getCtx(),o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.setValueAtTime(500,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(900,ctx.currentTime+.07);g.gain.setValueAtTime(.12,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.12);o.connect(g);g.connect(masterGain||ctx.destination);o.start();o.stop(ctx.currentTime+.14);}
+function sfxNext(){const ctx=getCtx();[0,.06].forEach((d,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=i===0?440:660;g.gain.setValueAtTime(.1,ctx.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+d+.09);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.11);});}
+function sfxCorrect(){const ctx=getCtx();[880,1047,1319].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.15,ctx.currentTime+i*.09);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.09+.2);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+i*.09);o.stop(ctx.currentTime+i*.09+.24);});}
+function sfxWrong(){const ctx=getCtx();[280,230].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.value=f;g.gain.setValueAtTime(.09,ctx.currentTime+i*.12);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.12+.15);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+i*.12);o.stop(ctx.currentTime+i*.12+.18);});}
+
+// ─── DATA ───
+const statusClasses={kritis:"status-kritis",rentan:"status-rentan",aman:"status-aman",punah:"status-punah"};
+const tagColors={
+  elang:"linear-gradient(135deg,#1a5276,#0a2540)",
+  beo:"linear-gradient(135deg,#1a8a3a,#0d5225)",
+  merak:"linear-gradient(135deg,#6b21a8,#3b0764)",
+  pantai:"linear-gradient(135deg,#0e7490,#164e63)",
+  malam:"linear-gradient(135deg,#374151,#111827)",
+  hutan:"linear-gradient(135deg,#166534,#052e16)",
+  terbang:"linear-gradient(135deg,#92400e,#451a03)",
+  langka:"linear-gradient(135deg,#991b1b,#450a0a)",
+  air:"linear-gradient(135deg,#1e40af,#1e3a8a)",
+  padang:"linear-gradient(135deg,#a16207,#713f12)",
+};
+
+const birds=[
+  // ELANG & RAPTOR
+  {id:1,emoji:"🦅",nameId:"Elang Botak",nameEn:"Bald Eagle",latin:"Haliaeetus leucocephalus",category:"elang",tag:"🦅 Elang",tagColor:"elang",region:"🌎 Amerika Utara",habitat:"🌲 Hutan & Tepi Sungai",desc:"Simbol nasional Amerika Serikat dengan penglihatan 8x lebih tajam dari manusia.",fact:"Elang botak menyelam menangkap ikan dengan kecepatan 120 km/jam!",status:"aman",statusLabel:"✅ Aman",anim:"anim-soar"},
+  {id:2,emoji:"🦅",nameId:"Elang Harpy",nameEn:"Harpy Eagle",latin:"Harpia harpyja",category:"elang",tag:"🦅 Elang Terkuat",tagColor:"elang",region:"🌎 Amerika Tengah-Selatan",habitat:"🌿 Hutan Amazon",desc:"Elang terbesar dan terkuat di dunia dengan cakar sepanjang cakar beruang grizzly!",fact:"Harpy Eagle bisa membawa monyet seberat 7 kg terbang dengan mudah!",status:"rentan",statusLabel:"🟠 Rentan",anim:"anim-soar"},
+  {id:3,emoji:"🦉",nameId:"Burung Hantu Salju",nameEn:"Snowy Owl",latin:"Bubo scandiacus",category:"malam",tag:"🌙 Burung Hantu",tagColor:"malam",region:"🌍 Arktik",habitat:"❄️ Tundra Arktik",desc:"Burung hantu putih bersih yang bisa mendeteksi tikus di bawah salju setebal 30 cm.",fact:"Burung hantu salju bisa memakan 1.600 lemming dalam setahun!",status:"rentan",statusLabel:"🟠 Rentan",anim:"anim-float"},
+  {id:4,emoji:"🦅",nameId:"Rajawali Emas",nameEn:"Golden Eagle",latin:"Aquila chrysaetos",category:"elang",tag:"🦅 Elang",tagColor:"elang",region:"🌍 Eropa-Asia-Amerika",habitat:"⛰️ Pegunungan",desc:"Salah satu predator udara paling cepat dengan kecepatan menukik 240-320 km/jam.",fact:"Rajawali emas bisa melihat kelinci dari ketinggian 3 km!",status:"aman",statusLabel:"✅ Aman",anim:"anim-soar"},
+  // BEO & PARKIT
+  {id:5,emoji:"🦜",nameId:"Macaw Merah",nameEn:"Scarlet Macaw",latin:"Ara macao",category:"beo",tag:"🦜 Beo",tagColor:"beo",region:"🌎 Amerika Tengah",habitat:"🌿 Hutan Tropis",desc:"Beo terbesar dan paling berwarna-warni yang bisa menirukan suara manusia dengan sempurna.",fact:"Macaw bisa hidup hingga 75 tahun — hampir sepanjang umur manusia!",status:"aman",statusLabel:"✅ Aman",anim:"anim-fly"},
+];
+
+const categories=[
+  {id:"all",label:"🐦 Semua (5 Preview)"},
+  {id:"elang",label:"🦅 Elang & Raptor"},
+];
+
+let currentCat="all",filteredAnimals=[...birds],currentIndex=0,isFlipped=false;
+let quizAnimals=[],quizIndex=0,qCorrect=0,qWrong=0,quizAnswered=false,currentMode="flashcard";
+let currentQuizAnimal=null,synth=window.speechSynthesis;
+
+// BG
+for(let i=0;i<6;i++){const c=document.createElement("div");c.className="cloud";const h=20+Math.random()*40;c.style.cssText=`width:${150+Math.random()*200}px;height:${h}px;top:${5+Math.random()*40}%;animation-duration:${30+Math.random()*30}s;animation-delay:${-Math.random()*30}s`;document.querySelector(".sky-bg").appendChild(c);}
+["🍃","🌿","🍀"].forEach((f,i)=>{const el=document.createElement("div");el.className="feather";el.textContent=f;el.style.cssText=`left:${Math.random()*100}%;animation-duration:${8+Math.random()*10}s;animation-delay:${Math.random()*8}s;font-size:${10+Math.random()*8}px`;document.querySelector(".sky-bg").appendChild(el);});
+["🌲","🌳","🎋"].forEach((f,i)=>{const el=document.createElement("div");el.className="tree";el.textContent=f;el.style.cssText=`left:${i*30+Math.random()*20}%;animation-duration:${3+Math.random()*3}s;animation-delay:${Math.random()*2}s`;document.querySelector(".sky-bg").appendChild(el);});
+["🦅","🐦","🦜"].forEach((f,i)=>{const el=document.createElement("div");el.className="deco-bird";el.textContent=f;el.style.cssText=`top:${10+i*15}%;font-size:${18+Math.random()*10}px;animation-duration:${18+i*7}s;animation-delay:${-i*4}s`;document.body.appendChild(el);});
+
+// TABS
+const tabsEl=document.getElementById("catTabs");
+categories.forEach(cat=>{const btn=document.createElement("button");btn.className="tab"+(cat.id==="all"?" active":"");btn.textContent=cat.label;btn.onclick=()=>selectCat(cat.id,btn,cat.label);tabsEl.appendChild(btn);});
+
+function selectCat(catId,btn,label){currentCat=catId;document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));btn.classList.add("active");filteredAnimals=catId==="all"?[...birds]:birds.filter(a=>a.category===catId);currentIndex=0;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");document.getElementById("catLabel").textContent=label;updateCard();if(currentMode==="quiz")startQuiz();}
+
+function updateCard(){
+  if(!filteredAnimals.length)return;
+  const a=filteredAnimals[currentIndex];
+  const emoji=document.getElementById("animalEmoji");emoji.textContent=a.emoji;emoji.className="animal-main";void emoji.offsetWidth;emoji.classList.add(a.anim);
+  document.getElementById("statusBadge").textContent=a.statusLabel;document.getElementById("statusBadge").className="status-badge "+statusClasses[a.status];
+  document.getElementById("regionBadge").textContent=a.region;
+  const tag=document.getElementById("animalTag");tag.textContent=a.tag;tag.style.background=tagColors[a.tagColor];
+  document.getElementById("animalNameId").textContent=a.nameId;
+  document.getElementById("animalNameEn").textContent=a.nameEn;
+  document.getElementById("habitatInfo").textContent=a.habitat;
+  document.getElementById("backEmoji").textContent=a.emoji;
+  const be=document.getElementById("backEmoji");be.className="back-emoji-sm "+a.anim;
+  document.getElementById("backName").textContent=a.nameId;
+  document.getElementById("backLatin").textContent=a.latin;
+  document.getElementById("backRegion").textContent=a.region+" · "+a.habitat;
+  document.getElementById("backDesc").textContent=a.desc;
+  document.getElementById("backFact").textContent=a.fact;
+  document.getElementById("cardCounter").textContent=`${currentIndex+1}/${filteredAnimals.length}`;
+  document.getElementById("progressFill").style.width=`${((currentIndex+1)/filteredAnimals.length)*100}%`;
+  document.getElementById("prevBtn").disabled=currentIndex===0;
+  document.getElementById("nextBtn").disabled=currentIndex===filteredAnimals.length-1;
+}
+
+function flipCard(){sfxFlip();isFlipped=!isFlipped;document.getElementById("cardInner").classList.toggle("flipped",isFlipped);if(isFlipped)setTimeout(()=>speakCurrent(null,true),300);}
+function prevCard(){if(currentIndex>0){sfxNext();currentIndex--;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");updateCard();}}
+function nextCard(){if(currentIndex<filteredAnimals.length-1){sfxNext();currentIndex++;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");updateCard();}}
+function speak(text,lang,onEnd){if(!synth)return;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang||"id-ID";u.rate=.85;u.pitch=1.1;u.onend=()=>{if(onEnd)onEnd()};synth.speak(u);}
+function speakCurrent(e){if(e)e.stopPropagation();const a=filteredAnimals[currentIndex];if(!a)return;const btn=document.getElementById("audioBtn");btn.classList.add("speaking");btn.innerHTML="<span class='sound-wave'><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span></span>";speak(`${a.nameId}. ${a.nameEn}.`,"id-ID",()=>{btn.classList.remove("speaking");btn.innerHTML="🔊";});}
+function speakQuizHint(e){if(e)e.stopPropagation();if(!currentQuizAnimal)return;const btn=document.getElementById("quizAudioBtn");btn.classList.add("speaking");btn.innerHTML="<span class='sound-wave'><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span></span>";speak(`Petunjuk: ${currentQuizAnimal.region}`,"id-ID",()=>{btn.classList.remove("speaking");btn.innerHTML="🔊";});}
+function setMode(mode){currentMode=mode;document.getElementById("btnFlash").classList.toggle("active",mode==="flashcard");document.getElementById("btnQuiz").classList.toggle("active",mode==="quiz");document.getElementById("flashcard-mode").style.display=mode==="flashcard"?"block":"none";document.getElementById("quiz-mode").style.display=mode==="quiz"?"block":"none";if(mode==="quiz"){if(musicPlaying&&currentTrack!==3)selectTrack(3);startQuiz();}else{if(musicPlaying&&currentTrack===3)selectTrack(0);}}
+function startQuiz(){quizAnimals=[...filteredAnimals].sort(()=>Math.random()-.5);quizIndex=0;qCorrect=0;qWrong=0;quizAnswered=false;document.getElementById("resultScreen").style.display="none";document.getElementById("quizQuestion").style.display="block";document.getElementById("quizOptions").style.display="grid";document.getElementById("quizNext").style.display="none";document.getElementById("quizFeedback").textContent="";updateQuizScore();showQuestion();}
+function updateQuizScore(){document.getElementById("qCorrect").textContent=qCorrect;document.getElementById("qTotal").textContent=quizIndex;document.getElementById("qWrong").textContent=qWrong;}
+function showQuestion(){
+  if(quizIndex>=quizAnimals.length){showResult();return;}
+  const cur=quizAnimals[quizIndex];currentQuizAnimal=cur;
+  const e=document.getElementById("quizEmoji");e.textContent=cur.emoji;e.className="quiz-big-emoji "+cur.anim;
+  document.getElementById("quizFeedback").textContent="";document.getElementById("quizNext").style.display="none";document.getElementById("quizAudioBtn").innerHTML="🔊";document.getElementById("quizAudioBtn").classList.remove("speaking");quizAnswered=false;
+  const pool=birds.filter(a=>a.id!==cur.id).sort(()=>Math.random()-.5).slice(0,3);
+  const opts=[...pool,cur].sort(()=>Math.random()-.5);
+  const optEl=document.getElementById("quizOptions");optEl.innerHTML="";
+  opts.forEach(opt=>{const btn=document.createElement("button");btn.className="quiz-opt";btn.innerHTML=`${opt.emoji}<br>${opt.nameId}`;btn.onclick=()=>answerQuiz(btn,opt.id===cur.id,cur);optEl.appendChild(btn);});
+}
+function answerQuiz(btn,isCorrect,cur){
+  if(quizAnswered)return;quizAnswered=true;quizIndex++;
+  document.querySelectorAll(".quiz-opt").forEach(b=>{b.disabled=true;if(b.innerHTML.includes(cur.nameId))b.classList.add("correct");});
+  if(isCorrect){qCorrect++;btn.classList.add("correct");sfxCorrect();document.getElementById("quizFeedback").textContent="✅ Benar! "+cur.fact;document.getElementById("quizFeedback").style.color="#4ade80";speak(`Benar! ${cur.nameId}.`,"id-ID");spawnParticles(btn,"🎉","⭐","🐦","🦅","✨");}
+  else{qWrong++;btn.classList.add("wrong");sfxWrong();document.getElementById("quizFeedback").textContent="❌ Salah! Itu adalah "+cur.nameId;document.getElementById("quizFeedback").style.color="#ff6b6b";speak(`Salah. Jawaban benar: ${cur.nameId}`,"id-ID");}
+  updateQuizScore();document.getElementById("quizNext").style.display="block";document.getElementById("quizNext").textContent=quizIndex>=quizAnimals.length?"Lihat Hasil 🏆":"Soal Berikutnya ▶";
+}
+function nextQuiz(){sfxNext();showQuestion();}
+function showResult(){
+  synth&&synth.cancel();document.getElementById("quizQuestion").style.display="none";document.getElementById("quizOptions").style.display="none";document.getElementById("quizNext").style.display="none";document.getElementById("quizFeedback").textContent="";
+  const total=quizAnimals.length,pct=Math.round((qCorrect/total)*100);
+  let emoji="😅",title="Terus Belajar!",stars="⭐";
+  if(pct>=90){emoji="🏆";title="Luar Biasa!";stars="⭐⭐⭐⭐⭐";}else if(pct>=75){emoji="🥇";title="Keren Banget!";stars="⭐⭐⭐⭐";}else if(pct>=60){emoji="⭐";title="Bagus Sekali!";stars="⭐⭐⭐";}else if(pct>=40){emoji="💪";title="Lumayan!";stars="⭐⭐";}
+  document.getElementById("resultEmoji").textContent=emoji;document.getElementById("resultTitle").textContent=title;document.getElementById("resultSub").textContent=`Kamu menjawab ${qCorrect} dari ${total} soal benar (${pct}%)`;document.getElementById("resultBig").textContent=`${qCorrect}/${total}`;document.getElementById("resultStars").textContent=stars;document.getElementById("resultScreen").style.display="block";
+  speak(`${title}! Kamu mendapat nilai ${qCorrect} dari ${total}!`,"id-ID");
+  if(pct>=60)for(let i=0;i<3;i++)setTimeout(()=>spawnParticles(document.getElementById("resultScreen"),"🎉","🏆","⭐","🐦","🦅"),i*300);
+}
+function restartQuiz(){startQuiz();}
+function spawnParticles(el,...emojis){const rect=el.getBoundingClientRect();for(let i=0;i<6;i++){const p=document.createElement("div");p.className="particle";p.textContent=emojis[Math.floor(Math.random()*emojis.length)];p.style.cssText=`left:${rect.left+Math.random()*rect.width}px;top:${rect.top+rect.height*.3}px;animation-delay:${Math.random()*.4}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),1000);}}
+updateCard();
+</script>
+</body>
+</html>
