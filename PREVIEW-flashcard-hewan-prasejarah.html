@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PREVIEW — Hewan Prasejarah 🦕 | WNJ Little W🌏rld</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#0d0500;--mid:#2a0e00;--lava:#c0392b;--orange:#e67e22;
+  --yellow:#f9ca24;--amber:#f39c12;--green:#6ab04c;--surface:#d4956a;
+  --coral:#ff6b6b;--sky:#74b9ff;--bone:#f0e6d3;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(180deg,#0d0500 0%,#1a0800 20%,#2d1000 45%,#4a1800 65%,#2d1000 100%);
+  min-height:100vh;color:white;overflow-x:hidden;
+}
+
+/* PREHISTORIC BG */
+.dino-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+
+/* Volcano glow */
+.volcano-glow{
+  position:absolute;bottom:-80px;left:50%;transform:translateX(-50%);
+  width:600px;height:300px;
+  background:radial-gradient(ellipse,rgba(192,57,43,.25) 0%,rgba(230,126,18,.1) 40%,transparent 70%);
+  animation:lavaPulse 3s ease-in-out infinite;
+}
+@keyframes lavaPulse{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}
+
+/* Lava drips */
+.lava-drip{
+  position:absolute;top:0;width:6px;border-radius:0 0 4px 4px;
+  background:linear-gradient(180deg,transparent,var(--lava),var(--orange));
+  animation:lavaFlow linear infinite;
+  opacity:.4;
+}
+@keyframes lavaFlow{0%{transform:translateY(-30px);opacity:0}20%{opacity:.5}100%{transform:translateY(110vh);opacity:0}}
+
+/* Floating embers */
+.ember{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,#f9ca24,#e67e22);
+  box-shadow:0 0 6px 2px rgba(249,202,36,.5);
+  animation:emberFloat ease-in-out infinite;
+}
+@keyframes emberFloat{
+  0%,100%{transform:translate(0,0) scale(1);opacity:0}
+  20%{opacity:.8}50%{transform:translate(var(--ex),var(--ey)) scale(.7)}
+  80%{opacity:.3}
+}
+
+/* Footprints */
+.footprint{position:absolute;font-size:20px;opacity:.06;animation:fadePrint 8s ease-in-out infinite}
+@keyframes fadePrint{0%,100%{opacity:0}50%{opacity:.08}}
+
+/* Meteor shower */
+.meteor{
+  position:absolute;width:2px;height:40px;
+  background:linear-gradient(180deg,transparent,var(--amber));
+  border-radius:2px;opacity:0;
+  animation:meteorFall linear infinite;
+}
+@keyframes meteorFall{
+  0%{transform:translateY(-60px) translateX(0) rotate(30deg);opacity:0}
+  10%{opacity:.6}90%{opacity:.2}
+  100%{transform:translateY(110vh) translateX(-100px) rotate(30deg);opacity:0}
+}
+
+/* Ground crack effect */
+.crack-line{
+  position:absolute;bottom:0;width:100%;height:3px;
+  background:linear-gradient(90deg,transparent,rgba(192,57,43,.4),var(--lava),rgba(192,57,43,.4),transparent);
+  animation:crackGlow 2s ease-in-out infinite;
+}
+@keyframes crackGlow{0%,100%{opacity:.3}50%{opacity:.8}}
+
+/* LAYOUT */
+.container{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:14px 14px 110px}
+
+/* MUSIC FAB */
+.music-fab{position:fixed;bottom:20px;right:20px;z-index:100;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2a0e00,#4a1800);border:2px solid rgba(255,255,255,.3);color:white;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5);transition:all .3s}
+.music-fab:hover{transform:scale(1.1)}
+.music-fab.playing{background:linear-gradient(135deg,var(--lava),var(--orange));animation:musicPulse 1.5s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 4px 20px rgba(192,57,43,.4)}50%{box-shadow:0 4px 30px rgba(192,57,43,.8),0 0 0 8px rgba(192,57,43,.1)}}
+
+.music-panel{position:fixed;bottom:86px;right:14px;z-index:99;background:rgba(13,5,0,.93);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:14px;width:220px;box-shadow:0 8px 32px rgba(0,0,0,.6);display:none}
+.music-panel.show{display:block;animation:slideUp .25s ease-out}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.music-panel h4{font-family:'Fredoka One',cursive;font-size:16px;margin-bottom:10px;color:var(--amber)}
+.music-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:all .2s;margin-bottom:4px;font-size:13px;font-weight:700}
+.music-option:hover{background:rgba(255,255,255,.1)}
+.music-option.active{background:rgba(243,156,18,.2);color:var(--amber)}
+.music-option .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);flex-shrink:0}
+.music-option.active .dot{background:var(--amber);box-shadow:0 0 6px var(--amber)}
+.vol-row{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--surface)}
+.vol-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.2);outline:none;cursor:pointer}
+.vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--amber);cursor:pointer}
+
+.now-playing{display:none;align-items:center;gap:8px;background:rgba(243,156,18,.12);border:1px solid rgba(243,156,18,.25);border-radius:10px;padding:6px 10px;margin-bottom:10px;font-size:12px;font-weight:700;color:var(--amber)}
+.now-playing.show{display:flex}
+.eq-bars{display:flex;align-items:flex-end;gap:2px;height:14px}
+.eq-bar{width:3px;border-radius:1px;background:var(--amber);animation:eqAnim .5s ease-in-out infinite alternate}
+.eq-bar:nth-child(1){height:4px;animation-delay:0s}.eq-bar:nth-child(2){height:10px;animation-delay:.15s}
+.eq-bar:nth-child(3){height:6px;animation-delay:.3s}.eq-bar:nth-child(4){height:12px;animation-delay:.1s}
+.eq-bar:nth-child(5){height:5px;animation-delay:.25s}
+@keyframes eqAnim{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+/* HEADER */
+.header{text-align:center;padding:14px 0 10px}
+.header-emojis{font-size:26px;letter-spacing:3px;margin-bottom:2px}
+.header h1{font-family:'Fredoka One',cursive;font-size:38px;background:linear-gradient(135deg,#fff 0%,var(--amber) 40%,var(--lava) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{font-size:13px;color:var(--surface);font-weight:700}
+
+.now-playing-top{display:none;justify-content:center;align-items:center;gap:8px;background:rgba(243,156,18,.12);border:1px solid rgba(243,156,18,.2);border-radius:10px;padding:5px 12px;margin-bottom:8px;font-size:12px;font-weight:700;color:var(--amber)}
+
+/* ERA BADGE */
+.era-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.4);
+  border-radius:20px;padding:4px 12px;margin:6px auto 12px;
+  font-size:11px;font-weight:800;color:var(--amber);
+  text-align:center;justify-content:center;
+}
+
+/* TABS */
+.tabs-wrapper{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:12px 0 8px}
+.tab{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:white;padding:5px 11px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab:hover{background:rgba(255,255,255,.2);transform:translateY(-1px)}
+.tab.active{background:var(--amber);border-color:var(--amber);color:#0d0500}
+
+/* MODE */
+.mode-tabs{display:flex;gap:8px;justify-content:center;margin:8px 0 14px}
+.mode-btn{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);color:white;padding:7px 16px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.mode-btn.active{background:var(--lava);border-color:var(--lava)}
+.mode-btn:hover{transform:translateY(-1px)}
+
+/* PROGRESS */
+.category-label{text-align:center;font-size:13px;color:var(--surface);font-weight:700;margin-bottom:8px}
+.progress-bar{width:100%;height:7px;background:rgba(255,255,255,.1);border-radius:4px;margin-bottom:12px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),var(--lava));border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* CARD */
+.card-container{perspective:1200px;margin:0 auto 12px;width:100%;max-width:340px;height:410px;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,0,.2,1)}
+.card-inner.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;border-radius:28px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 18px}
+
+.card-front{
+  background:linear-gradient(145deg,#2d1505,#1a0a00);
+  box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 0 1px rgba(243,156,18,.2),inset 0 1px 0 rgba(255,255,255,.05);
+  border:1.5px solid rgba(243,156,18,.25);
+}
+.card-back{
+  background:linear-gradient(145deg,#0d0500,#2a0e00);
+  transform:rotateY(180deg);
+  box-shadow:0 12px 40px rgba(0,0,0,.7);
+  border:1.5px solid rgba(192,57,43,.3);
+}
+
+/* Fossil texture overlay */
+.card-front::before{
+  content:'';position:absolute;inset:0;border-radius:28px;
+  background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.01) 20px,rgba(255,255,255,.01) 21px);
+  pointer-events:none;
+}
+
+.animal-stage{width:155px;height:155px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:4px}
+.animal-main{font-size:105px;line-height:1;filter:drop-shadow(0 0 16px rgba(192,57,43,.4)) drop-shadow(0 6px 12px rgba(0,0,0,.4));display:inline-block;transform-origin:center}
+
+/* Ground dust */
+.ground-dust{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:110px;height:20px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(192,57,43,.2),transparent);
+  animation:dustPulse 2s ease-in-out infinite;
+}
+@keyframes dustPulse{0%,100%{width:110px;opacity:.3}50%{width:80px;opacity:.1}}
+
+/* Lava glow under card */
+.lava-glow{
+  position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  width:80%;height:12px;
+  background:radial-gradient(ellipse,rgba(192,57,43,.4),transparent);
+  border-radius:50%;
+  animation:glowPulse 2s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:.4}50%{opacity:.9}}
+
+.animal-name-id{font-family:'Fredoka One',cursive;font-size:22px;color:var(--bone);margin-bottom:2px;text-align:center;text-shadow:0 0 10px rgba(243,156,18,.3)}
+.animal-name-en{font-size:13px;color:var(--amber);font-weight:700;text-align:center}
+.animal-tag{background:linear-gradient(135deg,rgba(192,57,43,.6),rgba(230,126,18,.4));border:1px solid rgba(243,156,18,.3);color:var(--amber);font-size:11px;font-weight:800;padding:4px 12px;border-radius:10px;margin-top:6px}
+.era-tag{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-top:4px;letter-spacing:.5px}
+.tap-hint{margin-top:10px;font-size:11px;color:rgba(243,156,18,.6);font-weight:700;display:flex;align-items:center;gap:4px;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+.back-content{text-align:center;color:white;width:100%}
+.back-emoji-sm{font-size:44px;margin-bottom:4px;display:block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.back-name{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:2px;color:var(--bone)}
+.back-latin{font-size:11px;color:var(--amber);font-style:italic;margin-bottom:4px}
+.back-era{font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:8px;letter-spacing:.5px}
+.back-desc{font-size:12px;line-height:1.6;color:#f0d5b0;margin-bottom:8px;background:rgba(255,255,255,.04);border-radius:12px;padding:9px;border:1px solid rgba(255,255,255,.06)}
+.fun-fact{background:rgba(243,156,18,.12);border:1px solid rgba(243,156,18,.3);border-radius:12px;padding:8px 10px;font-size:11px;color:var(--amber);font-weight:700;text-align:left}
+
+/* NAVIGATION */
+.card-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:8px}
+.nav-btn{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);color:white;width:46px;height:46px;border-radius:50%;font-size:17px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.nav-btn:hover:not(:disabled){background:rgba(255,255,255,.18);transform:scale(1.08)}
+.nav-btn:disabled{opacity:.2;cursor:not-allowed}
+.card-counter{font-family:'Fredoka One',cursive;font-size:17px;color:white;min-width:58px;text-align:center}
+
+/* AUDIO */
+.audio-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .2s}
+.audio-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.1)}
+.audio-btn.speaking{background:var(--amber);color:#0d0500}
+.sound-wave{display:inline-flex;align-items:flex-end;gap:2px;height:14px;vertical-align:middle}
+.sound-bar{width:3px;background:currentColor;border-radius:2px;animation:soundBar .5s ease-in-out infinite alternate}
+.sound-bar:nth-child(1){height:4px}.sound-bar:nth-child(2){height:9px;animation-delay:.1s}
+.sound-bar:nth-child(3){height:6px;animation-delay:.2s}.sound-bar:nth-child(4){height:12px;animation-delay:.05s}
+.sound-bar:nth-child(5){height:5px;animation-delay:.15s}
+@keyframes soundBar{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+
+/* ANIMATIONS */
+.anim-stomp{animation:stomp 1.5s ease-in-out infinite}
+.anim-roar{animation:roar 2s ease-in-out infinite}
+.anim-fly{animation:fly 2.5s ease-in-out infinite}
+.anim-swim{animation:swim 2.5s ease-in-out infinite}
+.anim-snap{animation:snap 1.8s ease-in-out infinite}
+.anim-lumber{animation:lumber 2s ease-in-out infinite}
+.anim-charge{animation:charge 1.8s ease-in-out infinite}
+.anim-prowl{animation:prowl 2.5s ease-in-out infinite}
+.anim-drift{animation:drift 4s ease-in-out infinite}
+.anim-tremble{animation:tremble 1s ease-in-out infinite}
+.anim-float{animation:float 3s ease-in-out infinite}
+
+@keyframes stomp{0%,100%{transform:translateY(0) scaleY(1)}30%{transform:translateY(-16px) scaleY(1.05)}60%{transform:translateY(-6px) scaleY(.97)}80%{transform:translateY(4px) scaleY(.95)}}
+@keyframes roar{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.12) rotate(-5deg)}75%{transform:scale(1.08) rotate(4deg)}}
+@keyframes fly{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(3deg)}}
+@keyframes swim{0%,100%{transform:translateX(-8px) rotate(-4deg)}50%{transform:translateX(8px) rotate(4deg)}}
+@keyframes snap{0%,100%{transform:rotate(0) scale(1)}40%{transform:rotate(-8deg) scale(1.08)}80%{transform:rotate(5deg) scale(.97)}}
+@keyframes lumber{0%,100%{transform:translateX(-6px) rotate(-2deg) scaleY(1)}50%{transform:translateX(6px) rotate(2deg) scaleY(1.03)}}
+@keyframes charge{0%,100%{transform:translateX(-10px)}50%{transform:translateX(10px)}}
+@keyframes prowl{0%,100%{transform:translateX(-8px) translateY(2px)}50%{transform:translateX(8px) translateY(-4px)}}
+@keyframes drift{0%{transform:translateX(-10px) translateY(5px)}33%{transform:translateX(8px) translateY(-8px)}66%{transform:translateX(4px) translateY(10px)}100%{transform:translateX(-10px) translateY(5px)}}
+@keyframes tremble{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-4deg) scale(1.04)}75%{transform:rotate(4deg) scale(.97)}}
+
+/* QUIZ */
+#quiz-mode{display:none}
+.quiz-score{display:flex;justify-content:space-around;background:rgba(255,255,255,.07);border-radius:16px;padding:12px;margin-bottom:12px;border:1px solid rgba(255,255,255,.08)}
+.score-item{text-align:center}
+.score-num{font-family:'Fredoka One',cursive;font-size:26px}
+.score-label{font-size:10px;color:var(--surface);font-weight:700}
+.quiz-question{background:rgba(255,255,255,.07);border-radius:22px;padding:18px;text-align:center;margin-bottom:12px;border:1px solid rgba(243,156,18,.15)}
+.quiz-big-emoji{font-size:76px;display:inline-block;filter:drop-shadow(0 0 12px rgba(192,57,43,.4))}
+.quiz-q{font-size:15px;font-weight:800;color:var(--surface);margin-top:6px}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.quiz-opt{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);border-radius:14px;padding:12px 8px;color:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.quiz-opt:hover:not(:disabled){background:rgba(255,255,255,.15);transform:translateY(-2px)}
+.quiz-opt.correct{background:var(--green)!important;border-color:var(--green)!important;animation:correctPop .4s cubic-bezier(.4,0,.2,1)}
+.quiz-opt.wrong{background:var(--lava)!important;border-color:var(--lava)!important;animation:wrongShake .4s ease-in-out}
+@keyframes correctPop{0%{transform:scale(.95)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.quiz-opt:disabled{cursor:not-allowed}
+.quiz-feedback{text-align:center;font-size:13px;font-weight:800;min-height:20px;margin-bottom:10px;line-height:1.4}
+.quiz-next{width:100%;background:linear-gradient(135deg,var(--amber),var(--orange));border:none;border-radius:14px;padding:13px;font-family:'Fredoka One',cursive;font-size:18px;color:#0d0500;cursor:pointer;transition:all .2s;display:none;box-shadow:0 4px 16px rgba(243,156,18,.3)}
+.quiz-next:hover{transform:translateY(-2px)}
+.result-screen{display:none;text-align:center;padding:10px}
+.result-emoji{font-size:76px;margin-bottom:10px;animation:roar 1.5s ease-in-out infinite}
+.result-title{font-family:'Fredoka One',cursive;font-size:30px;margin-bottom:6px}
+.result-sub{font-size:13px;color:var(--surface);margin-bottom:16px;line-height:1.5}
+.result-score-box{background:rgba(255,255,255,.07);border-radius:20px;padding:14px;margin-bottom:14px;border:1px solid rgba(243,156,18,.2)}
+.result-big{font-family:'Fredoka One',cursive;font-size:50px;color:var(--amber)}
+.result-stars{font-size:28px;letter-spacing:3px;margin-top:4px}
+.restart-btn{background:linear-gradient(135deg,var(--lava),#a93226);border:none;border-radius:14px;padding:12px 26px;font-family:'Fredoka One',cursive;font-size:19px;color:white;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(192,57,43,.4)}
+.restart-btn:hover{transform:translateY(-2px)}
+
+/* LICENSE */
+.license-footer{text-align:center;margin-top:28px;padding:18px 16px 8px;border-top:1px solid rgba(255,255,255,.08)}
+.license-logo{font-family:'Fredoka One',cursive;font-size:18px;background:linear-gradient(135deg,var(--amber),var(--lava),var(--bone));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.license-text{font-size:10.5px;color:rgba(255,255,255,.3);font-weight:600;line-height:1.7}
+.license-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 12px;margin-top:8px;font-size:11px;font-weight:800;color:rgba(255,255,255,.4)}
+.watermark{position:fixed;bottom:78px;left:12px;z-index:98;font-family:'Fredoka One',cursive;font-size:11px;color:rgba(255,255,255,.12);pointer-events:none;letter-spacing:.3px;line-height:1.4}
+
+/* PARTICLES */
+.particle{position:fixed;pointer-events:none;z-index:999;font-size:22px;animation:particleFly .8s ease-out forwards}
+@keyframes particleFly{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-80px) scale(0);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="dino-bg">
+  <div class="volcano-glow"></div>
+  <div class="crack-line"></div>
+</div>
+
+<div class="watermark">WNJ Little W🌏rld<br>© 2026</div>
+
+<!-- MUSIC FAB -->
+<button class="music-fab" id="musicFab" onclick="toggleMusicPanel()">🎵</button>
+<div class="music-panel" id="musicPanel">
+  <h4>🎵 Suara Prasejarah</h4>
+  <div class="now-playing" id="nowPlaying">
+    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    <span id="nowPlayingText">Gemuruh Purba</span>
+  </div>
+  <div class="music-option active" id="opt0" onclick="selectTrack(0)"><div class="dot"></div>🌋 Gemuruh Purba</div>
+  <div class="music-option" id="opt1" onclick="selectTrack(1)"><div class="dot"></div>🦕 Hutan Jurassic</div>
+  <div class="music-option" id="opt2" onclick="selectTrack(2)"><div class="dot"></div>❄️ Zaman Es</div>
+  <div class="music-option" id="opt3" onclick="selectTrack(3)"><div class="dot"></div>🎮 Beat Kuis</div>
+  <div class="music-option" id="opt-off" onclick="stopMusic()"><div class="dot"></div>🔇 Mati</div>
+  <div class="vol-row">🔈<input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="40" oninput="setVolume(this.value)">🔊</div>
+</div>
+
+<div class="container">
+  <div class="now-playing-top" id="nowPlayingTop">
+    <div class="eq-bars"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    <span id="nowPlayingTopText">♫ Gemuruh Purba</span>
+  </div>
+
+  <div class="header">
+    <div class="header-emojis">🦕🦖🦣🦤🐉🌋🦴💀</div>
+    <h1>Hewan Prasejarah</h1>
+    <p>🌋 Petualangan Jutaan Tahun yang Lalu!</p>
+  </div>
+
+  <div class="tabs-wrapper" id="catTabs"></div>
+  <div class="mode-tabs">
+    <button class="mode-btn active" id="btnFlash" onclick="setMode('flashcard')">📚 Flashcard</button>
+    <button class="mode-btn" id="btnQuiz" onclick="setMode('quiz')">🎮 Kuis</button>
+  </div>
+
+  <!-- FLASHCARD -->
+  <div id="flashcard-mode">
+    <div class="category-label" id="catLabel">🌋 Semua Hewan Prasejarah</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="card-container" onclick="flipCard()">
+      <div class="card-inner" id="cardInner">
+        <div class="card-face card-front">
+          <div class="lava-glow"></div>
+          <div class="animal-stage">
+            <div class="ground-dust"></div>
+            <span class="animal-main anim-roar" id="animalEmoji">🦖</span>
+          </div>
+          <div class="animal-name-id" id="animalNameId">T-Rex</div>
+          <div class="animal-name-en" id="animalNameEn">Tyrannosaurus Rex</div>
+          <div class="animal-tag" id="animalTag">🦴 Theropoda</div>
+          <div class="era-tag" id="eraTag">⏳ 68-66 Juta Tahun Lalu</div>
+          <div class="tap-hint">👆 Tap untuk info lengkap</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-content">
+            <span class="back-emoji-sm" id="backEmoji">🦖</span>
+            <div class="back-name" id="backName">T-Rex</div>
+            <div class="back-latin" id="backLatin">Tyrannosaurus rex</div>
+            <div class="back-era" id="backEra">⏳ Kapur Akhir — 68-66 Juta Tahun Lalu</div>
+            <div class="back-desc" id="backDesc">Predator puncak zaman dinosaurus dengan gigitan terkuat.</div>
+            <div class="fun-fact">💡 <span id="backFact">T-Rex punya tangan kecil tapi giginya sepanjang pisau!!</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-nav">
+      <button class="nav-btn" id="prevBtn" onclick="prevCard()">◀</button>
+      <div class="card-counter" id="cardCounter">1/1</div>
+      <button class="nav-btn" id="nextBtn" onclick="nextCard()">▶</button>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:8px">
+      <button class="audio-btn" id="audioBtn" onclick="speakCurrent(event)">🔊</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-mode">
+    <div class="quiz-score">
+      <div class="score-item"><div class="score-num" id="qCorrect" style="color:#6ab04c">0</div><div class="score-label">✅ Benar</div></div>
+      <div class="score-item"><div class="score-num" id="qTotal">0</div><div class="score-label">📝 Soal</div></div>
+      <div class="score-item"><div class="score-num" id="qWrong" style="color:#ff6b6b">0</div><div class="score-label">❌ Salah</div></div>
+    </div>
+    <div class="quiz-question" id="quizQuestion">
+      <span class="quiz-big-emoji anim-roar" id="quizEmoji">🦖</span>
+      <div class="quiz-q">Hewan prasejarah apa ini?</div>
+      <button class="audio-btn" id="quizAudioBtn" onclick="speakQuizHint(event)" style="margin:8px auto 0">🔊</button>
+    </div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="quiz-next" id="quizNext" onclick="nextQuiz()">Soal Berikutnya ▶</button>
+    <div class="result-screen" id="resultScreen">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-title" id="resultTitle">Luar Biasa!</div>
+      <div class="result-sub" id="resultSub"></div>
+      <div class="result-score-box"><div class="result-big" id="resultBig">0/0</div><div class="result-stars" id="resultStars">⭐</div></div>
+      <button class="restart-btn" onclick="restartQuiz()">🔄 Main Lagi</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW BANNER -->
+  <div style="background:linear-gradient(135deg,#8B0000,#cc4400);border-radius:20px;padding:20px 18px;margin:20px 0;text-align:center;box-shadow:0 8px 30px rgba(150,0,0,.4);">
+    <div style="font-size:2rem;margin-bottom:8px;">🔓</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.1rem;color:#fff;margin-bottom:6px;">Ini versi PREVIEW — 5 dari 35 Hewan Prasejarah!</div>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.9);font-family:'Nunito',sans-serif;line-height:1.6;margin-bottom:14px;">
+      Versi lengkap berisi <strong>35 hewan prasejarah</strong> dari 6 kategori:<br>
+      🦖 Theropoda · 🦕 Sauropoda · 🌊 Laut Purba<br>
+      ❄️ Zaman Es · 💀 Punah & Unik<br>
+      + Mode Kuis interaktif & Efek Suara! 🎵
+    </div>
+    <a href="https://wa.me/6289630486382?text=Halo%20kak%20WNJ%20Little%20World!%20Saya%20mau%20beli%20Flashcard%20Hewan%20Prasejarah%20versi%20lengkap%20%F0%9F%A6%96"
+       target="_blank"
+       style="display:inline-block;background:#fff;color:#8B0000;font-family:'Nunito',sans-serif;font-size:.8rem;font-weight:900;
+       padding:12px 24px;border-radius:20px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);">
+      💬 Beli Versi Lengkap via WhatsApp
+    </a>
+  </div>
+
+  <!-- LICENSE -->
+  <div class="license-footer">
+    <div class="license-logo">WNJ Little W🌏rld</div>
+    <div class="license-text">© 2026 WNJ Little W🌏rld · All Rights Reserved<br>Flashcard Edukasi Hewan Prasejarah — Versi 1.0</div>
+    <div class="license-badge"><span>🌏</span> Dibuat dengan ❤️ oleh WNJ Little W🌏rld</div>
+    <div class="license-text" style="margin-top:8px">Dilarang memperbanyak atau mendistribusikan<br>tanpa izin tertulis dari WNJ Little W🌏rld.</div>
+  </div>
+</div>
+
+<script>
+// ─── AUDIO ENGINE ───
+let audioCtx=null,masterGain=null,currentTrack=0,musicNodes=[],musicPlaying=false;
+function getCtx(){if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.gain.value=0.4;masterGain.connect(audioCtx.destination);}return audioCtx;}
+function setVolume(v){if(masterGain)masterGain.gain.value=v/100;}
+
+// TRACK 0: Gemuruh Purba (Volcano + Rumble)
+function playVolcano(){
+  const ctx=getCtx(),nodes=[];
+  // Deep rumble
+  const r=ctx.createOscillator(),rg=ctx.createGain(),rlp=ctx.createBiquadFilter();
+  r.type='sawtooth';r.frequency.value=28;rlp.type='lowpass';rlp.frequency.value=80;rg.gain.value=0.18;
+  r.connect(rlp);rlp.connect(rg);rg.connect(masterGain);r.start();nodes.push(r);
+  const rlfo=ctx.createOscillator(),rlg=ctx.createGain();rlfo.frequency.value=0.1;rlg.gain.value=0.08;rlfo.connect(rlg);rlg.connect(rg.gain);rlfo.start();nodes.push(rlfo);
+
+  // Low drone
+  const d=ctx.createOscillator(),dg=ctx.createGain();d.type='sine';d.frequency.value=45;dg.gain.value=0.1;d.connect(dg);dg.connect(masterGain);d.start();nodes.push(d);
+
+  // Lava pops
+  function lavaPop(){
+    if(!musicPlaying)return;
+    const buf=ctx.createBuffer(1,ctx.sampleRate*.15,ctx.sampleRate),bd=buf.getChannelData(0);
+    for(let i=0;i<bd.length;i++)bd[i]=(Math.random()*2-1)*Math.pow(1-i/bd.length,1.5);
+    const s=ctx.createBufferSource(),g=ctx.createGain(),lp=ctx.createBiquadFilter();
+    lp.type='lowpass';lp.frequency.value=400;g.gain.value=0.25+Math.random()*.15;
+    s.buffer=buf;s.connect(lp);lp.connect(g);g.connect(masterGain);s.start();
+    setTimeout(lavaPop,800+Math.random()*2500);
+  }
+  lavaPop();
+
+  // Distant thunder
+  function thunder(){
+    if(!musicPlaying)return;
+    const buf=ctx.createBuffer(1,ctx.sampleRate*.8,ctx.sampleRate),bd=buf.getChannelData(0);
+    for(let i=0;i<bd.length;i++)bd[i]=(Math.random()*2-1)*Math.pow(1-i/bd.length,.5)*.6;
+    const s=ctx.createBufferSource(),g=ctx.createGain(),lp=ctx.createBiquadFilter();
+    lp.type='lowpass';lp.frequency.value=200;g.gain.value=0.18;
+    s.buffer=buf;s.connect(lp);lp.connect(g);g.connect(masterGain);s.start();
+    setTimeout(thunder,5000+Math.random()*8000);
+  }
+  setTimeout(thunder,2000);
+  return nodes;
+}
+
+// TRACK 1: Hutan Jurassic
+function playJurassic(){
+  const ctx=getCtx(),nodes=[];
+  // Ambient jungle base
+  const buf=ctx.createBuffer(1,4096,ctx.sampleRate),d=buf.getChannelData(0);
+  let b0=0,b1=0,b2=0,b3=0;
+  for(let i=0;i<4096;i++){const w=Math.random()*2-1;b0=.99*b0+w*.05;b1=.95*b1+w*.1;b2=.85*b2+w*.15;b3=.7*b3+w*.2;d[i]=(b0+b1+b2+b3)*0.06;}
+  const wn=ctx.createBufferSource(),wg=ctx.createGain(),wlp=ctx.createBiquadFilter();
+  wn.buffer=buf;wn.loop=true;wlp.type='lowpass';wlp.frequency.value=600;wg.gain.value=0.4;
+  wn.connect(wlp);wlp.connect(wg);wg.connect(masterGain);wn.start();nodes.push(wn);
+
+  // Dino roar (low horn-like)
+  function roar(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();
+    o.type='sawtooth';o.frequency.setValueAtTime(80,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(55,ctx.currentTime+1.2);
+    o2.type='sine';o2.frequency.setValueAtTime(160,ctx.currentTime);o2.frequency.exponentialRampToValueAtTime(110,ctx.currentTime+1.2);
+    lp.type='lowpass';lp.frequency.value=500;
+    g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(0.12,ctx.currentTime+.2);g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+1.5);
+    o.connect(lp);o2.connect(lp);lp.connect(g);g.connect(masterGain);o.start();o2.start();o.stop(ctx.currentTime+1.6);o2.stop(ctx.currentTime+1.6);
+    setTimeout(roar,6000+Math.random()*8000);
+  }
+  setTimeout(roar,1500);
+
+  // Pterodactyl screech
+  function screech(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sawtooth';o.frequency.setValueAtTime(800,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(1600,ctx.currentTime+.15);o.frequency.exponentialRampToValueAtTime(400,ctx.currentTime+.4);
+    g.gain.setValueAtTime(0.06,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+.5);
+    o.connect(g);g.connect(masterGain);o.start();o.stop(ctx.currentTime+.55);
+    setTimeout(screech,4000+Math.random()*6000);
+  }
+  setTimeout(screech,3000);
+
+  // Stomping bass pulse
+  let st=ctx.currentTime+.1;
+  function stomp(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='sine';o.frequency.setValueAtTime(60,st);o.frequency.exponentialRampToValueAtTime(30,st+.3);
+    g.gain.setValueAtTime(.3,st);g.gain.exponentialRampToValueAtTime(.0001,st+.4);
+    o.connect(g);g.connect(masterGain);o.start(st);o.stop(st+.45);
+    st+=2.4;setTimeout(stomp,(st-ctx.currentTime-.1)*1000);
+  }
+  stomp();
+  return nodes;
+}
+
+// TRACK 2: Zaman Es
+function playIceAge(){
+  const ctx=getCtx(),nodes=[];
+  // Cold wind
+  const buf=ctx.createBuffer(1,4096,ctx.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<4096;i++)d[i]=(Math.random()*2-1)*.7;
+  const wn=ctx.createBufferSource(),wg=ctx.createGain(),hp=ctx.createBiquadFilter(),lp2=ctx.createBiquadFilter();
+  wn.buffer=buf;wn.loop=true;hp.type='highpass';hp.frequency.value=1000;lp2.type='lowpass';lp2.frequency.value=3000;wg.gain.value=0;
+  wn.connect(hp);hp.connect(lp2);lp2.connect(wg);wg.connect(masterGain);wn.start();nodes.push(wn);
+  const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=0.12;lg.gain.value=0.12;lfo.connect(lg);lg.connect(wg.gain);lfo.start();nodes.push(lfo);
+
+  // Ice crystal tones
+  const iceNotes=[1047,1319,1568,2093];let ii=0,it=ctx.currentTime+.5;
+  function iceTone(){
+    if(!musicPlaying)return;
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type='triangle';o.frequency.value=iceNotes[ii%iceNotes.length];
+    g.gain.setValueAtTime(0.06,it);g.gain.exponentialRampToValueAtTime(0.0001,it+1.8);
+    o.connect(g);g.connect(masterGain);o.start(it);o.stop(it+2);
+    ii++;it+=1.5+Math.random()*2;
+    setTimeout(iceTone,(it-ctx.currentTime-.1)*1000);
+  }
+  iceTone();
+
+  // Mammoth low hum
+  const m=ctx.createOscillator(),mg=ctx.createGain();
+  m.type='sawtooth';m.frequency.value=35;mg.gain.value=0.08;
+  const mlp=ctx.createBiquadFilter();mlp.type='lowpass';mlp.frequency.value=100;
+  m.connect(mlp);mlp.connect(mg);mg.connect(masterGain);m.start();nodes.push(m);
+
+  // Blizzard rumble
+  function blizzard(){
+    if(!musicPlaying)return;
+    const buf2=ctx.createBuffer(1,ctx.sampleRate*.5,ctx.sampleRate),d2=buf2.getChannelData(0);
+    for(let i=0;i<d2.length;i++)d2[i]=(Math.random()*2-1)*Math.pow(1-i/d2.length,.3);
+    const s=ctx.createBufferSource(),g=ctx.createGain(),bp=ctx.createBiquadFilter();
+    bp.type='bandpass';bp.frequency.value=2000;bp.Q.value=.3;g.gain.value=0.08;
+    s.buffer=buf2;s.connect(bp);bp.connect(g);g.connect(masterGain);s.start();
+    setTimeout(blizzard,3000+Math.random()*4000);
+  }
+  blizzard();
+  return nodes;
+}
+
+// TRACK 3: Beat Kuis
+function playQuizBeat(){
+  const ctx=getCtx(),nodes=[];
+  const bpm=130,beat=60/bpm;let t=ctx.currentTime+.05;
+  function kick(tm){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(180,tm);o.frequency.exponentialRampToValueAtTime(.001,tm+.3);g.gain.setValueAtTime(.5,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+.35);o.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+.35);}
+  function snare(tm){const buf=ctx.createBuffer(1,ctx.sampleRate*.1,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);const s=ctx.createBufferSource(),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=1200;s.buffer=buf;g.gain.value=.15;s.connect(hp);hp.connect(g);g.connect(masterGain);s.start(tm);}
+  function hihat(tm){const buf=ctx.createBuffer(1,ctx.sampleRate*.02,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=ctx.createBufferSource(),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=9000;s.buffer=buf;g.gain.value=.035;s.connect(hp);hp.connect(g);g.connect(masterGain);s.start(tm);}
+  const bass=[55,61.7,55,73.4];let bi=0;
+  function bassNote(tm){const o=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();o.type='sawtooth';o.frequency.value=bass[bi%bass.length];lp.type='lowpass';lp.frequency.value=280;g.gain.setValueAtTime(.14,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+beat*.9);o.connect(lp);lp.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+beat);bi++;}
+  const lead=[440,0,523,587,0,523,440,0];let li=0;
+  function leadNote(tm){if(!lead[li%lead.length]){li++;return;}const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=lead[li%lead.length];g.gain.setValueAtTime(.04,tm);g.gain.exponentialRampToValueAtTime(.0001,tm+beat*.7);o.connect(g);g.connect(masterGain);o.start(tm);o.stop(tm+beat*.8);li++;}
+  function scheduleBar(){
+    if(!musicPlaying)return;
+    for(let i=0;i<8;i++){if(i%2===0)kick(t+i*beat*.5);if(i%2===1)snare(t+i*beat*.5);hihat(t+i*beat*.5);bassNote(t+i*beat*.5);leadNote(t+i*beat*.5);}
+    t+=beat*4;setTimeout(scheduleBar,(beat*4-.1)*1000);
+  }
+  scheduleBar();return nodes;
+}
+
+const trackNames=["🌋 Gemuruh Purba","🦕 Hutan Jurassic","❄️ Zaman Es","🎮 Beat Kuis"];
+const trackFns=[playVolcano,playJurassic,playIceAge,playQuizBeat];
+
+function stopMusic(){
+  musicPlaying=false;musicNodes.forEach(n=>{try{n.stop&&n.stop();n.disconnect&&n.disconnect()}catch(e){}});musicNodes=[];
+  document.getElementById("musicFab").classList.remove("playing");document.getElementById("musicFab").textContent="🎵";
+  document.getElementById("nowPlaying").classList.remove("show");document.getElementById("nowPlayingTop").style.display="none";
+  document.querySelectorAll(".music-option").forEach(o=>o.classList.remove("active"));document.getElementById("opt-off").classList.add("active");
+}
+function selectTrack(idx){
+  stopMusic();currentTrack=idx;getCtx();if(audioCtx.state==='suspended')audioCtx.resume();
+  musicPlaying=true;musicNodes=trackFns[idx]();
+  document.getElementById("musicFab").classList.add("playing");
+  document.getElementById("nowPlaying").classList.add("show");document.getElementById("nowPlayingText").textContent=trackNames[idx];
+  document.getElementById("nowPlayingTop").style.display="flex";document.getElementById("nowPlayingTopText").textContent="♫ "+trackNames[idx];
+  document.querySelectorAll(".music-option").forEach((o,i)=>o.classList.toggle("active",i===idx));document.getElementById("opt-off").classList.remove("active");
+}
+function toggleMusicPanel(){document.getElementById("musicPanel").classList.toggle("show");}
+document.addEventListener("click",e=>{const p=document.getElementById("musicPanel"),f=document.getElementById("musicFab");if(p.classList.contains("show")&&!p.contains(e.target)&&!f.contains(e.target))p.classList.remove("show");});
+
+function sfxFlip(){const ctx=getCtx(),o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(280,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(560,ctx.currentTime+.1);g.gain.setValueAtTime(.15,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.14);o.connect(g);g.connect(masterGain||ctx.destination);o.start();o.stop(ctx.currentTime+.16);}
+function sfxNext(){const ctx=getCtx();[0,.07].forEach((d,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=i===0?300:450;g.gain.setValueAtTime(.12,ctx.currentTime+d);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+d+.1);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.12);});}
+function sfxCorrect(){const ctx=getCtx();[440,554,659].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.18,ctx.currentTime+i*.1);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.1+.2);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+i*.1);o.stop(ctx.currentTime+i*.1+.25);});}
+function sfxWrong(){const ctx=getCtx();[250,200].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.value=f;g.gain.setValueAtTime(.1,ctx.currentTime+i*.13);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.13+.17);o.connect(g);g.connect(masterGain||ctx.destination);o.start(ctx.currentTime+i*.13);o.stop(ctx.currentTime+i*.13+.2);});}
+
+// ─── DATA ───
+const animals=[
+  // THEROPODA
+  {id:1,emoji:"🦖",nameId:"Tyrannosaurus Rex",nameEn:"T-Rex",latin:"Tyrannosaurus rex",category:"theropoda",tag:"🦴 Theropoda",era:"Kapur Akhir — 68-66 Juta Tahun Lalu",desc:"Predator puncak terbesar di darat! Dengan gigi setajam pisau dan kecepatan berlari 20 km/jam.",fact:"T-Rex punya tangan kecil tapi gigitannya 3x lebih kuat dari singa!",anim:"anim-roar"},
+  {id:2,emoji:"🦕",nameId:"Velociraptor",nameEn:"Velociraptor",latin:"Velociraptor mongoliensis",category:"theropoda",tag:"🦴 Theropoda",era:"Kapur Akhir — 75-71 Juta Tahun Lalu",desc:"Dinosaurus kecil secepat kilat yang berburu dalam kelompok cerdas dan terkoordinasi.",fact:"Velociraptor aslinya sebesar kalkun — jauh lebih kecil dari yang di film Jurassic Park!",anim:"anim-prowl"},
+  {id:3,emoji:"🐉",nameId:"Spinosaurus",nameEn:"Spinosaurus",latin:"Spinosaurus aegyptiacus",category:"theropoda",tag:"🦴 Theropoda",era:"Kapur Tengah — 95-93 Juta Tahun Lalu",desc:"Dinosaurus terbesar yang pernah ada, lebih besar dari T-Rex! Suka berburu di air.",fact:"Spinosaurus adalah satu-satunya dinosaurus yang terbukti bisa berenang!",anim:"anim-swim"},
+  {id:4,emoji:"🦅",nameId:"Pterodactyl",nameEn:"Pterodactylus",latin:"Pterodactylus antiquus",category:"theropoda",tag:"✈️ Pterosauria",era:"Jurassic Akhir — 150-148 Juta Tahun Lalu",desc:"Reptil terbang pertama yang menguasai langit zaman dinosaurus dengan sayap kulit.",fact:"Pterodactyl bukan dinosaurus — mereka adalah reptil terbang yang berbeda!",anim:"anim-fly"},
+  {id:5,emoji:"🦜",nameId:"Quetzalcoatlus",nameEn:"Quetzalcoatlus",latin:"Quetzalcoatlus northropi",category:"theropoda",tag:"✈️ Pterosauria",era:"Kapur Akhir — 68-66 Juta Tahun Lalu",desc:"Makhluk terbang terbesar sepanjang masa dengan rentang sayap 10-11 meter!",fact:"Quetzalcoatlus setinggi jerapah saat berdiri di darat!",anim:"anim-fly"},
+];
+
+const categories=[
+  {id:"all",label:"🌋 Semua (5 Preview)"},
+  {id:"theropoda",label:"🦖 Theropoda"},
+];
+
+let currentCat="all",filteredAnimals=[...animals],currentIndex=0,isFlipped=false;
+let quizAnimals=[],quizIndex=0,qCorrect=0,qWrong=0,quizAnswered=false,currentMode="flashcard";
+let currentQuizAnimal=null,synth=window.speechSynthesis;
+
+// BUILD BG
+for(let i=0;i<8;i++){const l=document.createElement("div");l.className="lava-drip";l.style.cssText=`left:${Math.random()*100}%;height:${80+Math.random()*120}px;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*8}s`;document.querySelector(".dino-bg").appendChild(l);}
+for(let i=0;i<15;i++){const e=document.createElement("div");e.className="ember";const s=3+Math.random()*5,tx=(Math.random()*60-30)+'px',ty=(Math.random()*60-30)+'px';e.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--ex:${tx};--ey:${ty};animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*5}s`;document.querySelector(".dino-bg").appendChild(e);}
+for(let i=0;i<6;i++){const m=document.createElement("div");m.className="meteor";m.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*30}%;animation-duration:${4+Math.random()*6}s;animation-delay:${Math.random()*10}s`;document.querySelector(".dino-bg").appendChild(m);}
+["🦶","🐾","👣","🦷"].forEach((f,i)=>{const el=document.createElement("div");el.className="footprint";el.textContent=f;el.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${i*2}s;font-size:${20+Math.random()*20}px`;document.querySelector(".dino-bg").appendChild(el);});
+
+// TABS
+const tabsEl=document.getElementById("catTabs");
+categories.forEach(cat=>{
+  const btn=document.createElement("button");btn.className="tab"+(cat.id==="all"?" active":"");btn.textContent=cat.label;
+  btn.onclick=()=>selectCat(cat.id,btn,cat.label);tabsEl.appendChild(btn);
+});
+
+function selectCat(catId,btn,label){
+  currentCat=catId;document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));btn.classList.add("active");
+  filteredAnimals=catId==="all"?[...animals]:animals.filter(a=>a.category===catId);
+  currentIndex=0;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");
+  document.getElementById("catLabel").textContent=label;updateCard();if(currentMode==="quiz")startQuiz();
+}
+
+function updateCard(){
+  if(!filteredAnimals.length)return;
+  const a=filteredAnimals[currentIndex];
+  const emoji=document.getElementById("animalEmoji");emoji.textContent=a.emoji;emoji.className="animal-main";void emoji.offsetWidth;emoji.classList.add(a.anim);
+  document.getElementById("animalNameId").textContent=a.nameId;
+  document.getElementById("animalNameEn").textContent=a.nameEn;
+  document.getElementById("animalTag").textContent=a.tag;
+  document.getElementById("eraTag").textContent="⏳ "+a.era;
+  document.getElementById("backEmoji").textContent=a.emoji;
+  document.getElementById("backName").textContent=a.nameId;
+  document.getElementById("backLatin").textContent=a.latin;
+  document.getElementById("backEra").textContent="⏳ "+a.era;
+  document.getElementById("backDesc").textContent=a.desc;
+  document.getElementById("backFact").textContent=a.fact;
+  document.getElementById("cardCounter").textContent=`${currentIndex+1}/${filteredAnimals.length}`;
+  document.getElementById("progressFill").style.width=`${((currentIndex+1)/filteredAnimals.length)*100}%`;
+  document.getElementById("prevBtn").disabled=currentIndex===0;
+  document.getElementById("nextBtn").disabled=currentIndex===filteredAnimals.length-1;
+}
+
+function flipCard(){sfxFlip();isFlipped=!isFlipped;document.getElementById("cardInner").classList.toggle("flipped",isFlipped);if(isFlipped)setTimeout(()=>speakCurrent(null,true),300);}
+function prevCard(){if(currentIndex>0){sfxNext();currentIndex--;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");updateCard();}}
+function nextCard(){if(currentIndex<filteredAnimals.length-1){sfxNext();currentIndex++;isFlipped=false;document.getElementById("cardInner").classList.remove("flipped");updateCard();}}
+
+function speak(text,lang,onEnd){if(!synth)return;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang||"id-ID";u.rate=.85;u.pitch=1;u.onend=()=>{if(onEnd)onEnd()};synth.speak(u);}
+function speakCurrent(e){if(e)e.stopPropagation();const a=filteredAnimals[currentIndex];if(!a)return;const btn=document.getElementById("audioBtn");btn.classList.add("speaking");btn.innerHTML="<span class='sound-wave'><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span></span>";speak(`${a.nameId}. ${a.nameEn}.`,"id-ID",()=>{btn.classList.remove("speaking");btn.innerHTML="🔊";});}
+function speakQuizHint(e){if(e)e.stopPropagation();if(!currentQuizAnimal)return;const btn=document.getElementById("quizAudioBtn");btn.classList.add("speaking");btn.innerHTML="<span class='sound-wave'><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span><span class='sound-bar'></span></span>";speak(`Petunjuk: ${currentQuizAnimal.tag}`,"id-ID",()=>{btn.classList.remove("speaking");btn.innerHTML="🔊";});}
+
+function setMode(mode){
+  currentMode=mode;
+  document.getElementById("btnFlash").classList.toggle("active",mode==="flashcard");
+  document.getElementById("btnQuiz").classList.toggle("active",mode==="quiz");
+  document.getElementById("flashcard-mode").style.display=mode==="flashcard"?"block":"none";
+  document.getElementById("quiz-mode").style.display=mode==="quiz"?"block":"none";
+  if(mode==="quiz"){if(musicPlaying&&currentTrack!==3)selectTrack(3);startQuiz();}
+  else{if(musicPlaying&&currentTrack===3)selectTrack(0);}
+}
+
+function startQuiz(){quizAnimals=[...filteredAnimals].sort(()=>Math.random()-.5);quizIndex=0;qCorrect=0;qWrong=0;quizAnswered=false;document.getElementById("resultScreen").style.display="none";document.getElementById("quizQuestion").style.display="block";document.getElementById("quizOptions").style.display="grid";document.getElementById("quizNext").style.display="none";document.getElementById("quizFeedback").textContent="";updateQuizScore();showQuestion();}
+function updateQuizScore(){document.getElementById("qCorrect").textContent=qCorrect;document.getElementById("qTotal").textContent=quizIndex;document.getElementById("qWrong").textContent=qWrong;}
+function showQuestion(){
+  if(quizIndex>=quizAnimals.length){showResult();return;}
+  const cur=quizAnimals[quizIndex];currentQuizAnimal=cur;
+  const e=document.getElementById("quizEmoji");e.textContent=cur.emoji;e.className="quiz-big-emoji "+cur.anim;
+  document.getElementById("quizFeedback").textContent="";document.getElementById("quizNext").style.display="none";document.getElementById("quizAudioBtn").innerHTML="🔊";document.getElementById("quizAudioBtn").classList.remove("speaking");quizAnswered=false;
+  const pool=animals.filter(a=>a.id!==cur.id).sort(()=>Math.random()-.5).slice(0,3);
+  const opts=[...pool,cur].sort(()=>Math.random()-.5);
+  const optEl=document.getElementById("quizOptions");optEl.innerHTML="";
+  opts.forEach(opt=>{const btn=document.createElement("button");btn.className="quiz-opt";btn.innerHTML=`${opt.emoji}<br>${opt.nameId}`;btn.onclick=()=>answerQuiz(btn,opt.id===cur.id,cur);optEl.appendChild(btn);});
+}
+function answerQuiz(btn,isCorrect,cur){
+  if(quizAnswered)return;quizAnswered=true;quizIndex++;
+  document.querySelectorAll(".quiz-opt").forEach(b=>{b.disabled=true;if(b.innerHTML.includes(cur.nameId))b.classList.add("correct");});
+  if(isCorrect){qCorrect++;btn.classList.add("correct");sfxCorrect();document.getElementById("quizFeedback").textContent="✅ Benar! "+cur.fact;document.getElementById("quizFeedback").style.color="#6ab04c";speak(`Benar! ${cur.nameId}.`,"id-ID");spawnParticles(btn,"🦕","⭐","🦖","💥","🔥");}
+  else{qWrong++;btn.classList.add("wrong");sfxWrong();document.getElementById("quizFeedback").textContent="❌ Salah! Itu adalah "+cur.nameId;document.getElementById("quizFeedback").style.color="#ff6b6b";speak(`Salah. Jawaban benar: ${cur.nameId}`,"id-ID");}
+  updateQuizScore();document.getElementById("quizNext").style.display="block";document.getElementById("quizNext").textContent=quizIndex>=quizAnimals.length?"Lihat Hasil 🏆":"Soal Berikutnya ▶";
+}
+function nextQuiz(){sfxNext();showQuestion();}
+function showResult(){
+  synth&&synth.cancel();document.getElementById("quizQuestion").style.display="none";document.getElementById("quizOptions").style.display="none";document.getElementById("quizNext").style.display="none";document.getElementById("quizFeedback").textContent="";
+  const total=quizAnimals.length,pct=Math.round((qCorrect/total)*100);
+  let emoji="😅",title="Terus Semangat!",stars="⭐";
+  if(pct>=90){emoji="🏆";title="Luar Biasa!";stars="⭐⭐⭐⭐⭐";}else if(pct>=75){emoji="🥇";title="Keren Banget!";stars="⭐⭐⭐⭐";}else if(pct>=60){emoji="⭐";title="Bagus Sekali!";stars="⭐⭐⭐";}else if(pct>=40){emoji="💪";title="Lumayan!";stars="⭐⭐";}
+  document.getElementById("resultEmoji").textContent=emoji;document.getElementById("resultTitle").textContent=title;document.getElementById("resultSub").textContent=`Kamu menjawab ${qCorrect} dari ${total} soal benar (${pct}%)`;document.getElementById("resultBig").textContent=`${qCorrect}/${total}`;document.getElementById("resultStars").textContent=stars;document.getElementById("resultScreen").style.display="block";
+  speak(`${title}! Kamu mendapat nilai ${qCorrect} dari ${total}!`,"id-ID");
+  if(pct>=60)for(let i=0;i<3;i++)setTimeout(()=>spawnParticles(document.getElementById("resultScreen"),"🎉","🏆","⭐","🦕","🔥"),i*300);
+}
+function restartQuiz(){startQuiz();}
+function spawnParticles(el,...emojis){const rect=el.getBoundingClientRect();for(let i=0;i<6;i++){const p=document.createElement("div");p.className="particle";p.textContent=emojis[Math.floor(Math.random()*emojis.length)];p.style.cssText=`left:${rect.left+Math.random()*rect.width}px;top:${rect.top+rect.height*.3}px;animation-delay:${Math.random()*.4}s`;document.body.appendChild(p);setTimeout(()=>p.remove(),1000);}}
+
+updateCard();
+</script>
+</body>
+</html>
