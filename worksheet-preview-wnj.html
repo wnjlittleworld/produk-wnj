@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Preview – Worksheet Bahasa Inggris TK | WNJ Little World</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Nunito', sans-serif; background: #f0f0f0; color: #333; }
+
+/* PROGRESS BAR */
+#progress-wrap {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: #fff; border-bottom: 2px solid #f4a261;
+  padding: 6px 14px; display: flex; align-items: center; gap: 8px;
+}
+#progress-bar-bg { flex: 1; background: #f0f0f0; border-radius: 20px; height: 10px; }
+#progress-bar { height: 10px; border-radius: 20px; background: #e76f51; transition: width .4s; width: 33.33%; }
+#progress-label { font-family: 'Baloo 2', cursive; font-size: 12px; font-weight: 800; color: #e76f51; white-space: nowrap; }
+
+/* PAGES */
+.page {
+  display: none;
+  max-width: 600px;
+  margin: 70px auto 90px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+.page.active { display: block; }
+
+/* THEMES */
+.ta { --ac:#e76f51; --lt:#fff3ee; --bd:#f4a261; }
+.tf { --ac:#2a9d8f; --lt:#e8f8f5; --bd:#52b69a; }
+.tc { --ac:#d4a017; --lt:#fffbee; --bd:#e9c46a; }
+.tn { --ac:#457b9d; --lt:#eaf4fb; --bd:#74b3ce; }
+.tb { --ac:#6a4c93; --lt:#f5f0fb; --bd:#9d7ec9; }
+.tm { --ac:#c1121f; --lt:#fdf0f0; --bd:#e07070; }
+
+/* HEADER */
+.ph { display:flex; align-items:center; justify-content:space-between; background:var(--lt); border-radius:12px; padding:10px 12px; margin-bottom:10px; border:2px solid var(--bd); }
+.ph h1 { font-family:'Baloo 2',cursive; font-size:15px; font-weight:800; color:var(--ac); }
+.ph p { font-size:10px; color:#999; }
+.ph .pg { background:var(--ac); color:#fff; border-radius:20px; padding:3px 10px; font-size:10px; font-weight:700; white-space:nowrap; }
+.ph .ico { font-size:26px; }
+
+/* NAME ROW */
+.nr { display:flex; gap:10px; margin-bottom:10px; font-size:10px; color:#aaa; }
+.nf { flex:1; border-bottom:1.5px dashed var(--bd); padding-bottom:2px; }
+
+/* INSTRUCTION */
+.ins { background:var(--lt); border-left:3px solid var(--ac); border-radius:0 8px 8px 0; padding:5px 10px; font-size:11px; font-weight:700; color:#555; margin-bottom:10px; }
+
+/* MATCH */
+.mw { display:grid; grid-template-columns:1fr 30px 1fr; gap:5px 0; align-items:center; margin-bottom:8px; }
+.ml { background:var(--lt); border:1.5px solid var(--bd); border-radius:8px; padding:5px; text-align:center; font-size:22px; }
+.mdl { border-bottom:2px dashed #ddd; margin:0 3px; }
+.mr { border:1.5px solid var(--bd); border-radius:8px; padding:5px; text-align:center; font-family:'Baloo 2',cursive; font-size:12px; font-weight:700; color:var(--ac); }
+
+/* CIRCLE */
+.cg { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+.cc { border:1.5px solid var(--bd); border-radius:10px; padding:7px 4px; text-align:center; background:var(--lt); }
+.cc .em { font-size:24px; margin-bottom:4px; }
+.chs { display:flex; flex-wrap:wrap; justify-content:center; gap:4px; }
+.cb { border:1.5px solid var(--ac); border-radius:20px; padding:2px 7px; font-size:10px; font-weight:700; color:var(--ac); }
+
+/* FILL */
+.fl { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.fi { display:flex; align-items:center; gap:6px; background:var(--lt); border-radius:8px; padding:6px 10px; border:1.5px solid var(--bd); font-size:12px; }
+.fi .pic { font-size:20px; flex-shrink:0; }
+.bk { display:inline-block; min-width:80px; border-bottom:1.5px solid var(--ac); height:16px; margin:0 2px; }
+.wb { background:#f8f9fa; border:1.5px dashed #ccc; border-radius:7px; padding:5px 8px; font-size:10px; color:#888; margin-top:7px; text-align:center; }
+
+/* REWARD */
+.rw { text-align:center; margin-top:10px; padding-top:8px; border-top:2px dashed var(--bd); }
+.rw .sr2 { font-size:18px; letter-spacing:5px; }
+.rw p { font-size:9px; color:#bbb; margin-top:1px; }
+
+/* FOOTER */
+.footer-wnj { display:flex; align-items:center; justify-content:space-between; margin-top:8px; padding-top:6px; border-top:2px dashed var(--bd); }
+.footer-wnj .brand { font-family:"Baloo 2",cursive; font-size:11px; font-weight:800; color:var(--ac); }
+.footer-wnj .icons { font-size:13px; letter-spacing:2px; }
+.footer-wnj .pgn { font-size:10px; color:#bbb; font-weight:700; }
+
+/* NAV */
+#nav { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:2px solid #f4a261; padding:8px 16px; display:flex; justify-content:space-between; align-items:center; z-index:100; }
+.nbtn { background:#e76f51; color:#fff; border:none; border-radius:20px; padding:8px 22px; font-family:'Nunito',sans-serif; font-weight:800; font-size:13px; cursor:pointer; touch-action:manipulation; }
+.nbtn:disabled { background:#ccc; cursor:default; }
+#nav-pg { font-family:'Baloo 2',cursive; font-size:13px; font-weight:800; color:#e76f51; }
+
+/* LOCK SECTION */
+#lock-section { display:none; padding:16px; max-width:600px; margin:0 auto; }
+</style>
+</head>
+<body>
+
+<!-- PROGRESS -->
+<div id="progress-wrap">
+  <div id="progress-bar-bg"><div id="progress-bar"></div></div>
+  <span id="progress-label">1 / 3 preview</span>
+</div>
+
+<!-- PAGE 1: Animals Match -->
+<div class="page ta active" id="page-1">
+  <div class="ph"><div><h1>🐾 Animals – Match!</h1><p>Hubungkan gambar &amp; kata</p></div><div class="ico">🦁</div><div class="pg">1/30</div></div>
+  <div class="nr"><div class="nf">Nama: _____________________</div><div class="nf">Tgl: _______________</div></div>
+  <div class="ins">✏️ Draw a line to match! (Tarik garis untuk mencocokkan!)</div>
+  <div class="mw">
+    <div class="ml">🐶</div><div class="mdl"></div><div class="mr">Cat</div>
+    <div class="ml">🐱</div><div class="mdl"></div><div class="mr">Fish</div>
+    <div class="ml">🐟</div><div class="mdl"></div><div class="mr">Rabbit</div>
+    <div class="ml">🐰</div><div class="mdl"></div><div class="mr">Dog</div>
+    <div class="ml">🦋</div><div class="mdl"></div><div class="mr">Butterfly</div>
+    <div class="ml">🐸</div><div class="mdl"></div><div class="mr">Frog</div>
+  </div>
+  <div class="rw"><div class="sr2">☆ ☆ ☆ ☆ ☆</div><p>Warnai bintang sesuai nilaimu!</p></div>
+  <div class="footer-wnj"><div class="icons">🌟✨🎀</div><div class="brand">© WNJ Little World</div><div class="pgn">Hal. 1 / 30</div></div>
+</div>
+
+<!-- PAGE 2: Animals Circle -->
+<div class="page ta" id="page-2">
+  <div class="ph"><div><h1>🐾 Animals – Circle!</h1><p>Lingkari kata yang benar</p></div><div class="ico">🐘</div><div class="pg">2/30</div></div>
+  <div class="nr"><div class="nf">Nama: _____________________</div><div class="nf">Tgl: _______________</div></div>
+  <div class="ins">⭕ Circle the correct word! (Lingkari kata yang benar!)</div>
+  <div class="cg">
+    <div class="cc"><div class="em">🐘</div><div class="chs"><span class="cb">Elephant</span><span class="cb">Horse</span><span class="cb">Cow</span></div></div>
+    <div class="cc"><div class="em">🦒</div><div class="chs"><span class="cb">Tiger</span><span class="cb">Giraffe</span><span class="cb">Bear</span></div></div>
+    <div class="cc"><div class="em">🐧</div><div class="chs"><span class="cb">Eagle</span><span class="cb">Parrot</span><span class="cb">Penguin</span></div></div>
+    <div class="cc"><div class="em">🦊</div><div class="chs"><span class="cb">Fox</span><span class="cb">Wolf</span><span class="cb">Deer</span></div></div>
+    <div class="cc"><div class="em">🐊</div><div class="chs"><span class="cb">Lizard</span><span class="cb">Snake</span><span class="cb">Croc.</span></div></div>
+    <div class="cc"><div class="em">🦓</div><div class="chs"><span class="cb">Zebra</span><span class="cb">Donkey</span><span class="cb">Pony</span></div></div>
+  </div>
+  <div class="rw"><div class="sr2">☆ ☆ ☆ ☆ ☆</div><p>Warnai bintang sesuai nilaimu!</p></div>
+  <div class="footer-wnj"><div class="icons">🌟✨🎀</div><div class="brand">© WNJ Little World</div><div class="pgn">Hal. 2 / 30</div></div>
+</div>
+
+<!-- PAGE 3: Animals Fill In -->
+<div class="page ta" id="page-3">
+  <div class="ph"><div><h1>🐾 Animals – Fill In!</h1><p>Lengkapi kalimat</p></div><div class="ico">🦁</div><div class="pg">3/30</div></div>
+  <div class="nr"><div class="nf">Nama: _____________________</div><div class="nf">Tgl: _______________</div></div>
+  <div class="ins">📝 Fill in the blanks! (Isi titik-titiknya!)</div>
+  <ul class="fl">
+    <li class="fi"><span class="pic">🐯</span>This is a <span class="bk"></span>. (Harimau)</li>
+    <li class="fi"><span class="pic">🐮</span>The <span class="bk"></span> says moo. (Sapi)</li>
+    <li class="fi"><span class="pic">🐑</span>A <span class="bk"></span> has white wool. (Domba)</li>
+    <li class="fi"><span class="pic">🦅</span>The <span class="bk"></span> can fly high. (Elang)</li>
+    <li class="fi"><span class="pic">🐬</span>A <span class="bk"></span> lives in the sea. (Lumba-lumba)</li>
+  </ul>
+  <div class="wb">💡 tiger | cow | sheep | eagle | dolphin</div>
+  <div class="rw"><div class="sr2">☆ ☆ ☆ ☆ ☆</div><p>Warnai bintang sesuai nilaimu!</p></div>
+  <div class="footer-wnj"><div class="icons">🌟✨🎀</div><div class="brand">© WNJ Little World</div><div class="pgn">Hal. 3 / 30</div></div>
+</div>
+
+<!-- LOCK SECTION -->
+<div id="lock-section">
+  <div style="background:linear-gradient(135deg,#f953c6,#b91d73,#7b2ff7);border-radius:24px;padding:28px 20px;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%"></div>
+    <div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,.08);border-radius:50%"></div>
+    <div style="font-size:36px;margin-bottom:10px">🔒</div>
+    <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.3;position:relative">
+      Ini versi PREVIEW –<br>3 dari 30 Worksheet!
+    </div>
+    <div style="font-size:13px;color:rgba(255,255,255,.9);line-height:1.7;margin-bottom:14px;position:relative">
+      Versi lengkap berisi <strong>30 halaman worksheet</strong> interaktif dengan 6 tema:
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:12px;position:relative">
+      <span style="background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff">🐾 Animals</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff">🍓 Fruits &amp; Vegs</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff">🎨 Colors &amp; Shapes</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff">🔢 Numbers 1–10</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff">🧍 Body Parts</span>
+      <span style="background:rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff">👨‍👩‍👧 Family</span>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,.85);margin-bottom:18px;position:relative">
+      + Soal Variatif, Bintang Reward &amp; Desain Colorful! 🌟
+    </div>
+    <button onclick="buyWA()" style="width:100%;background:#fff;border:none;border-radius:20px;padding:14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#7b2ff7;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;touch-action:manipulation;">
+      💬 Beli Versi Lengkap via WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- WNJ FOOTER -->
+<div id="wnj-footer" style="width:100%;max-width:600px;margin:0 auto 90px;background:linear-gradient(135deg,#0a2e5e,#1565a8);border-radius:16px;padding:20px 16px;text-align:center;box-shadow:0 2px 16px rgba(0,0,0,.15);">
+  <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:#fff;margin-bottom:3px;letter-spacing:.5px">
+    WNJ Little W<span style="color:#ffd166">🌏</span>rld
+  </div>
+  <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">
+    Media Edukasi Anak Seru &amp; Interaktif
+  </div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:12px">
+    <span style="background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8)">📄 Worksheet</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8)">🃏 Flashcard</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8)">🎮 Kuis Interaktif</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8)">🎵 Musik Edukatif</span>
+  </div>
+  <div style="font-size:9px;color:rgba(255,255,255,.3)">© 2026 WNJ Little World · All Rights Reserved</div>
+  <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:2px">Worksheet Bahasa Inggris TK — 30 Halaman</div>
+</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nbtn" id="prev-btn" onclick="navigate(-1)" disabled>← Prev</button>
+  <span id="nav-pg">1 / 3</span>
+  <button class="nbtn" id="next-btn" onclick="navigate(1)">Next →</button>
+</div>
+
+<script>
+let cur = 0;
+const themeColors = ['#e76f51','#e76f51','#e76f51'];
+const themeBorders = ['#f4a261','#f4a261','#f4a261'];
+
+function showPage(idx) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  const page = document.getElementById('page-' + (idx + 1));
+  if (page) page.classList.add('active');
+
+  const pb = document.getElementById('progress-bar');
+  if (pb) pb.style.width = ((idx + 1) / 3 * 100) + '%';
+  const pl = document.getElementById('progress-label');
+  if (pl) pl.textContent = (idx + 1) + ' / 3 preview';
+  const np = document.getElementById('nav-pg');
+  if (np) np.textContent = (idx + 1) + ' / 3';
+  const prevBtn = document.getElementById('prev-btn');
+  if (prevBtn) prevBtn.disabled = idx === 0;
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) nextBtn.disabled = idx === 2;
+
+  const lock = document.getElementById('lock-section');
+  const footer = document.getElementById('wnj-footer');
+  if (lock) lock.style.display = idx === 2 ? 'block' : 'none';
+  if (footer) footer.style.display = idx === 2 ? 'block' : 'none';
+
+  // Update progress bar & nav color to match theme
+  const navBar = document.getElementById('nav');
+  if (idx < 3) {
+    const color = page ? getComputedStyle(page).getPropertyValue('--ac').trim() || '#e76f51' : '#e76f51';
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigate(dir) {
+  const next = cur + dir;
+  if (next < 0 || next > 2) return;
+  cur = next;
+  showPage(cur);
+}
+
+function buyWA() {
+  const msg = encodeURIComponent("Halo kak WNJ Little World! 👋\nSaya mau beli Worksheet Bahasa Inggris TK 30 Halaman versi lengkap! 📄\nBoleh info lebih lanjut? 😊");
+  window.open("https://wa.me/628xxxxxxxxxx?text=" + msg, "_blank");
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Hide footer initially
+  const footer = document.getElementById('wnj-footer');
+  if (footer) footer.style.display = 'none';
+  showPage(0);
+});
+</script>
+
+</body>
+</html>
