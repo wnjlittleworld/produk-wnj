@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PREVIEW – Hijaiyah Alphabet Flashcard – WNJ Little World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mint: #3ecfb0; --sky: #4fc3f7; --sun: #ffd54f; --coral: #ff7043;
+    --purple: #ce93d8; --green: #81c784; --bg: #f0faff;
+    --shadow: 0 8px 32px rgba(62,207,176,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 0 80px;
+    background: linear-gradient(180deg, #b8e0f7 0%, #7ec8e3 30%, #5aafd4 60%, #4a9bc5 100%);
+    position: relative;
+  }
+
+  /* HEADER BANNER */
+  .top-banner {
+    width: 100%; background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .top-banner-title {
+    font-family: 'Fredoka One', cursive;
+    color: white; font-size: 1rem;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 60vw;
+  }
+  .preview-badge {
+    background: linear-gradient(135deg, #ff6b9d, #c44dff);
+    color: white; font-family: 'Fredoka One', cursive;
+    font-size: 0.72rem; padding: 4px 12px; border-radius: 50px;
+    letter-spacing: 0.5px; white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(196,77,255,0.4);
+  }
+
+  /* MAIN CONTENT */
+  main {
+    width: 100%; max-width: 520px;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px 18px 0;
+  }
+
+  /* APP HEADER */
+  .app-header { text-align: center; margin-bottom: 18px; }
+  .app-header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    color: white; letter-spacing: 1px;
+    text-shadow: 2px 3px 0 rgba(0,0,0,0.12);
+  }
+  .app-header p { color: rgba(255,255,255,0.85); font-size: 0.9rem; font-weight: 600; margin-top: 4px; }
+  .stars { font-size: 1.2rem; letter-spacing: 4px; margin-top: 4px; }
+
+  /* CARD AREA */
+  .card-shell {
+    width: 100%;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(8px);
+    border-radius: 32px;
+    padding: 20px 16px 22px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1.5px solid rgba(255,255,255,0.45);
+    margin-bottom: 18px;
+  }
+
+  .card-area {
+    width: 100%; height: 280px;
+    cursor: pointer; position: relative;
+    margin-bottom: 20px;
+  }
+  .card-inner { width: 100%; height: 100%; position: relative; }
+  .card-face {
+    position: absolute; top:0; left:0; width:100%; height:100%;
+    border-radius: 24px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .card-front {
+    background: white;
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    opacity:1; transform:scale(1); pointer-events:auto; z-index:2;
+  }
+  .card-front::before {
+    content:''; position:absolute; inset:-4px; border-radius:28px;
+    background: linear-gradient(135deg, var(--mint), var(--sky), var(--purple)); z-index:-1;
+  }
+  .card-front .deco { position:absolute; font-size:5rem; opacity:0.06; pointer-events:none; }
+  .card-front .deco.tl { top:-10px; left:10px; transform:rotate(-20deg); }
+  .card-front .deco.br { bottom:-10px; right:10px; transform:rotate(20deg); }
+  .card-back {
+    background: linear-gradient(135deg, #e8fff8 0%, #e3f4ff 100%);
+    border: 4px solid var(--mint);
+    opacity:0; transform:scale(0.92); pointer-events:none; z-index:1; padding:20px;
+  }
+  .card-inner.flipped .card-front { opacity:0; transform:scale(0.92); pointer-events:none; z-index:1; }
+  .card-inner.flipped .card-back  { opacity:1; transform:scale(1);    pointer-events:auto;  z-index:2; }
+
+  .arabic-letter {
+    font-size: clamp(5rem, 18vw, 7rem); line-height:1;
+    color: #2a7a6c; font-weight:900;
+    font-family:'Amiri',serif;
+    text-shadow: 3px 4px 0 rgba(62,207,176,0.2);
+    margin-bottom: 8px;
+  }
+  .letter-number { font-family:'Fredoka One',cursive; font-size:0.9rem; color:#a0cfc9; margin-top:6px; }
+  .tap-hint {
+    position:absolute; bottom:14px;
+    font-size:0.78rem; color:#b0d8d4; font-weight:600;
+    display:flex; align-items:center; gap:4px;
+    animation: pulse 2s infinite;
+  }
+  .back-content {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; width:100%; height:100%;
+  }
+  .back-arabic-small { font-size:2rem; color:#2a7a6c; opacity:0.4; font-family:'Amiri',serif; }
+  .back-name { font-family:'Fredoka One',cursive; font-size:2rem; color:#2a7a6c; }
+  .back-latin {
+    font-size:0.9rem; color:#5ab0a4; font-weight:700;
+    background:white; padding:4px 16px; border-radius:20px; border:2px dashed var(--mint);
+  }
+  .back-example { font-size:0.95rem; color:#f57c00; font-weight:800; text-align:center; }
+
+  /* NAV CONTROLS — circle style like screenshot */
+  .nav-row {
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+    margin-bottom: 14px;
+  }
+  .nav-circle {
+    width: 50px; height: 50px; border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    border: 2px solid rgba(255,255,255,0.6);
+    backdrop-filter: blur(4px);
+    font-size: 1.2rem; color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.18s;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  }
+  .nav-circle:hover { background: rgba(255,255,255,0.5); transform: scale(1.08); }
+  .nav-circle:active { transform: scale(0.93); }
+  .nav-counter {
+    font-family: 'Fredoka One', cursive; font-size: 1.3rem;
+    color: white; min-width: 60px; text-align: center;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .sound-row {
+    display: flex; justify-content: center; margin-top: 2px;
+  }
+  .btn-sound-circle {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.28); border: 2px solid rgba(255,255,255,0.55);
+    color: white; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.18s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.10);
+  }
+  .btn-sound-circle:hover { background: rgba(255,255,255,0.45); transform: scale(1.08); }
+  .btn-sound-circle.playing { background: rgba(255,165,0,0.6); animation: soundPulse 0.6s ease infinite alternate; }
+  @keyframes soundPulse { from{box-shadow:0 2px 10px rgba(255,165,0,0.3)} to{box-shadow:0 3px 20px rgba(255,165,0,0.8)} }
+
+  /* PREMIUM BANNER — matching screenshot */
+  .premium-banner {
+    width: 100%;
+    background: linear-gradient(135deg, #3ecfb0 0%, #4fc3f7 55%, #2a9e8a 100%);
+    border-radius: 24px;
+    padding: 22px 20px 24px;
+    text-align: center;
+    box-shadow: 0 8px 28px rgba(62,207,176,0.45);
+    margin-bottom: 24px;
+  }
+  .banner-lock { font-size: 2rem; margin-bottom: 8px; }
+  .banner-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.25rem; color: white;
+    line-height: 1.3; margin-bottom: 10px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .banner-desc {
+    font-size: 0.83rem; color: rgba(255,255,255,0.92);
+    font-weight: 600; line-height: 1.7; margin-bottom: 16px;
+  }
+  .banner-desc strong { color: white; font-weight: 800; }
+  .banner-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; color: #2a7a6c;
+    font-family: 'Fredoka One', cursive; font-size: 1rem;
+    border: none; border-radius: 50px;
+    padding: 12px 28px; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transition: all 0.18s; text-decoration: none;
+    font-weight: 700;
+    width: 100%;
+    justify-content: center;
+  }
+  .banner-btn:hover { transform: scale(1.03); box-shadow: 0 6px 22px rgba(0,0,0,0.18); }
+  .banner-btn:active { transform: scale(0.97); }
+
+  /* FOOTER — WNJ style */
+  .footer-section {
+    width: 100%; max-width: 520px;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 18px 20px;
+  }
+  .footer-divider {
+    width: 100%; height: 1px;
+    background: rgba(255,255,255,0.25); margin-bottom: 20px;
+  }
+  .footer-brand {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.45rem; margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  /* Colorful WNJ word — matching screenshot */
+  .brand-w  { color: #ff6b9d; }
+  .brand-n  { color: #ffd54f; }
+  .brand-j  { color: #4fc3f7; }
+  .brand-sp { color: white; }
+  .brand-L  { color: #81c784; }
+  .brand-i  { color: #ff7043; }
+  .brand-tt { color: #ce93d8; }
+  .brand-le { color: #ffd54f; }
+  .brand-W2 { color: #ff6b9d; }
+  .brand-o  { color: #4fc3f7; }   /* The globe emoji replaces 'o' */
+  .brand-rld{ color: white; }
+
+  .footer-copy {
+    font-size: 0.72rem; color: rgba(255,255,255,0.8);
+    font-weight: 600; margin-bottom: 2px; text-align: center;
+  }
+  .footer-ver {
+    font-size: 0.7rem; color: rgba(255,255,255,0.7);
+    font-style: italic; margin-bottom: 14px;
+  }
+  .footer-made-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 50px; padding: 8px 20px;
+    margin-bottom: 10px;
+    font-size: 0.78rem; color: rgba(255,255,255,0.9); font-weight: 600;
+  }
+  .footer-warning {
+    font-size: 0.68rem; color: rgba(255,255,255,0.65);
+    text-align: center; line-height: 1.6; max-width: 320px;
+  }
+  .footer-watermark-left {
+    align-self: flex-start;
+    margin-top: 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.72rem; color: rgba(255,255,255,0.35);
+    line-height: 1.4;
+  }
+
+  /* MUSIC BUTTON FLOATING */
+  .music-fab {
+    position: fixed; bottom: 20px; right: 18px;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #1a3a5c;
+    border: none; color: white; font-size: 1.3rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    transition: all 0.18s; z-index: 500;
+  }
+  .music-fab:hover { transform: scale(1.1); }
+  .music-fab.off { background: #2a4a6a; opacity: 0.7; }
+
+  /* ANIMATIONS */
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  @keyframes cardIn { 0%{opacity:0;transform:scale(0.88) translateY(16px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+  .card-animate { animation:cardIn 0.32s cubic-bezier(.3,1.3,.4,1); }
+
+  /* BG floating shapes */
+  .bg-shapes { position:fixed; top:0;left:0;width:100%;height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .shape { position:absolute; border-radius:50%; opacity:0.08; animation:floatShape linear infinite; }
+  @keyframes floatShape {
+    0%{transform:translateY(110vh) scale(0.8) rotate(0deg);opacity:0}
+    10%{opacity:0.10} 90%{opacity:0.10}
+    100%{transform:translateY(-10vh) scale(1.1) rotate(360deg);opacity:0}
+  }
+  main, .footer-section { position: relative; z-index: 1; }
+  .top-banner { position: sticky; top: 0; z-index: 100; }
+</style>
+</head>
+<body>
+
+<div class="bg-shapes" id="bgShapes"></div>
+
+<!-- TOP BAR -->
+<div class="top-banner">
+  <div class="top-banner-title">📖 Hijaiyah Alphabet Flashcard</div>
+  <div class="preview-badge">🔒 PREVIEW</div>
+</div>
+
+<main>
+  <!-- APP HEADER -->
+  <div class="app-header">
+    <h1>✨ Hijaiyah Flashcard ✨</h1>
+    <p>Learning Arabic letters is fun!</p>
+    <div class="stars">⭐⭐⭐</div>
+  </div>
+
+  <!-- CARD SHELL -->
+  <div class="card-shell">
+    <!-- FLASHCARD -->
+    <div class="card-area" id="cardArea" onclick="flipCard()">
+      <div class="card-inner" id="cardInner">
+        <div class="card-face card-front">
+          <span class="deco tl">🌙</span>
+          <span class="deco br">⭐</span>
+          <div class="arabic-letter" id="frontLetter">ا</div>
+          <div class="letter-number" id="frontNum">Huruf ke-1</div>
+          <div class="tap-hint">👆 Click to see the name</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-content">
+            <div class="back-arabic-small" id="backLetterSmall">ا</div>
+            <div class="back-name" id="backName">Alif</div>
+            <div class="back-latin" id="backLatin">Sound: A / Aa</div>
+            <div class="back-example" id="backExample">🌙 أَحْمَد (Ahmad – a name)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV CONTROLS -->
+    <div class="nav-row">
+      <button class="nav-circle" onclick="prevCard()">◀</button>
+      <div class="nav-counter" id="navCounter">1 / 5</div>
+      <button class="nav-circle" onclick="nextCard()">▶</button>
+    </div>
+    <div class="sound-row">
+      <button class="btn-sound-circle" id="btnSound" onclick="speakCurrent()">🔊</button>
+    </div>
+  </div>
+
+  <!-- PREMIUM BANNER -->
+  <div class="premium-banner">
+    <div class="banner-lock">🔒</div>
+    <div class="banner-title">This is a PREVIEW – 5 of 29 Hijaiyah Letters!</div>
+    <div class="banner-desc">
+      The full version includes all <strong>29 hijaiyah letters</strong> from Alif to Ya:<br>
+      ✍️ Writing Practice · 🎮 Matching Game · 🔤 Complete Harakat<br>
+      + Interactive Quiz Mode &amp; Educational Music! 🎵
+    </div>
+    <a class="banner-btn" href="https://wa.me/6289630486382" target="_blank">
+      💬 <span>Get Full Version via WhatsApp</span>
+    </a>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<div class="footer-section">
+  <div class="footer-divider"></div>
+
+  <div class="footer-brand">
+    <span class="brand-w">W</span><span class="brand-n">N</span><span class="brand-j">J</span>
+    <span class="brand-sp"> </span>
+    <span class="brand-L">L</span><span class="brand-i">i</span><span class="brand-tt">tt</span><span class="brand-le">le</span>
+    <span class="brand-sp"> </span>
+    <span class="brand-W2">W</span><span class="brand-o">🌍</span><span class="brand-rld">rld</span>
+  </div>
+
+  <div class="footer-copy">© 2026 WNJ Little W🌍rld · All Rights Reserved</div>
+  <div class="footer-ver">Hijaiyah Alphabet Flashcard — Version 3.0</div>
+
+  <div class="footer-made-pill">
+    🌍 Made with ❤️ by WNJ Little W🌍rld
+  </div>
+
+  <div class="footer-warning">
+    Reproduction or distribution without<br>
+    written permission from WNJ Little W🌍rld is prohibited.
+  </div>
+
+  <div class="footer-watermark-left">
+    WNJ Little W🌍rld<br>© 2026
+  </div>
+</div>
+
+<!-- MUSIC FAB -->
+<button class="music-fab" id="musicFab" onclick="toggleMusic()">🎵</button>
+
+<script>
+/* ── DATA (5 preview letters) ── */
+const previewLetters = [
+  {letter:'ا', name:'Alif', latin:'A / Aa', example:'🌙 أَحْمَد (Ahmad – a name)',     speak:'Alif'},
+  {letter:'ب', name:'Ba',   latin:'B',       example:'🏠 بَيْت (Bayt = House)',        speak:'Ba'},
+  {letter:'ت', name:'Ta',   latin:'T',       example:'🍎 تُفَّاح (Tuffah = Apple)',    speak:'Ta'},
+  {letter:'ث', name:'Tsa',  latin:'Ts',      example:'🐂 ثَوْر (Tsawr = Bull)',        speak:'Tsa'},
+  {letter:'ج', name:'Jim',  latin:'J',       example:'🌺 جَمِيل (Jamil = Beautiful)',  speak:'Jim'},
+];
+
+let current = 0, flipped = false;
+
+function renderCard() {
+  const h = previewLetters[current];
+  document.getElementById('frontLetter').textContent  = h.letter;
+  document.getElementById('frontNum').textContent     = `Letter #${current+1}`;
+  document.getElementById('backLetterSmall').textContent = h.letter;
+  document.getElementById('backName').textContent     = h.name;
+  document.getElementById('backLatin').textContent    = `Sound: ${h.latin}`;
+  document.getElementById('backExample').innerHTML    = h.example;
+  document.getElementById('navCounter').textContent   = `${current+1} / ${previewLetters.length}`;
+  document.getElementById('cardInner').classList.toggle('flipped', flipped);
+  const a = document.getElementById('cardArea');
+  a.classList.remove('card-animate'); void a.offsetWidth; a.classList.add('card-animate');
+}
+
+function flipCard() {
+  flipped = !flipped;
+  document.getElementById('cardInner').classList.toggle('flipped', flipped);
+  if (flipped) setTimeout(() => speakCurrent(), 300);
+}
+
+function nextCard() {
+  if (current < previewLetters.length - 1) { current++; flipped = false; renderCard(); }
+}
+function prevCard() {
+  if (current > 0) { current--; flipped = false; renderCard(); }
+}
+
+/* ── TTS ── */
+const synth = window.speechSynthesis;
+function speakCurrent() {
+  const h = previewLetters[current];
+  speakText('Letter ' + h.speak + '. ' + h.speak);
+}
+function speakText(text) {
+  if (!synth) return;
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.85; u.pitch = 1.1;
+  const btn = document.getElementById('btnSound');
+  if (btn) { btn.classList.add('playing'); u.onend = u.onerror = () => btn.classList.remove('playing'); }
+  synth.speak(u);
+}
+
+/* ── MUSIC ── */
+let musicOn = true;
+let audioCtx = null;
+let musicInterval = null;
+
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playNote(freq, start, dur) {
+  const ctx = getCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+  gain.gain.setValueAtTime(0.08, ctx.currentTime + start);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+  osc.start(ctx.currentTime + start);
+  osc.stop(ctx.currentTime + start + dur + 0.05);
+}
+
+const melody = [523, 659, 784, 659, 523, 392, 440, 523];
+let noteIdx = 0;
+function playMelody() {
+  if (!musicOn) return;
+  playNote(melody[noteIdx % melody.length], 0, 0.45);
+  noteIdx++;
+}
+
+function startMusic() {
+  if (musicInterval) return;
+  musicInterval = setInterval(playMelody, 600);
+}
+function stopMusic() {
+  clearInterval(musicInterval); musicInterval = null;
+}
+
+function toggleMusic() {
+  musicOn = !musicOn;
+  const fab = document.getElementById('musicFab');
+  if (musicOn) { fab.classList.remove('off'); fab.textContent = '🎵'; startMusic(); }
+  else { fab.classList.add('off'); fab.textContent = '🔇'; stopMusic(); }
+}
+
+// Start music on first user interaction
+document.body.addEventListener('click', function startOnce() {
+  if (musicOn) startMusic();
+  document.body.removeEventListener('click', startOnce);
+}, { once: true });
+
+/* ── BG SHAPES ── */
+function makeBgShapes() {
+  const wrap = document.getElementById('bgShapes');
+  const colors = ['#ffffff', '#ffd54f', '#ff7043', '#ce93d8', '#81c784', '#4fc3f7'];
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement('div');
+    d.className = 'shape';
+    const s = Math.random() * 40 + 15;
+    d.style.cssText = `
+      width:${s}px; height:${s}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*14+10}s;
+      animation-delay:-${Math.random()*14}s;
+    `;
+    wrap.appendChild(d);
+  }
+}
+makeBgShapes();
+renderCard();
+</script>
+</body>
+</html>
