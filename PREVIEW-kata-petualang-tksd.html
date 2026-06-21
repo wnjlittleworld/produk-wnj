@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════
+  KATA PETUALANG — Bahasa Indonesia & English (TK-SD)
+  VERSI PREVIEW — untuk promosi di website
+  © 2026 WNJ Little W🌏rld. All Rights Reserved.
+
+  Game edukasi ini, termasuk seluruh kode, desain, teks,
+  soal, dan konsep di dalamnya, adalah hak milik WNJ Little
+  W🌏rld. Dilarang menyalin, mendistribusikan ulang,
+  memodifikasi, atau mengklaim karya ini sebagai milik
+  pihak lain — sebagian maupun seluruhnya — tanpa izin
+  tertulis dari WNJ Little W🌏rld.
+  ════════════════════════════════════════════════════════
+-->
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="WNJ Little W🌏rld">
+<meta name="copyright" content="© 2026 WNJ Little W🌏rld. All Rights Reserved.">
+<title>PREVIEW — KATA PETUALANG 📚 | WNJ Little W🌏rld</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#1a0a2e;--bg2:#0d1a3a;--panel:#1e1040;
+  --indo:#ff6b35;--indo2:#ff9a6b;--indo3:#8b3010;
+  --eng:#00b4d8;--eng2:#48cae4;--eng3:#004a6a;
+  --gold:#ffd700;--gold2:#ffe66d;--gold3:#8b6914;
+  --green:#00cc66;--red:#ff4444;--red2:#ff7777;
+  --text:#f0e8ff;--text2:#7a6aaa;
+  --border:rgba(255,215,0,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;overflow-x:hidden;color:var(--text);}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 20% 20%,rgba(255,107,53,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 80%,rgba(0,180,216,0.08) 0%,transparent 50%);}
+.fstar{position:fixed;pointer-events:none;z-index:0;animation:starFloat linear infinite;opacity:0;}
+@keyframes starFloat{0%{transform:translateY(110vh) rotate(0);opacity:0;}10%{opacity:0.8;}90%{opacity:0.6;}100%{transform:translateY(-30px) rotate(360deg);opacity:0;}}
+#game{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:62px 14px 80px;}
+
+/* MUSIC TOGGLE & BRAND WATERMARK */
+.music-btn{position:fixed;top:14px;right:14px;z-index:50;width:42px;height:42px;border-radius:50%;
+  background:rgba(20,10,40,0.65);border:2px solid var(--border);color:var(--gold);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+  box-shadow:0 4px 14px rgba(0,0,0,0.35);transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);user-select:none;}
+.music-btn:hover{transform:scale(1.08);border-color:var(--gold);}
+.brand-badge{position:fixed;bottom:8px;left:0;right:0;z-index:40;text-align:center;font-size:10px;
+  color:rgba(240,232,255,0.35);font-weight:700;letter-spacing:1px;pointer-events:none;}
+.license-foot{font-size:10px;color:var(--text2);opacity:0.7;margin-top:18px;text-align:center;line-height:1.6;max-width:420px;}
+
+/* ===== PREVIEW MODE ===== */
+.watermark{position:fixed;bottom:10px;left:12px;z-index:40;font-family:'Fredoka One',cursive;
+  font-size:10px;color:rgba(240,232,255,0.22);pointer-events:none;letter-spacing:0.3px;line-height:1.5;text-align:left;}
+
+.pv-banner{background:linear-gradient(135deg,#ff6b9d,#c44dff);border-radius:20px;padding:20px 18px;
+  margin:6px 0 18px;text-align:center;box-shadow:0 8px 30px rgba(200,0,200,0.3);}
+.pv-banner-ico{font-size:2rem;margin-bottom:6px;}
+.pv-banner-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:#fff;margin-bottom:6px;}
+.pv-banner-desc{font-size:0.72rem;color:rgba(255,255,255,0.92);line-height:1.6;margin-bottom:14px;}
+.pv-banner-cta{display:inline-block;background:#fff;color:#c44dff;font-family:'Nunito',sans-serif;
+  font-weight:900;font-size:0.8rem;padding:12px 24px;border-radius:20px;text-decoration:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+
+.qcard-locked{opacity:0.5;filter:grayscale(0.5);position:relative;}
+.qcard-locked::after{content:'🔒';position:absolute;top:12px;right:12px;font-size:20px;
+  filter:none;opacity:1;}
+.qb-locked{background:linear-gradient(135deg,#777,#444)!important;color:#eee!important;}
+
+.pv-modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(10,5,20,0.8);
+  display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.pv-modal-overlay.hidden{display:none;}
+.pv-modal-card{background:linear-gradient(145deg,#241248,#1a0a2e);border:1.5px solid var(--border);
+  border-radius:22px;padding:28px 22px 22px;max-width:320px;text-align:center;
+  box-shadow:0 16px 50px rgba(0,0,0,0.5);}
+.pv-modal-ico{font-size:42px;margin-bottom:8px;}
+.pv-modal-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--gold);margin-bottom:10px;}
+.pv-modal-desc{font-size:12.5px;color:var(--text);line-height:1.6;margin-bottom:18px;}
+.pv-modal-cta{display:block;background:linear-gradient(135deg,#25D366,#1aa64a);color:#fff;
+  font-weight:800;font-size:13px;padding:12px;border-radius:14px;text-decoration:none;margin-bottom:10px;
+  box-shadow:0 4px 16px rgba(37,211,102,0.35);}
+.pv-modal-close{background:transparent;border:1px solid var(--border);color:var(--text2);
+  font-size:12px;padding:8px 16px;border-radius:12px;cursor:pointer;}
+
+.license-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);}
+.license-logo{font-family:'Fredoka One',cursive;font-size:16px;letter-spacing:0.5px;
+  background:linear-gradient(135deg,var(--gold),var(--eng2),var(--indo2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.license-text2{font-size:10px;color:var(--text2);font-weight:600;line-height:1.7;}
+.license-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:5px 12px;margin:8px 0;
+  font-size:10.5px;font-weight:800;color:var(--text2);}
+
+/* TITLE */
+#screen-title{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:96vh;text-align:center;animation:popIn 0.8s cubic-bezier(0.34,1.56,0.64,1);}
+.book-icon{font-size:80px;margin-bottom:12px;filter:drop-shadow(0 0 24px var(--gold));animation:bookBounce 2s ease-in-out infinite;}
+@keyframes bookBounce{0%,100%{transform:rotate(-5deg) scale(1);}50%{transform:rotate(5deg) scale(1.1) translateY(-10px);}}
+.kata-title{font-family:'Fredoka One',cursive;font-size:clamp(32px,8vw,62px);background:linear-gradient(135deg,var(--indo),var(--gold),var(--eng));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;letter-spacing:2px;}
+.kata-sub{font-size:14px;color:var(--text2);letter-spacing:3px;font-weight:800;text-transform:uppercase;margin-bottom:22px;}
+.lang-div{display:flex;align-items:center;gap:14px;width:300px;margin:0 auto 22px;}
+.ld-line{flex:1;height:2px;}
+.ld-line.indo{background:linear-gradient(90deg,transparent,var(--indo));}
+.ld-line.eng{background:linear-gradient(270deg,transparent,var(--eng));}
+.story-box{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;padding:16px 20px;max-width:480px;margin-bottom:28px;}
+.sb-txt{font-size:14px;color:var(--text2);line-height:1.8;font-style:italic;}
+.sb-txt em{color:var(--gold);font-style:normal;font-weight:800;}
+.hero-hdr{font-family:'Fredoka One',cursive;font-size:19px;color:var(--gold);margin-bottom:12px;}
+.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;max-width:540px;margin-bottom:24px;}
+.hcard{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px 10px;cursor:pointer;text-align:center;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);user-select:none;}
+.hcard:hover,.hcard.sel{transform:translateY(-5px) scale(1.03);border-color:var(--gold);box-shadow:0 0 22px rgba(255,215,0,0.3);}
+.hc-e{font-size:42px;display:block;margin-bottom:9px;}
+.hc-n{font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold);margin-bottom:3px;}
+.hc-s{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.hc-stat{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2);margin-bottom:3px;font-weight:700;}
+.hc-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.hc-fill{height:100%;border-radius:2px;}
+.start-btn{font-family:'Fredoka One',cursive;font-size:19px;padding:13px 50px;border:none;border-radius:30px;cursor:pointer;background:linear-gradient(135deg,var(--indo),#8800cc,var(--eng));color:white;box-shadow:0 6px 24px rgba(255,107,53,0.4);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.start-btn:hover{transform:translateY(-3px) scale(1.04);}
+.start-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+
+/* HUD */
+.hud{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:14px;padding:11px 15px;margin-bottom:11px;display:flex;align-items:center;gap:11px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+.hud-av{font-size:28px;}
+.hud-nm{font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold);}
+.hud-sk{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;}
+.hud-bars{display:flex;flex-direction:column;gap:3px;flex:1;min-width:110px;}
+.hud-br{display:flex;align-items:center;gap:5px;}
+.hud-bl{font-size:9px;color:var(--text2);width:20px;font-weight:800;}
+.hud-bt{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.hud-bf{height:100%;border-radius:3px;transition:width 0.5s;}
+.hp-f{background:linear-gradient(90deg,#8b0000,var(--red2));}
+.xp-f{background:linear-gradient(90deg,var(--gold3),var(--gold));}
+.hud-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.hud-lv{font-family:'Fredoka One',cursive;font-size:11px;background:linear-gradient(135deg,var(--gold3),var(--gold));color:#1a0a00;padding:3px 9px;border-radius:20px;}
+.hud-pts{font-size:11px;color:var(--gold);font-weight:800;}
+
+/* WORLD MAP */
+.world-panel{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:18px;padding:22px 16px;}
+.wp-title{font-family:'Fredoka One',cursive;font-size:21px;color:var(--gold);text-align:center;margin-bottom:4px;}
+.wp-sub{font-size:12px;color:var(--text2);font-weight:700;letter-spacing:2px;text-align:center;margin-bottom:18px;text-transform:uppercase;}
+.lang-tabs{display:flex;gap:9px;margin-bottom:14px;justify-content:center;}
+.lang-tab{font-family:'Fredoka One',cursive;font-size:14px;padding:7px 22px;border-radius:30px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;user-select:none;}
+.lang-tab.indo{color:var(--indo2);border-color:rgba(255,107,53,0.3);}
+.lang-tab.indo.active{background:linear-gradient(135deg,var(--indo3),rgba(139,48,16,0.5));border-color:var(--indo);box-shadow:0 0 14px rgba(255,107,53,0.3);}
+.lang-tab.eng{color:var(--eng2);border-color:rgba(0,180,216,0.3);}
+.lang-tab.eng.active{background:linear-gradient(135deg,var(--eng3),rgba(0,74,106,0.5));border-color:var(--eng);box-shadow:0 0 14px rgba(0,180,216,0.3);}
+.quest-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;}
+.qcard{border-radius:14px;padding:14px 13px;cursor:pointer;border:2px solid transparent;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);user-select:none;}
+.qcard:hover{transform:translateY(-3px);}
+.qi1{background:linear-gradient(145deg,rgba(255,107,53,0.15),rgba(139,48,16,0.25));border-color:rgba(255,107,53,0.3);}
+.qi1:hover{border-color:var(--indo);box-shadow:0 6px 20px rgba(255,107,53,0.22);}
+.qi2{background:linear-gradient(145deg,rgba(255,165,0,0.15),rgba(139,80,0,0.25));border-color:rgba(255,165,0,0.3);}
+.qi2:hover{border-color:#ffa500;box-shadow:0 6px 20px rgba(255,165,0,0.22);}
+.qi3{background:linear-gradient(145deg,rgba(220,50,50,0.15),rgba(100,10,10,0.25));border-color:rgba(220,50,50,0.3);}
+.qi3:hover{border-color:var(--red);box-shadow:0 6px 20px rgba(220,50,50,0.22);}
+.qi4{background:linear-gradient(145deg,rgba(180,0,200,0.15),rgba(80,0,100,0.25));border-color:rgba(180,0,200,0.3);}
+.qi4:hover{border-color:#cc00dd;box-shadow:0 6px 20px rgba(180,0,200,0.22);}
+.qi5{background:linear-gradient(145deg,rgba(255,80,120,0.15),rgba(120,0,50,0.25));border-color:rgba(255,80,120,0.3);}
+.qi5:hover{border-color:#ff5078;box-shadow:0 6px 20px rgba(255,80,120,0.22);}
+.qi6{background:linear-gradient(145deg,rgba(40,0,0,0.5),rgba(20,0,20,0.6));border-color:rgba(220,40,0,0.2);animation:bpulse 2.5s ease-in-out infinite;}
+@keyframes bpulse{0%,100%{border-color:rgba(220,40,0,0.2);}50%{border-color:rgba(220,40,0,0.7);box-shadow:0 0 12px rgba(200,0,0,0.2);}}
+.qe1{background:linear-gradient(145deg,rgba(0,180,216,0.15),rgba(0,74,106,0.25));border-color:rgba(0,180,216,0.3);}
+.qe1:hover{border-color:var(--eng);box-shadow:0 6px 20px rgba(0,180,216,0.22);}
+.qe2{background:linear-gradient(145deg,rgba(0,200,150,0.15),rgba(0,80,60,0.25));border-color:rgba(0,200,150,0.3);}
+.qe2:hover{border-color:#00c896;box-shadow:0 6px 20px rgba(0,200,150,0.22);}
+.qe3{background:linear-gradient(145deg,rgba(80,120,255,0.15),rgba(20,40,120,0.25));border-color:rgba(80,120,255,0.3);}
+.qe3:hover{border-color:#5078ff;box-shadow:0 6px 20px rgba(80,120,255,0.22);}
+.qe4{background:linear-gradient(145deg,rgba(0,220,255,0.15),rgba(0,80,120,0.25));border-color:rgba(0,220,255,0.3);}
+.qe4:hover{border-color:#00dcff;box-shadow:0 6px 20px rgba(0,220,255,0.22);}
+.qe5{background:linear-gradient(145deg,rgba(100,200,255,0.15),rgba(0,60,120,0.25));border-color:rgba(100,200,255,0.3);}
+.qe5:hover{border-color:#64c8ff;box-shadow:0 6px 20px rgba(100,200,255,0.22);}
+.qe6{background:linear-gradient(145deg,rgba(40,0,0,0.5),rgba(20,0,20,0.6));border-color:rgba(0,100,220,0.2);animation:bpulseeng 2.5s ease-in-out infinite;}
+@keyframes bpulseeng{0%,100%{border-color:rgba(0,100,220,0.2);}50%{border-color:rgba(0,100,220,0.7);box-shadow:0 0 12px rgba(0,100,200,0.2);}}
+.qc-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;}
+.qc-ico{font-size:26px;}
+.qc-nm{font-family:'Fredoka One',cursive;font-size:13px;color:var(--text);margin-bottom:2px;}
+.qc-lv{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.qc-desc{font-size:12px;color:var(--text2);line-height:1.4;margin-bottom:7px;}
+.qc-foot{display:flex;align-items:center;justify-content:space-between;}
+.qc-badge{font-size:9px;font-weight:800;padding:2px 9px;border-radius:20px;}
+.qb-open{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.25);}
+.qb-done{background:rgba(0,204,102,0.1);color:var(--green);border:1px solid rgba(0,204,102,0.25);}
+.qb-boss{background:rgba(220,40,0,0.1);color:#ff6040;border:1px solid rgba(220,40,0,0.25);}
+.qb-boss-eng{background:rgba(0,100,220,0.1);color:#4080ff;border:1px solid rgba(0,100,220,0.25);}
+.qc-prog{font-size:10px;color:var(--text2);font-weight:700;}
+
+/* BATTLE */
+.battle-hdr{border-radius:10px;padding:9px 14px;text-align:center;margin-bottom:11px;position:relative;}
+.bh-indo{background:linear-gradient(90deg,rgba(180,50,20,0.5),rgba(80,20,10,0.7),rgba(180,50,20,0.5));border:1px solid rgba(220,80,40,0.4);}
+.bh-eng{background:linear-gradient(90deg,rgba(0,80,160,0.5),rgba(0,30,80,0.7),rgba(0,80,160,0.5));border:1px solid rgba(0,140,220,0.4);}
+.bh-lbl{font-size:9px;letter-spacing:3px;margin-bottom:2px;font-weight:800;text-transform:uppercase;}
+.bh-lbl.indo{color:rgba(255,200,180,0.5);}
+.bh-lbl.eng{color:rgba(180,220,255,0.5);}
+.bh-nm{font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold2);}
+.bh-cnt{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text2);font-weight:700;}
+.enemy-box{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:14px;padding:14px 13px;margin-bottom:11px;display:flex;align-items:flex-start;gap:12px;position:relative;overflow:hidden;}
+.eb-fig{font-size:54px;flex-shrink:0;animation:enemyFloat 2.5s ease-in-out infinite;}
+@keyframes enemyFloat{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+.eb-nm{font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:2px;}
+.eb-nm.indo{color:var(--indo2);}
+.eb-nm.eng{color:var(--eng2);}
+.eb-tp{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.eb-taunt{font-size:13px;color:var(--text);font-style:italic;background:rgba(0,0,0,0.3);border-radius:0 8px 8px 0;padding:6px 10px;margin-bottom:7px;line-height:1.5;}
+.eb-taunt.indo{border-left:3px solid var(--indo);}
+.eb-taunt.eng{border-left:3px solid var(--eng);}
+.eb-hpl{font-size:9px;color:var(--text2);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.eb-hpt{height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.eb-hpf{height:100%;background:linear-gradient(90deg,#8b0000,#ff4444);border-radius:4px;transition:width 0.6s;}
+.q-board{background:rgba(5,3,10,0.98);border:2px solid var(--border);border-radius:14px;padding:22px 16px 16px;margin-bottom:11px;position:relative;overflow:hidden;}
+.q-board::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.qb-indo::before{background:linear-gradient(90deg,transparent,var(--indo),var(--gold),transparent);}
+.qb-eng::before{background:linear-gradient(90deg,transparent,var(--eng),var(--gold),transparent);}
+.qb-tag{display:inline-block;font-size:10px;font-weight:800;padding:2px 11px;border-radius:20px;margin-bottom:9px;letter-spacing:2px;text-transform:uppercase;}
+.qb-tag.indo{background:rgba(255,107,53,0.12);color:var(--indo2);border:1px solid rgba(255,107,53,0.25);}
+.qb-tag.eng{background:rgba(0,180,216,0.12);color:var(--eng2);border:1px solid rgba(0,180,216,0.25);}
+.qb-num{font-family:'Fredoka One',cursive;font-size:12px;color:var(--text2);letter-spacing:1px;margin-bottom:9px;}
+.qb-vis{font-size:58px;display:block;text-align:center;margin-bottom:11px;animation:visPulse 3s ease-in-out infinite;}
+@keyframes visPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(255,215,0,0.2));}50%{filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));}}
+.qb-txt{font-size:clamp(15px,3.5vw,19px);color:var(--text);line-height:1.5;font-weight:800;text-align:center;}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.opt-btn{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 10px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;color:var(--text);font-size:14px;font-weight:700;line-height:1.35;transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);text-align:left;user-select:none;}
+.opt-btn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--gold);background:rgba(255,215,0,0.06);box-shadow:0 5px 14px rgba(255,215,0,0.15);}
+.opt-letter{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold);background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);border-radius:8px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.opt-btn.correct{border-color:var(--green)!important;background:rgba(0,20,10,0.95)!important;box-shadow:0 0 18px rgba(0,204,102,0.25);}
+.opt-btn.correct .opt-letter{background:rgba(0,204,102,0.15);color:var(--green);border-color:var(--green);}
+.opt-btn.wrong{border-color:var(--red)!important;background:rgba(25,0,0,0.95)!important;}
+.opt-btn.wrong .opt-letter{color:var(--red2);border-color:var(--red);}
+.feedback{border-radius:12px;padding:13px 15px;margin-bottom:11px;display:none;animation:slideUp 0.3s ease;border-left:4px solid;}
+.feedback.show{display:block;}
+.feedback.ok{background:rgba(0,20,10,0.7);border-color:var(--green);}
+.feedback.bad{background:rgba(20,0,0,0.7);border-color:var(--red);}
+.fb-head{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:5px;display:flex;align-items:center;gap:7px;}
+.fb-head.ok{color:var(--green);}
+.fb-head.bad{color:var(--red2);}
+.fb-exp{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px;}
+.fb-tip{font-size:12px;color:var(--gold);font-weight:700;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.12);border-radius:8px;padding:6px 10px;line-height:1.5;}
+.next-btn{width:100%;padding:12px;font-family:'Fredoka One',cursive;font-size:17px;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+.next-btn.indo-btn{background:linear-gradient(135deg,var(--indo),#cc4400);color:white;}
+.next-btn.eng-btn{background:linear-gradient(135deg,var(--eng),#007a9a);color:white;}
+.next-btn:hover{transform:translateY(-2px);}
+.next-btn.hidden{display:none!important;}
+
+/* RESULT */
+#screen-result{text-align:center;padding:42px 14px;animation:popIn 0.8s cubic-bezier(0.34,1.56,0.64,1);}
+.res-panel{background:rgba(255,255,255,0.05);border:2px solid var(--border);border-radius:20px;padding:36px 22px;position:relative;overflow:hidden;}
+.res-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--indo),var(--gold),var(--eng));}
+.res-ico{font-size:78px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 26px var(--gold));animation:bookBounce 2s ease-in-out infinite;}
+.res-title{font-family:'Fredoka One',cursive;font-size:clamp(22px,6vw,40px);background:linear-gradient(135deg,var(--indo),var(--gold),var(--eng));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
+.res-sub{font-size:14px;color:var(--text2);font-weight:700;margin-bottom:22px;}
+.res-stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.rs{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:13px 16px;}
+.rs-v{font-family:'Fredoka One',cursive;font-size:26px;display:block;margin-bottom:3px;}
+.rs-l{font-size:10px;color:var(--text2);font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.res-rank{display:inline-block;margin-bottom:20px;font-family:'Fredoka One',cursive;font-size:15px;padding:9px 22px;border-radius:30px;border:2px solid var(--gold);color:var(--gold);background:rgba(255,215,0,0.08);}
+.res-btns{display:flex;flex-direction:column;gap:9px;}
+.rbtn{padding:12px;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+.rbtn:hover{transform:translateY(-2px);}
+.rbtn.rindo{background:linear-gradient(135deg,var(--indo),#cc4400);color:white;}
+.rbtn.reng{background:linear-gradient(135deg,var(--eng),#007a9a);color:white;}
+.rbtn.rmap{background:linear-gradient(135deg,var(--gold3),rgba(40,20,0,0.9));color:var(--gold);border:1px solid var(--border);}
+
+.hidden{display:none!important;}
+@keyframes popIn{0%{opacity:0;transform:scale(0.84);}70%{transform:scale(1.03);}100%{opacity:1;transform:scale(1);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.spark{position:fixed;pointer-events:none;z-index:999;animation:spFly linear forwards;}
+@keyframes spFly{0%{transform:translateY(-20px) rotate(0);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.3);border-radius:3px;}
+@media(max-width:480px){.hero-grid{grid-template-columns:1fr 1fr 1fr;}.opts-grid{grid-template-columns:1fr;}.quest-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<button class="music-btn" id="music-toggle" onclick="toggleMusic()" title="Musik">🔇</button>
+<div class="watermark">WNJ Little W🌏rld<br>© 2026 · PREVIEW</div>
+<div class="pv-modal-overlay hidden" id="pv-modal" onclick="if(event.target===this)closePreviewModal()">
+  <div class="pv-modal-card">
+    <div class="pv-modal-ico">🔒</div>
+    <div class="pv-modal-title">Quest Ini Ada di Versi Lengkap!</div>
+    <div class="pv-modal-desc">Quest <b id="pv-modal-qname">—</b> hanya tersedia di versi lengkap <b>Kata Petualang</b>, lengkap dengan 12 quest + boss battle + musik & efek suara penuh! 🎵</div>
+    <a class="pv-modal-cta" id="pv-modal-wa" href="#" target="_blank">💬 Beli Versi Lengkap via WhatsApp</a>
+    <button class="pv-modal-close" onclick="closePreviewModal()">Tutup</button>
+  </div>
+</div>
+<div id="game">
+
+<!-- TITLE -->
+<div id="screen-title">
+  <div class="book-icon">📚</div>
+  <h1 class="kata-title">KATA PETUALANG</h1>
+  <p class="kata-sub">Bahasa Indonesia & English · TK–SD</p>
+  <div class="lang-div">
+    <div class="ld-line indo"></div>
+    <span>📖</span>
+    <div class="ld-line eng"></div>
+  </div>
+  <div class="story-box">
+    <div class="sb-txt">Di <em>Negeri Kata</em>, semua buku ajaib telah dicuri!<br>
+    Selesaikan quest <em>Bahasa Indonesia</em> & <em>English</em>.<br>
+    Setiap jawaban benar = musuh dikalahkan!</div>
+  </div>
+  <div class="hero-hdr">✦ Pilih Petualangmu ✦</div>
+  <div class="hero-grid">
+    <div class="hcard" id="h0" onclick="pickHero(0)">
+      <span class="hc-e">📖</span>
+      <div class="hc-n">Penulis</div>
+      <div class="hc-s">WRITER · WISE</div>
+      <div class="hc-stat">HP<div class="hc-bar"><div class="hc-fill" style="width:60%;background:var(--red2)"></div></div>120</div>
+      <div class="hc-stat">IQ<div class="hc-bar"><div class="hc-fill" style="width:90%;background:var(--gold)"></div></div>+28%</div>
+    </div>
+    <div class="hcard" id="h1" onclick="pickHero(1)">
+      <span class="hc-e">🗡️</span>
+      <div class="hc-n">Ksatria</div>
+      <div class="hc-s">WARRIOR · STRONG</div>
+      <div class="hc-stat">HP<div class="hc-bar"><div class="hc-fill" style="width:90%;background:var(--red2)"></div></div>180</div>
+      <div class="hc-stat">IQ<div class="hc-bar"><div class="hc-fill" style="width:55%;background:var(--gold)"></div></div>+14%</div>
+    </div>
+    <div class="hcard" id="h2" onclick="pickHero(2)">
+      <span class="hc-e">🧚</span>
+      <div class="hc-n">Peri Kata</div>
+      <div class="hc-s">FAIRY · AGILE</div>
+      <div class="hc-stat">HP<div class="hc-bar"><div class="hc-fill" style="width:75%;background:var(--red2)"></div></div>150</div>
+      <div class="hc-stat">IQ<div class="hc-bar"><div class="hc-fill" style="width:75%;background:var(--gold)"></div></div>+21%</div>
+    </div>
+  </div>
+  <button class="start-btn" id="start-btn" onclick="beginGame()" disabled>📚 Mulai Petualangan!</button>
+  <div class="license-footer">
+    <div class="license-logo">WNJ Little W🌏rld</div>
+    <div class="license-text2">© 2026 WNJ Little W🌏rld · All Rights Reserved<br>Kata Petualang — Bahasa Indonesia & English (PREVIEW)</div>
+    <div class="license-badge"><span>🌏</span> Dibuat dengan ❤️ oleh WNJ Little W🌏rld</div>
+    <div class="license-text2">Dilarang memperbanyak atau mendistribusikan<br>tanpa izin tertulis dari WNJ Little W🌏rld.</div>
+  </div>
+</div>
+
+<!-- WORLD MAP -->
+<div id="screen-map" class="hidden">
+  <div class="hud">
+    <div class="hud-av" id="hud-av">📖</div>
+    <div><div class="hud-nm" id="hud-nm">Penulis</div><div class="hud-sk" id="hud-sk">WRITER · WISE</div></div>
+    <div class="hud-bars">
+      <div class="hud-br"><span class="hud-bl">HP</span><div class="hud-bt"><div class="hud-bf hp-f" id="hud-hp" style="width:100%"></div></div></div>
+      <div class="hud-br"><span class="hud-bl">XP</span><div class="hud-bt"><div class="hud-bf xp-f" id="hud-xp" style="width:0%"></div></div></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-lv" id="hud-lv">LVL 1</div>
+      <div class="hud-pts">📜 <span id="hud-pts">0</span></div>
+    </div>
+  </div>
+  <div class="world-panel">
+    <div class="wp-title">📚 Negeri Kata</div>
+    <div class="wp-sub">[ Pilih Quest Bahasa ]</div>
+    <div class="lang-tabs">
+      <div class="lang-tab indo active" id="tab-indo" onclick="switchLang('indo')">🇮🇩 Bahasa Indonesia</div>
+      <div class="lang-tab eng" id="tab-eng" onclick="switchLang('eng')">🇺🇸 English</div>
+    </div>
+    <div class="pv-banner">
+      <div class="pv-banner-ico">🔓</div>
+      <div class="pv-banner-title">Ini versi PREVIEW — 1 dari 6 quest tiap bahasa!</div>
+      <div class="pv-banner-desc">
+        Versi lengkap berisi <b>12 quest</b> dari dasar sampai BOSS Bahasa:<br>
+        🌺 Kosakata · 📖 Membaca · 🏛️ Tata Bahasa · 🌟 Sastra · ✏️ Menulis · 👑 Boss<br>
+        — di Bahasa Indonesia & English, plus musik dan efek suara penuh! 🎵
+      </div>
+      <a class="pv-banner-cta" href="https://wa.me/6289630486382?text=Halo%20kak%20WNJ%20Little%20World!%20Saya%20mau%20beli%20Kata%20Petualang%20versi%20lengkap%20%F0%9F%93%9A" target="_blank">💬 Beli Versi Lengkap via WhatsApp</a>
+    </div>
+    <div class="quest-grid" id="quest-grid"></div>
+  </div>
+</div>
+
+<!-- BATTLE -->
+<div id="screen-battle" class="hidden">
+  <div class="hud" style="padding:8px 13px;margin-bottom:9px;">
+    <div class="hud-av" id="hud2-av">📖</div>
+    <div><div class="hud-nm" id="hud2-nm">Penulis</div></div>
+    <div class="hud-bars" style="min-width:100px;">
+      <div class="hud-br"><span class="hud-bl">HP</span><div class="hud-bt"><div class="hud-bf hp-f" id="hud2-hp" style="width:100%"></div></div></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-lv" id="hud2-lv">LVL 1</div>
+      <button onclick="goWorld()" style="background:rgba(255,215,0,0.07);border:1px solid var(--border);color:var(--text2);font-size:10px;padding:3px 8px;border-radius:20px;cursor:pointer;font-weight:700;">PETA</button>
+    </div>
+  </div>
+  <div class="battle-hdr" id="battle-hdr">
+    <div class="bh-lbl" id="bh-lbl">⚔ PERTEMPURAN KATA</div>
+    <div class="bh-nm" id="bh-nm">Quest</div>
+    <div class="bh-cnt" id="bh-cnt">1/6</div>
+  </div>
+  <div class="enemy-box">
+    <div class="eb-fig" id="eb-fig">👹</div>
+    <div>
+      <div class="eb-nm" id="eb-nm">Si Pencuri Kata</div>
+      <div class="eb-tp" id="eb-tp">VILLAIN</div>
+      <div class="eb-taunt" id="eb-taunt">"Kamu tidak bisa mengalahkanku!"</div>
+      <div class="eb-hpl">Nyawa Musuh</div>
+      <div class="eb-hpt"><div class="eb-hpf" id="eb-hpf" style="width:100%"></div></div>
+    </div>
+  </div>
+  <div class="q-board" id="q-board">
+    <span class="qb-tag" id="qb-tag">BAHASA</span>
+    <div class="qb-num" id="qb-num">Soal 1</div>
+    <span class="qb-vis" id="qb-vis">📚</span>
+    <div class="qb-txt" id="qb-txt">Loading...</div>
+  </div>
+  <div class="opts-grid" id="opts-grid"></div>
+  <div class="feedback" id="feedback">
+    <div class="fb-head" id="fb-head"></div>
+    <div class="fb-exp" id="fb-exp"></div>
+    <div class="fb-tip" id="fb-tip"></div>
+  </div>
+  <button class="next-btn hidden" id="next-btn" onclick="nextQ()">Lanjut ➡️</button>
+</div>
+
+<!-- RESULT -->
+<div id="screen-result" class="hidden">
+  <div class="res-panel">
+    <span class="res-ico" id="res-ico">🏆</span>
+    <div class="res-title" id="res-title">Quest Selesai!</div>
+    <div class="res-sub" id="res-sub">Hebat sekali!</div>
+    <div class="res-stats">
+      <div class="rs"><span class="rs-v" id="rsv-b" style="color:var(--green)">0</span><span class="rs-l">Benar</span></div>
+      <div class="rs"><span class="rs-v" id="rsv-s" style="color:var(--gold)">0</span><span class="rs-l">Skor</span></div>
+      <div class="rs"><span class="rs-v" id="rsv-r" style="color:var(--eng)">B</span><span class="rs-l">Rank</span></div>
+    </div>
+    <div class="res-rank" id="res-rank">📖 Pelajar Bahasa</div>
+    <div class="res-btns">
+      <button class="rbtn" id="rbtn-retry" onclick="retryQuest()">🔄 Ulangi Quest!</button>
+      <button class="rbtn rmap" onclick="goWorld()">🗺️ Peta Kata</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  const e=['📚','✨','⭐','📖','🌟','✏️','🎯','💫','🔤','🌈'];
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');el.className='fstar';
+    el.textContent=e[Math.floor(Math.random()*e.length)];
+    el.style.left=Math.random()*100+'vw';
+    const d=8+Math.random()*14;
+    el.style.animationDuration=d+'s';el.style.animationDelay=(Math.random()*d)+'s';
+    el.style.fontSize=(14+Math.random()*14)+'px';
+    document.body.appendChild(el);
+  }
+})();
+
+/* ===== COPYRIGHT NOTICE ===== */
+console.log('%cKATA PETUALANG','font-size:18px;font-weight:bold;color:#ffd700;');
+console.log('© 2026 WNJ Little W🌍rld. All Rights Reserved. Dilarang menyalin atau mendistribusikan ulang game ini tanpa izin.');
+
+/* ===== MUSIC ENGINE (musik latar ceria & petualangan, dibuat dengan Web Audio API, tanpa file luar) ===== */
+const Music=(function(){
+  let ctx=null,master=null,sfxGain=null,enabled=false,timer=null;
+  const N={C3:130.81,D3:146.83,E3:164.81,F3:174.61,G3:196.00,A3:220.00,B3:246.94,
+    C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392.00,A4:440.00,B4:493.88,
+    C5:523.25,D5:587.33,E5:659.25,F5:698.46,G5:783.99,A5:880.00,B5:987.77,
+    C6:1046.50,D6:1174.66};
+  const EI=0.165; // panjang not seperdelapan -> tempo ceria & bersemangat
+  // melodi: arpeggio naik-turun riang (C-F-G-C), terasa seperti petualangan
+  const melody=[
+    ['C5',1],['E5',1],['G5',1],['E5',1],['C5',1],['E5',1],['G5',1],['E5',1],
+    ['F5',1],['A5',1],['C6',1],['A5',1],['F5',1],['A5',1],['C6',1],['A5',1],
+    ['G5',1],['B5',1],['D6',1],['B5',1],['G5',1],['B5',1],['D6',1],['B5',1],
+    ['C6',2],['G5',1],['E5',1],['C5',2],['G4',2],
+  ];
+  const bass=[
+    ['C3',2],['G3',2],['C3',2],['G3',2],
+    ['F3',2],['C3',2],['F3',2],['C3',2],
+    ['G3',2],['D3',2],['G3',2],['D3',2],
+    ['C3',4],['G3',4],
+  ];
+  function ensureCtx(){
+    if(!ctx){
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+      sfxGain=ctx.createGain();sfxGain.gain.value=0.9;sfxGain.connect(ctx.destination);
+    }
+    if(ctx.state==='suspended')ctx.resume();
+  }
+  function tone(freq,start,dur,type,peak){
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(master);
+    const a=0.012,r=Math.min(dur*0.35,0.1);
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.linearRampToValueAtTime(peak,start+a);
+    g.gain.setValueAtTime(peak,Math.max(start+a,start+dur-r));
+    g.gain.linearRampToValueAtTime(0.0001,start+dur);
+    o.start(start);o.stop(start+dur+0.02);
+  }
+  function scheduleLoop(){
+    const startAt=ctx.currentTime+0.05;
+    let t=startAt;
+    melody.forEach(([note,len])=>{tone(N[note],t,len*EI*0.9,'square',0.06);t+=len*EI;});
+    let tb=startAt;
+    bass.forEach(([note,len])=>{tone(N[note],tb,len*EI*0.95,'triangle',0.075);tb+=len*EI;});
+    const totalBeats=melody.reduce((s,[,l])=>s+l,0);
+    timer=setTimeout(scheduleLoop,totalBeats*EI*1000-40);
+  }
+  function start(){
+    ensureCtx();enabled=true;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0.8,ctx.currentTime+0.5);
+    if(!timer)scheduleLoop();
+  }
+  function stop(){
+    enabled=false;
+    if(ctx){master.gain.cancelScheduledValues(ctx.currentTime);master.gain.linearRampToValueAtTime(0,ctx.currentTime+0.25);}
+    if(timer){clearTimeout(timer);timer=null;}
+  }
+  function sfxTone(freq,start,dur,type,peak){
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(sfxGain);
+    const a=0.006,r=Math.min(dur*0.4,0.07);
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.linearRampToValueAtTime(peak,start+a);
+    g.gain.setValueAtTime(peak,Math.max(start+a,start+dur-r));
+    g.gain.linearRampToValueAtTime(0.0001,start+dur);
+    o.start(start);o.stop(start+dur+0.02);
+  }
+  function playCorrect(){
+    ensureCtx();
+    const seq=[['C5',0.09],['E5',0.09],['G5',0.09],['C6',0.22]];
+    let t=ctx.currentTime;
+    seq.forEach(([note,dur])=>{sfxTone(N[note],t,dur,'square',0.18);t+=dur*0.82;});
+  }
+  function playWrong(){
+    ensureCtx();
+    const t=ctx.currentTime;
+    sfxTone(587.33,t,0.14,'square',0.26);
+    sfxTone(391.99,t+0.13,0.26,'square',0.26);
+  }
+  function toggle(){enabled?stop():start();return enabled;}
+  return {toggle,isEnabled:()=>enabled,playCorrect,playWrong};
+})();
+
+function toggleMusic(){
+  const on=Music.toggle();
+  document.getElementById('music-toggle').textContent=on?'🔊':'🔇';
+}
+
+function beginGame(){
+  if(!Music.isEnabled())toggleMusic();
+  goWorld();
+}
+
+const HEROES=[
+  {e:'📖',n:'Penulis',sk:'WRITER · WISE',hp:120,iq:0.28,pts:80},
+  {e:'🗡️',n:'Ksatria',sk:'WARRIOR · STRONG',hp:180,iq:0.14,pts:60},
+  {e:'🧚',n:'Peri Kata',sk:'FAIRY · AGILE',hp:150,iq:0.21,pts:100},
+];
+const RANKS=['PEMULA','PELAJAR','SISWA CERDAS','AHLI KATA','MASTER BAHASA'];
+
+const QUESTS={
+  // ===== BAHASA INDONESIA =====
+  kosakata:{lang:'indo',name:'🌺 Hutan Kosakata',cls:'qi1',ico:'🌺',lv:'TK-SD KLS 1-3 · MUDAH',desc:'Kenali kata-kata dasar Bahasa Indonesia!',tag:'KOSAKATA',
+    enemies:[{e:'👹',n:'Si Salah Kata'},{e:'🐛',n:'Ulat Bingung'},{e:'🦕',n:'Dino Lupa'},{e:'👺',n:'Raja Salah'},{e:'🐙',n:'Gurita Kacau'},{e:'💀',n:'Boss Kata'}],
+    questions:[
+      {v:'🍎',q:'Apa nama buah berwarna merah yang manis ini? 🍎',opts:['Apel','Jeruk','Mangga','Pisang'],ans:0,exp:'Buah berwarna merah manis ini adalah APEL! Dalam bahasa Inggris disebut "apple".',tip:'💡 Apel mengandung vitamin C yang baik untuk kesehatan tubuh kita!'},
+      {v:'🌊',q:'Apa lawan kata (antonim) dari kata "naik"?',opts:['Turun','Pergi','Jalan','Lari'],ans:0,exp:'"TURUN" adalah lawan kata dari "naik". Lawan kata disebut juga ANTONIM!',tip:'💡 Naik ↔ Turun, Panas ↔ Dingin, Besar ↔ Kecil. Belajar antonim berpasangan lebih mudah!'},
+      {v:'📚',q:'Manakah yang termasuk kata benda (nomina)?',opts:['Berlari','Buku','Cantik','Dengan'],ans:1,exp:'"BUKU" adalah kata benda karena menyatakan nama sebuah benda.',tip:'💡 Kata benda = menyatakan nama orang, tempat, atau benda. Contoh: meja, guru, sekolah!'},
+      {v:'🌈',q:'Apa warna langit saat cuaca cerah?',opts:['Merah','Kuning','Biru','Hijau'],ans:2,exp:'Langit cerah berwarna BIRU karena cahaya matahari dihamburkan oleh atmosfer Bumi!',tip:'💡 Warna dasar: merah, kuning, biru. Campuran: merah+kuning=jingga, biru+kuning=hijau!'},
+      {v:'🎭',q:'Kata "berlari" termasuk jenis kata apa?',opts:['Kata benda','Kata kerja','Kata sifat','Kata keterangan'],ans:1,exp:'"BERLARI" adalah kata kerja karena menyatakan kegiatan/tindakan yang dilakukan.',tip:'💡 Kata kerja sering berawalan me-, ber-, di-. Berlari = ber+lari!'},
+      {v:'🌟',q:'Apa persamaan kata (sinonim) dari "senang"?',opts:['Sedih','Gembira','Marah','Takut'],ans:1,exp:'"GEMBIRA" adalah sinonim dari senang karena keduanya berarti perasaan bahagia!',tip:'💡 Sinonim = kata yang maknanya sama/mirip. Senang = gembira = bahagia = riang!'},
+    ]
+  },
+  membaca:{lang:'indo',name:'📖 Kastil Membaca',cls:'qi2',ico:'📖',lv:'SD KLS 2-4 · SEDANG',desc:'Pahami teks dan temukan informasi penting!',tag:'MEMBACA',
+    enemies:[{e:'📜',n:'Gulungan Jahat'},{e:'👓',n:'Kacamata Rusak'},{e:'🔮',n:'Bola Bingung'},{e:'🌀',n:'Pusaran Kacau'},{e:'💀',n:'Lord Membaca'},{e:'☠️',n:'Hantu Paragraf'}],
+    questions:[
+      {v:'📖',q:'Ide pokok paragraf biasanya terdapat di?',opts:['Tengah paragraf saja','Awal, akhir, atau keduanya','Selalu di akhir','Tidak ada ide pokok'],ans:1,exp:'Ide pokok bisa di awal (paragraf deduktif), akhir (induktif), atau awal-akhir (campuran)!',tip:'💡 Cari kalimat paling "umum" yang diperinci kalimat-kalimat lain = itulah ide pokok!'},
+      {v:'📝',q:'Apa tujuan utama membaca intensif?',opts:['Membaca cepat untuk info umum','Membaca cermat untuk memahami isi teks secara detail','Membaca sambil lalu','Mencatat semua kata'],ans:1,exp:'Membaca intensif = membaca cermat untuk memahami DETAIL isi teks, termasuk makna tersirat.',tip:'💡 Intensif = satu teks, dipahami mendalam. Ekstensif = banyak teks, info umum!'},
+      {v:'📰',q:'Kalimat utama berbeda dari kalimat penjelas karena?',opts:['Kalimat utama selalu lebih panjang','Kalimat utama berisi ide pokok; kalimat penjelas merinci ide pokok','Kalimat penjelas tidak penting','Keduanya sama'],ans:1,exp:'Kalimat utama = berisi gagasan pokok. Kalimat penjelas = menjelaskan dan merinci kalimat utama.',tip:'💡 Bayangkan kalimat utama = pohon, kalimat penjelas = cabang yang mendukung pohon!'},
+      {v:'📖',q:'Paragraf argumentatif bertujuan untuk?',opts:['Menceritakan kejadian','Meyakinkan pembaca dengan alasan dan bukti','Menggambarkan suasana','Memberikan petunjuk'],ans:1,exp:'Paragraf argumentatif = meyakinkan pembaca dengan argumen, alasan, dan bukti/data.',tip:'💡 Jenis paragraf: narasi (cerita), deskripsi (gambaran), eksposisi (penjelasan), argumentasi (meyakinkan)!'},
+      {v:'📚',q:'Makna tersirat dalam sebuah teks adalah?',opts:['Makna yang langsung tertulis','Makna yang tidak langsung, perlu dipahami dari konteks','Judul teks','Kata-kata sulit'],ans:1,exp:'Makna tersirat = makna tersembunyi yang perlu dibaca "antara baris".',tip:'💡 Tersurat = jelas tertulis. Tersirat = tersembunyi, perlu membaca lebih dalam!'},
+      {v:'📝',q:'Ringkasan yang baik harus?',opts:['Lebih panjang dari teks asli','Mengandung semua ide pokok dengan bahasa sendiri, lebih singkat dari aslinya','Berisi semua detail','Sama persis dengan teks asli'],ans:1,exp:'Ringkasan yang baik: lebih singkat, berisi semua ide pokok, menggunakan bahasa sendiri.',tip:'💡 Langkah meringkas: baca → temukan ide pokok tiap paragraf → tulis ulang dengan kata sendiri!'},
+    ]
+  },
+  tatabahasa:{lang:'indo',name:'🏛️ Benteng Tata Bahasa',cls:'qi3',ico:'🏛️',lv:'SD KLS 3-5 · SEDANG',desc:'Kuasai aturan Bahasa Indonesia yang benar!',tag:'TATA BAHASA',
+    enemies:[{e:'✏️',n:'Pensil Bengkok'},{e:'📐',n:'Penggaris Salah'},{e:'🗂️',n:'Berkas Kacau'},{e:'📌',n:'Pin Rusak'},{e:'💣',n:'Bom Tata Bahasa'},{e:'👑',n:'Raja Salah Tata'}],
+    questions:[
+      {v:'✏️',q:'Penulisan yang benar menurut EYD adalah?',opts:['di meja (kata depan, terpisah)','dimeja','Di meja','dimEja'],ans:0,exp:'"DI" kata depan (tempat) ditulis TERPISAH: "di meja". "Di-" awalan (verba pasif) SERANGKAI: "dimakan".',tip:'💡 Trik: "di" bisa diganti "dari/ke"? → kata depan (terpisah). Tidak bisa? → awalan (serangkai)!'},
+      {v:'📝',q:'Kalimat efektif adalah kalimat yang?',opts:['Sangat panjang dan detail','Singkat, jelas, menyampaikan pesan tepat tanpa kata mubazir','Menggunakan kata-kata sulit','Memiliki banyak anak kalimat'],ans:1,exp:'Kalimat efektif: hemat kata, jelas maknanya, tidak ambigu, sesuai kaidah bahasa.',tip:'💡 Kata mubazir: "sangat sekali" → cukup "sangat". "Para hadirin sekalian" → cukup "Para hadirin"!'},
+      {v:'📌',q:'Penulisan angka yang benar dalam teks formal?',opts:['Saya punya 3 anak','Saya punya tiga anak','Saya punya 3 (tiga) anak','Semuanya benar'],ans:1,exp:'Dalam teks formal, angka 1-9 biasanya ditulis dengan huruf (satu, dua,..., sembilan).',tip:'💡 Angka kecil (1-9) pakai huruf dalam kalimat. Tabel/daftar boleh pakai angka!'},
+      {v:'🔤',q:'Imbuhan "me-" berubah menjadi "menge-" jika diikuti kata yang suku katanya?',opts:['Lebih dari 2 suku kata','Hanya satu suku kata (kata dasar bersuku satu)','Dimulai vokal','Dimulai konsonan'],ans:1,exp:'"Menge-" untuk kata dasar satu suku kata: menge+cat=mengecat, menge+las=mengelas.',tip:'💡 Cat (1 suku) → mengecat. Sapu (2 suku) → menyapu. Tulis (2 suku) → menulis!'},
+      {v:'✏️',q:'Penggunaan tanda koma yang benar?',opts:['Saya suka makan, tidur dan bermain','Saya suka makan, tidur, dan bermain','Saya, suka makan tidur dan bermain','Saya suka makan tidur, dan bermain'],ans:1,exp:'Tanda koma memisahkan unsur perincian. Sebelum "dan" pada item terakhir juga diberi koma.',tip:'💡 Makan, tidur, dan bermain (3 item) → koma setelah tiap item kecuali yang terakhir!'},
+      {v:'📚',q:'Kalimat pasif dibentuk dari kalimat aktif dengan cara?',opts:['Menghapus subjek','Memindahkan objek ke posisi subjek dan menggunakan imbuhan di-/ter-','Menambah kata "tidak"','Mengubah kata kerja menjadi kata benda'],ans:1,exp:'Aktif: Ani memakan apel (S-P-O). Pasif: Apel dimakan Ani (O→S, pakai di-).',tip:'💡 Aktif = subjek melakukan. Pasif = subjek dikenai tindakan (di-, ter-)!'},
+    ]
+  },
+  sastra:{lang:'indo',name:'🌟 Istana Sastra',cls:'qi4',ico:'🌟',lv:'SD KLS 4-6 · SULIT',desc:'Jelajahi dunia dongeng, puisi, dan sastra!',tag:'SASTRA',
+    enemies:[{e:'🏰',n:'Raja Tanpa Cerita'},{e:'🐉',n:'Naga Dongeng'},{e:'📜',n:'Gulungan Rahasia'},{e:'🦄',n:'Kuda Ajaib'},{e:'🌙',n:'Bulan Misterius'},{e:'👸',n:'Putri Bahasa'}],
+    questions:[
+      {v:'📚',q:'Fabel adalah jenis cerita yang?',opts:['Menceritakan pahlawan nyata','Berisi tokoh binatang yang berperilaku seperti manusia dan mengandung pesan moral','Tentang dewa-dewi','Tentang kejadian sejarah'],ans:1,exp:'Fabel = cerita tokoh binatang berperilaku seperti manusia, selalu mengandung PESAN MORAL.',tip:'💡 Fabel terkenal: Kancil dan Buaya, Singa dan Tikus, Kelinci dan Kura-kura!'},
+      {v:'🦁',q:'Unsur intrinsik karya sastra meliputi?',opts:['Pengarang, penerbit, tahun terbit','Tema, tokoh, alur, latar, sudut pandang, amanat, dan gaya bahasa','Harga buku, jumlah halaman','Jenis kertas dan sampul'],ans:1,exp:'Unsur intrinsik = unsur DALAM karya: tema, tokoh, alur, latar, sudut pandang, amanat, gaya bahasa.',tip:'💡 Intrinsik = dari dalam karya. Ekstrinsik = dari luar (pengarang, budaya). Keduanya penting!'},
+      {v:'🌸',q:'Pantun memiliki ciri khas?',opts:['Bebas tanpa aturan','Baris 1-2 sampiran, baris 3-4 isi; bersajak a-b-a-b','Hanya mengungkapkan perasaan','Tidak menggunakan rima'],ans:1,exp:'Pantun: 4 baris/bait, baris 1-2 = sampiran, baris 3-4 = isi, rima akhir a-b-a-b.',tip:'💡 Sampiran = tidak bermakna tapi bersajak dengan isi. Keunikan pantun sebagai puisi lama Melayu!'},
+      {v:'📖',q:'Tema cerita berbeda dari amanat karena?',opts:['Tema lebih panjang','Tema = inti persoalan yang dibahas; amanat = pesan moral yang ingin disampaikan','Amanat lebih penting','Keduanya sama'],ans:1,exp:'Tema = TOPIK yang dibahas. Amanat = PESAN/PELAJARAN yang disampaikan pengarang.',tip:'💡 Tema dijawab: "tentang apa?" Amanat dijawab: "apa pelajarannya?"!'},
+      {v:'🌟',q:'Sudut pandang orang pertama ditandai dengan?',opts:['Penggunaan kata "dia" dan "ia"','Penggunaan kata "aku", "saya" — tokoh menceritakan dirinya sendiri','Tidak ada kata ganti','Penggunaan nama tokoh saja'],ans:1,exp:'Sudut pandang orang pertama: narator = tokoh dalam cerita, menggunakan "aku/saya".',tip:'💡 PoV 1 = "aku" merasakan langsung. PoV 3 = narator di luar, menggunakan "dia/ia/nama"!'},
+      {v:'📜',q:'Manakah contoh majas hiperbola?',opts:['"Matanya seperti bintang"','Perutnya sebesar bola','Air matanya mengalir sederas hujan lebat','Gadis itu berjalan bagaikan putri raja'],ans:2,exp:'Hiperbola = melebih-lebihkan. "Air matanya mengalir sederas hujan lebat" = sangat berlebihan.',tip:'💡 Hiperbola = berlebihan. Simile = seperti/bagai. Personifikasi = benda seperti manusia!'},
+    ]
+  },
+  menulis:{lang:'indo',name:'🖊️ Menara Menulis',cls:'qi5',ico:'🖊️',lv:'SD KLS 5-6 · SULIT',desc:'Kuasai seni menulis karangan dan puisi!',tag:'MENULIS',
+    enemies:[{e:'🖊️',n:'Pena Beku'},{e:'📄',n:'Kertas Kosong'},{e:'🌀',n:'Ide Hilang'},{e:'🔮',n:'Inspirasi Bingung'},{e:'💨',n:'Angin Kata'},{e:'👑',n:'Raja Tanpa Kata'}],
+    questions:[
+      {v:'🖊️',q:'Struktur teks narasi yang benar adalah?',opts:['Orientasi → Komplikasi → Resolusi','Pendapat → Argumen → Kesimpulan','Pernyataan → Deskripsi → Penutup','Deskripsi → Masalah → Solusi'],ans:0,exp:'Teks narasi: Orientasi (pengenalan), Komplikasi (konflik/masalah), Resolusi (penyelesaian).',tip:'💡 Orientasi = awal. Komplikasi = konflik. Resolusi = akhir/penyelesaian. Lengkap!'},
+      {v:'📝',q:'Langkah pertama sebelum menulis karangan yang baik?',opts:['Langsung menulis saja','Menentukan tema dan membuat kerangka karangan (outline)','Menyalin karangan orang lain','Menulis judul terlebih dahulu'],ans:1,exp:'Sebelum menulis: tentukan tema → buat kerangka → kembangkan → revisi!',tip:'💡 Kerangka = "peta jalan" tulisan agar tidak berputar-putar dan tetap fokus!'},
+      {v:'🖊️',q:'Majas personifikasi adalah?',opts:['Membandingkan dua hal menggunakan "seperti"','Menggambarkan benda mati seolah-olah memiliki sifat dan kemampuan manusia','Berlebihan dalam menggambarkan sesuatu','Mengulang kata untuk penekanan'],ans:1,exp:'Personifikasi: memberi sifat manusia pada benda mati. Contoh: "Angin berbisik mesra".',tip:'💡 Personifikasi: benda = manusia. Simile: seperti/bagai. Metafora: langsung menyamakan!'},
+      {v:'📖',q:'Perbedaan teks eksposisi dan teks deskripsi?',opts:['Eksposisi lebih panjang','Eksposisi menjelaskan informasi; deskripsi melukiskan suasana secara detail sensoris','Deskripsi lebih akurat','Keduanya sama'],ans:1,exp:'Eksposisi = menjelaskan topik secara informatif. Deskripsi = melukiskan agar pembaca "merasakan".',tip:'💡 Eksposisi = "menjelaskan". Deskripsi = "melukiskan dengan kata-kata"!'},
+      {v:'🌸',q:'Ciri puisi lama (pantun) yang membedakan dari puisi modern?',opts:['Lebih indah bahasanya','Terikat aturan: 4 baris, sampiran, isi, dan rima a-b-a-b','Lebih bebas','Tidak ada aturan'],ans:1,exp:'Pantun terikat aturan ketat: 4 baris, baris 1-2 sampiran, baris 3-4 isi, rima a-b-a-b.',tip:'💡 Puisi modern lebih bebas tidak terikat aturan rima dan jumlah baris seperti pantun!'},
+      {v:'🌟',q:'Karangan yang menarik memiliki ciri utama?',opts:['Menggunakan kata-kata sulit','Ide orisinal, dikembangkan runtut, bahasa hidup dan variatif','Menulis sebanyak mungkin kata','Menggunakan banyak kutipan'],ans:1,exp:'Karangan menarik: ide segar + pengembangan logis + diksi tepat + kalimat efektif.',tip:'💡 DIKSI = pilihan kata yang tepat. Kata yang tepat membuat tulisan hidup dan berkesan!'},
+    ]
+  },
+  bossIndo:{lang:'indo',name:'👑 BOSS: Mahkota Bahasa',cls:'qi6',ico:'👑',lv:'SEMUA · FINAL INDONESIA',desc:'Ujian terakhir Bahasa Indonesia!',tag:'FINAL INDONESIA',
+    enemies:[{e:'👑',n:'RAJA BAHASA'},{e:'💀',n:'OMEGA KATA'},{e:'🌑',n:'KEGELAPAN MAKNA'},{e:'🔥',n:'API KOSA KATA'},{e:'⚡',n:'PETIR EYD'},{e:'☠️',n:'LORD SASTRA'}],
+    questions:[
+      {v:'🇮🇩',q:'Bahasa Indonesia ditetapkan sebagai bahasa nasional pada?',opts:['17 Agustus 1945','28 Oktober 1928 (Sumpah Pemuda)','1 Juni 1945','20 Mei 1908'],ans:1,exp:'Bahasa Indonesia diresmikan sebagai bahasa nasional dalam Sumpah Pemuda 28 Oktober 1928!',tip:'💡 Bahasa Indonesia berasal dari Bahasa Melayu Riau yang digunakan sebagai lingua franca Nusantara!'},
+      {v:'📝',q:'KBBI singkatan dari?',opts:['Kumpulan Buku Bahasa Indonesia','Kamus Besar Bahasa Indonesia','Karya Besar Bahasa Indonesia','Kajian Bahasa Bangsa Indonesia'],ans:1,exp:'KBBI = Kamus Besar Bahasa Indonesia, diterbitkan oleh Badan Pengembangan Bahasa.',tip:'💡 KBBI bisa diakses online di kbbi.kemdikbud.go.id — gratis dan selalu diperbarui!'},
+      {v:'✏️',q:'Huruf kapital TIDAK digunakan pada?',opts:['Nama orang (Budi, Siti)','Awal kalimat','Nama jabatan yang tidak diikuti nama orang (presiden, gubernur)','Nama hari (Senin, Selasa)'],ans:2,exp:'Nama jabatan ditulis huruf kecil jika tidak diikuti nama: "presiden bertugas...". Tapi "Presiden Jokowi" → kapital.',tip:'💡 Huruf kapital: awal kalimat, nama orang/tempat/hari/bulan, gelar diikuti nama!'},
+      {v:'📖',q:'Teks prosedur adalah jenis teks yang bertujuan?',opts:['Menceritakan pengalaman','Memberikan langkah-langkah cara melakukan sesuatu secara berurutan','Meyakinkan pembaca','Menggambarkan suatu benda'],ans:1,exp:'Teks prosedur = teks langkah-langkah cara melakukan sesuatu. Contoh: resep masakan.',tip:'💡 Teks prosedur selalu menggunakan kata perintah: "masukkan", "aduk", "tambahkan"!'},
+      {v:'🌟',q:'Manakah kalimat Bahasa Indonesia BAKU yang benar?',opts:['Saya udah makan tadi','Kami telah menyelesaikan tugas tersebut dengan baik','Gue udah beres ngurusin itu','Mereka lagi rapat di kantor'],ans:1,exp:'"Kami telah menyelesaikan tugas tersebut" = bahasa baku: kata baku dan struktur kalimat benar.',tip:'💡 Bahasa baku = sesuai KBBI, digunakan dalam situasi formal: pidato, tulisan resmi, ujian!'},
+      {v:'📚',q:'Struktur surat resmi yang benar adalah?',opts:['Salam pembuka → isi → salam penutup','Kop surat → nomor → perihal → alamat → salam → isi → penutup → tanda tangan','Isi langsung tanpa kop','Tanda tangan dulu baru isi'],ans:1,exp:'Surat resmi: kop → nomor → perihal → tanggal → alamat tujuan → salam pembuka → isi → penutup → tanda tangan.',tip:'💡 Surat resmi berbeda dari surat pribadi: ada kop, nomor, perihal, dan format yang baku!'},
+    ]
+  },
+
+  // ===== ENGLISH QUESTS =====
+  vocabulary:{lang:'eng',name:'🌺 Vocabulary Garden',cls:'qe1',ico:'🌺',lv:'TK-SD Grade 1-3 · EASY',desc:'Learn basic English words and meanings!',tag:'VOCABULARY',
+    enemies:[{e:'🌵',n:'Word Thief'},{e:'🦊',n:'Tricky Fox'},{e:'🐺',n:'Confusion Wolf'},{e:'🧟',n:'Word Zombie'},{e:'👻',n:'Word Ghost'},{e:'💀',n:'Vocab Boss'}],
+    questions:[
+      {v:'🍎',q:'What is the English word for "apel" (the red fruit)?',opts:['Apple','Orange','Mango','Banana'],ans:0,exp:'"Apple" is the English word for "apel" — the sweet red fruit!',tip:'💡 Tip: "An apple a day keeps the doctor away!" — famous English proverb!'},
+      {v:'🏠',q:'Choose the correct OPPOSITE of "big".',opts:['Large','Huge','Small','Tall'],ans:2,exp:'"Small" is the opposite (antonym) of "big". Learn antonyms in pairs!',tip:'💡 Tip: Big ↔ Small, Hot ↔ Cold, Fast ↔ Slow, Happy ↔ Sad!'},
+      {v:'📅',q:'Which month comes AFTER July?',opts:['June','August','September','October'],ans:1,exp:'"August" comes after July. July is month 7, August is month 8!',tip:'💡 Tip: Jan-Feb-Mar-Apr-May-Jun-Jul-AUG-Sep-Oct-Nov-Dec. 12 months in a year!'},
+      {v:'🐕',q:'What is the plural of "dog"?',opts:['Dogies','Dogs','Doges','Dogz'],ans:1,exp:'The plural of "dog" is "dogs". Most nouns add "-s" to make them plural!',tip:'💡 Tip: Regular plurals add -s or -es. Irregular: mouse→mice, child→children!'},
+      {v:'🌟',q:'Which word means "very happy"?',opts:['Sad','Angry','Delighted','Tired'],ans:2,exp:'"Delighted" means extremely happy and pleased — stronger than just "happy"!',tip:'💡 Tip: Happy → Cheerful → Joyful → Delighted → Ecstatic (getting stronger)!'},
+      {v:'🎨',q:'What color do you get when you mix red and blue?',opts:['Green','Yellow','Purple','Orange'],ans:2,exp:'Red + Blue = PURPLE! Color mixing is fun to learn!',tip:'💡 Tip: Red+Yellow=Orange, Blue+Yellow=Green, Red+Blue=Purple. Primary colors!'},
+    ]
+  },
+  grammar:{lang:'eng',name:'📖 Grammar Castle',cls:'qe2',ico:'📖',lv:'SD Grade 2-4 · MEDIUM',desc:'Master English grammar rules!',tag:'GRAMMAR',
+    enemies:[{e:'📐',n:'Grammar Monster'},{e:'🌀',n:'Tense Twister'},{e:'💣',n:'Sentence Bomb'},{e:'👺',n:'Rule Breaker'},{e:'🔮',n:'Grammar Ghost'},{e:'💀',n:'Grammar Lord'}],
+    questions:[
+      {v:'📝',q:'Choose the correct verb: "She ___ to school every day."',opts:['go','goes','going','gone'],ans:1,exp:'"She GOES" — with he/she/it, add -s/-es in simple present tense!',tip:'💡 Tip: I/You/We/They + verb. He/She/It + verb+s/es. (She runs, He plays)'},
+      {v:'⏰',q:'What tense is: "They were playing football yesterday."?',opts:['Simple Past','Past Continuous','Present Perfect','Future Simple'],ans:1,exp:'Past Continuous: was/were + verb-ing. Shows ongoing action in the past.',tip:'💡 Tip: Past Continuous = was/were + Ving. For actions happening at a specific past time!'},
+      {v:'📝',q:'Which uses articles correctly?',opts:['I saw a elephant at zoo','I saw an elephant at the zoo','I saw the elephant at a zoo','I saw elephant at the zoo'],ans:1,exp:'"an elephant" (vowel sound) + "the zoo" (specific/known place)!',tip:'💡 Tip: a/an = first mention. the = specific/known. a vs an: vowel sounds use "an"!'},
+      {v:'🔤',q:'Comparative form of "interesting" (3+ syllables)?',opts:['more interesting','interestinger','most interesting','interestingest'],ans:0,exp:'"more interesting" — long adjectives (3+ syllables) use more/most!',tip:'💡 Tip: Short: big→bigger. Long (3+ syllables): more interesting. Irregular: good→better→best!'},
+      {v:'📖',q:'Correct question tag: "She is beautiful, ___?"',opts:["isn't it?","isn't she?","is she?","was she?"],ans:1,exp:'"isn\'t she?" — positive statement → negative tag, same pronoun.',tip:'💡 Tip: Positive → negative tag. "He can swim, can\'t he?" Negative → positive tag!'},
+      {v:'✏️',q:'Choose the correct passive voice: "The cake ___ by Mary."',opts:['eat','was eaten','is eat','eaten'],ans:1,exp:'"was eaten" — Passive = be + past participle. Past action uses was/were.',tip:'💡 Tip: Active: Mary ate the cake. Passive: The cake was eaten by Mary!'},
+    ]
+  },
+  reading:{lang:'eng',name:'🏰 Reading Palace',cls:'qe3',ico:'🏰',lv:'SD Grade 3-5 · MEDIUM',desc:'Develop English reading skills!',tag:'READING',
+    enemies:[{e:'📜',n:'Text Troll'},{e:'🌀',n:'Meaning Maze'},{e:'👓',n:'Blind Reader'},{e:'💀',n:'Story Stealer'},{e:'🔮',n:'Context Ghost'},{e:'☠️',n:'Reading Lord'}],
+    questions:[
+      {v:'📖',q:'The "main idea" of a paragraph is?',opts:['The longest sentence','The central thought the paragraph discusses','The first sentence only','The last sentence'],ans:1,exp:'Main idea = central thought/topic. Supporting sentences give details about the main idea.',tip:'💡 Tip: Ask "What is this paragraph mostly about?" The answer is the main idea!'},
+      {v:'🔍',q:'Making an "inference" means?',opts:['Copying text word by word','Drawing a logical conclusion using evidence + your own knowledge','Skipping unclear parts','Reading very fast'],ans:1,exp:'Inference = reading between the lines using text clues + background knowledge.',tip:'💡 Tip: "The author IMPLIES, the reader INFERS." What does the text suggest?'},
+      {v:'📝',q:'Context clues help you by?',opts:['Using a dictionary only','Looking at surrounding words to deduce an unfamiliar word\'s meaning','Skipping the word','Guessing randomly'],ans:1,exp:'Context clues: surrounding words/sentences give hints about unfamiliar word meanings.',tip:'💡 Tip: Types: definition clue, example clue, contrast clue, inference clue!'},
+      {v:'📖',q:'The purpose of "expository" text is to?',opts:['Tell an entertaining story','Inform, explain, or describe a topic factually','Persuade readers','Express feelings'],ans:1,exp:'Expository: to inform/explain factually using facts, definitions, and examples.',tip:'💡 Tip: Narrative=entertain, Expository=inform/explain, Persuasive=convince, Descriptive=describe!'},
+      {v:'🌟',q:'"Tone" of a text refers to?',opts:['Length of the text','The author\'s attitude/feeling toward the subject','Number of characters','The setting'],ans:1,exp:'Tone = author\'s attitude (angry, humorous, sad, critical, etc.)',tip:'💡 Tip: Tone = Author\'s attitude. Mood = how READERS feel. Both come from word choice!'},
+      {v:'📚',q:'A story\'s "theme" is best defined as?',opts:['The main character\'s name','The universal message/life lesson the story communicates','The setting','The beginning of the plot'],ans:1,exp:'Theme = universal life lesson. Not just "friendship" but "True friendship requires trust."',tip:'💡 Tip: Topic = "friendship". Theme = complete statement: "Real friends accept each other\'s flaws!"'},
+    ]
+  },
+  speaking:{lang:'eng',name:'🎤 Speaking Arena',cls:'qe4',ico:'🎤',lv:'SD Grade 4-5 · MEDIUM',desc:'Master English speaking and expressions!',tag:'SPEAKING',
+    enemies:[{e:'🎤',n:'Mute Monster'},{e:'🗣️',n:'Mumble Beast'},{e:'😰',n:'Shy Demon'},{e:'🌀',n:'Expression Chaos'},{e:'💀',n:'Silence Lord'},{e:'☠️',n:'Communication Void'}],
+    questions:[
+      {v:'🎤',q:'To politely ask for something, say?',opts:['"Give me water!"','"I want water now!"','"Could you please give me some water?"','"Water!"'],ans:2,exp:'"Could you please..." is polite and appropriate. Always better than direct commands!',tip:'💡 Tip: Polite: "Could you...?" "Would you mind...?" "May I...?" "Can I please...?"'},
+      {v:'🗣️',q:'Appropriate greeting for someone you meet for the FIRST TIME?',opts:['"Hey! What\'s up?"','"Nice to meet you! I\'m Ahmad."','"Hi there, buddy!"','"Yo! Wassup!"'],ans:1,exp:'"Nice to meet you!" is the standard formal greeting for first meetings.',tip:'💡 Tip: Formal first meeting: "How do you do?" / "Nice to meet you!" Informal: "Hey!"'},
+      {v:'💬',q:'When you don\'t understand, best response is?',opts:['Say nothing','Say "I\'m sorry, could you please repeat that?"','Walk away','Say "Whatever!"'],ans:1,exp:'Asking for clarification shows active listening! Much better than pretending.',tip:'💡 Tip: Clarification: "I\'m sorry?" / "Could you say that again?" / "What do you mean?"'},
+      {v:'🎤',q:'How to correctly express AGREEMENT?',opts:['"Whatever you say!"','"You are absolutely right!" / "I completely agree!"','"Maybe..." / "I guess..."','"I don\'t care."'],ans:1,exp:'"Absolutely!" "Exactly!" "I couldn\'t agree more!" show active engagement.',tip:'💡 Tip: Agreement levels: Weak: "I suppose so." Moderate: "I agree." Strong: "Absolutely!"'},
+      {v:'💬',q:'Correct self-introduction?',opts:['"I am called Ahmad my name."','"My name is Ahmad. I\'m from Jakarta. Nice to meet you!"','"Ahmad is me from Jakarta."','"Call me Ahmad am I."'],ans:1,exp:'"My name is Ahmad. I\'m from Jakarta. Nice to meet you!" — clear and complete!',tip:'💡 Tip: Self-intro: Name → Origin/School → Hobby → "Nice to meet you!"'},
+      {v:'🗣️',q:'Best opener when giving opinions?',opts:['"You must believe me..."','"In my opinion..." / "I think that..."','"Everyone knows that..."','"Obviously..."'],ans:1,exp:'"In my opinion..." / "I think..." signal you\'re sharing YOUR view, not absolute facts.',tip:'💡 Tip: Opinion starters: "In my opinion..." "I believe..." "From my point of view..."'},
+    ]
+  },
+  writing:{lang:'eng',name:'✍️ Writing Tower',cls:'qe5',ico:'✍️',lv:'SD Grade 5-6 · HARD',desc:'Master English writing and essays!',tag:'WRITING',
+    enemies:[{e:'✍️',n:"Writer's Block"},{e:'📄',n:'Empty Page'},{e:'🌀',n:'Idea Void'},{e:'💣',n:'Paragraph Bomb'},{e:'👑',n:'Grammar King'},{e:'💀',n:'Writing Overlord'}],
+    questions:[
+      {v:'✍️',q:'A well-structured paragraph contains?',opts:['Only a topic sentence','Topic sentence + supporting sentences + concluding sentence','Only examples','Only a conclusion'],ans:1,exp:'Paragraph = Topic Sentence (main idea) + Supporting (details) + Concluding sentence.',tip:'💡 Tip: Hamburger paragraph: top bun=topic, filling=details, bottom bun=conclusion!'},
+      {v:'📝',q:'The thesis statement in an essay is?',opts:['The title','A sentence stating the main argument/central claim of the essay','First sentence of every paragraph','The conclusion'],ans:1,exp:'Thesis = main argument/claim, usually at end of introduction paragraph.',tip:'💡 Tip: Good thesis is specific and arguable. "Homework should be limited because..." not just "Homework is bad"!'},
+      {v:'✍️',q:'Transition words like "however", "therefore", "furthermore" are used to?',opts:['Make text longer','Connect ideas and show relationships between sentences/paragraphs','Replace nouns','Start every sentence'],ans:1,exp:'Transition words connect ideas: however (contrast), therefore (result), furthermore (addition).',tip:'💡 Tip: Adding: furthermore, moreover, also. Contrast: however, although. Result: therefore, thus!'},
+      {v:'📖',q:'Revising your writing means?',opts:['Checking spelling only','Reviewing and improving content, organization, clarity, and word choice','Rewriting everything','Just reading it once'],ans:1,exp:'Revising = improving BIG PICTURE: content, organization, clarity, word choice.',tip:'💡 Tip: Revising vs Editing: Revise = BIG changes (content, ideas). Edit = SMALL fixes (grammar, spelling)!'},
+      {v:'📝',q:'A narrative essay MUST have?',opts:['Only facts and statistics','A story with clear beginning, middle, end — using vivid details and first-person perspective','No emotions','An abstract'],ans:1,exp:'Narrative essay: personal story with beginning-middle-end, vivid details, usually first person.',tip:'💡 Tip: Narrative essays use sensory details (sight, sound, smell, taste, touch) to bring the story alive!'},
+      {v:'🌟',q:'The best way to improve English writing is?',opts:['Only memorizing grammar rules','Reading widely, writing regularly, and seeking feedback to improve continuously','Avoiding difficult words','Writing only short sentences'],ans:1,exp:'Improve writing: read widely (see good models) + write regularly (practice) + get feedback (learn from mistakes).',tip:'💡 Tip: "The more you read, the more you write, the better you get!" — true for every language!'},
+    ]
+  },
+  bossEng:{lang:'eng',name:'🏆 BOSS: English Champion',cls:'qe6',ico:'🏆',lv:'ALL GRADES · FINAL ENGLISH',desc:'Final English test — all materials!',tag:'FINAL ENGLISH',
+    enemies:[{e:'🏆',n:'ENGLISH CHAMPION'},{e:'💀',n:'OMEGA ENGLISH'},{e:'🌑',n:'GRAMMAR VOID'},{e:'🔥',n:'VOCAB FIRE'},{e:'⚡',n:'ESSAY STORM'},{e:'☠️',n:'LANGUAGE LORD'}],
+    questions:[
+      {v:'🇬🇧',q:'English is spoken as an official language in approximately how many countries?',opts:['10-15','25-30','50-55','Over 70'],ans:3,exp:'English is an official language in over 70 countries! It\'s the global lingua franca.',tip:'💡 Tip: English is spoken by 1.5+ billion people worldwide as first or second language!'},
+      {v:'📝',q:'Which sentence uses the PRESENT PERFECT correctly?',opts:['She has went to Paris','She have gone to Paris','She has gone to Paris','She has go to Paris'],ans:2,exp:'"She HAS GONE to Paris" — Present Perfect: have/has + past participle. Gone = past participle of go.',tip:'💡 Tip: Present Perfect: have/has + past participle. go→gone, eat→eaten, write→written!'},
+      {v:'🔤',q:'Choose the sentence with CORRECT punctuation.',opts:["Let's eat Grandma!","Lets eat, Grandma!","Let's eat, Grandma!","Lets eat Grandma"],ans:2,exp:'"Let\'s eat, Grandma!" — the comma SAVES Grandma! Without comma, it sounds like eating Grandma.',tip:'💡 Tip: Commas save lives! "Let\'s eat, kids!" vs "Let\'s eat kids!" — very different meaning!'},
+      {v:'📖',q:'The word "however" functions as?',opts:['A noun','A verb','A conjunction/transition word showing contrast','An adjective'],ans:2,exp:'"However" = transition word showing contrast. "I wanted to go; however, it was raining."',tip:'💡 Tip: Contrast transitions: however, but, although, yet, on the other hand, nevertheless!'},
+      {v:'🎤',q:'When writing or speaking formally, which is correct?',opts:['"Me and John went to school."','"John and I went to school."','"John and me went to school."','"Me and him went to school."'],ans:1,exp:'"John and I went to school." — Use "I" as subject, "me" as object. Remove the other name to check!',tip:'💡 Tip: Quick test: remove "John and" → "I went to school" ✓ vs "Me went to school" ✗!'},
+      {v:'🌟',q:'The BEST summary of why learning English matters is?',opts:['It\'s required in school only','English enables global communication, opens career opportunities, and connects you to international knowledge and culture','English is just for American movies','Only scientists need English'],ans:1,exp:'English = global language of science, business, technology, and culture. Opens unlimited doors!',tip:'💡 Tip: English is used in 90%+ of international scientific journals. Learning it truly opens the world!'},
+    ]
+  },
+};
+
+let G={
+  heroIdx:-1,hp:120,maxHp:120,xp:0,lvl:1,pts:0,
+  lang:'indo',quest:null,qs:[],idx:0,correct:0,score:0,answered:false,
+  progress:{kosakata:0,membaca:0,tatabahasa:0,sastra:0,menulis:0,bossIndo:0,
+    vocabulary:0,grammar:0,reading:0,speaking:0,writing:0,bossEng:0},
+};
+
+const INDO_ORDER=['kosakata','membaca','tatabahasa','sastra','menulis','bossIndo'];
+const ENG_ORDER=['vocabulary','grammar','reading','speaking','writing','bossEng'];
+
+/* ===== PREVIEW MODE: hanya quest pertama tiap bahasa yang terbuka ===== */
+const PREVIEW_LOCKED=new Set([...INDO_ORDER.slice(1),...ENG_ORDER.slice(1)]);
+const WA_LINK='https://wa.me/6289630486382?text='+encodeURIComponent('Halo kak WNJ Little World! Saya mau beli Kata Petualang versi lengkap 📚');
+
+function openPreviewModal(key){
+  const q=QUESTS[key];
+  document.getElementById('pv-modal-qname').textContent=q.name;
+  document.getElementById('pv-modal-wa').href=WA_LINK;
+  document.getElementById('pv-modal').classList.remove('hidden');
+}
+function closePreviewModal(){document.getElementById('pv-modal').classList.add('hidden');}
+
+function show(id){
+  ['screen-title','screen-map','screen-battle','screen-result'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickHero(i){
+  document.querySelectorAll('.hcard').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('h'+i).classList.add('sel');
+  G.heroIdx=i;const h=HEROES[i];G.hp=h.hp;G.maxHp=h.hp;G.pts=h.pts;
+  document.getElementById('start-btn').disabled=false;
+}
+
+function goWorld(){updateHUD();renderQuestGrid();show('screen-map');}
+
+function switchLang(lang){
+  G.lang=lang;
+  document.getElementById('tab-indo').classList.toggle('active',lang==='indo');
+  document.getElementById('tab-eng').classList.toggle('active',lang==='eng');
+  renderQuestGrid();
+}
+
+function renderQuestGrid(){
+  const order=G.lang==='indo'?INDO_ORDER:ENG_ORDER;
+  const grid=document.getElementById('quest-grid');
+  grid.innerHTML='';
+  order.forEach(key=>{
+    const q=QUESTS[key];
+    const total=6;const p=G.progress[key]||0;
+    const isBoss=key.startsWith('boss');
+    const locked=PREVIEW_LOCKED.has(key);
+    const badgeCls=locked?'qb-locked':(p>=total?'qb-done':(isBoss?(q.lang==='eng'?'qb-boss-eng':'qb-boss'):'qb-open'));
+    const badgeTxt=locked?'🔒 Lengkap':(p>=total?'✅ Selesai!':(isBoss?(q.lang==='eng'?'🏆 BOSS ENG':'👑 BOSS INDO'):'⚔ Mulai!'));
+    const div=document.createElement('div');
+    div.className='qcard '+q.cls+(locked?' qcard-locked':'');
+    div.innerHTML=`<div class="qc-top"><span class="qc-ico">${q.ico}</span>
+      <div><div class="qc-nm">${q.name}</div><div class="qc-lv">${q.lv}</div></div></div>
+      <div class="qc-desc">${q.desc}</div>
+      <div class="qc-foot"><span class="qc-badge ${badgeCls}">${badgeTxt}</span><span class="qc-prog">${locked?'🔒':p+'/'+total}</span></div>`;
+    div.onclick=locked?()=>openPreviewModal(key):()=>startQuest(key);
+    grid.appendChild(div);
+  });
+}
+
+function updateHUD(){
+  if(G.heroIdx<0)return;
+  const h=HEROES[G.heroIdx];
+  ['hud-av','hud2-av'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=h.e;});
+  ['hud-nm','hud2-nm'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=h.n;});
+  document.getElementById('hud-sk').textContent=h.sk;
+  const hpP=Math.max(0,(G.hp/G.maxHp)*100);
+  ['hud-hp','hud2-hp'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.width=hpP+'%';});
+  document.getElementById('hud-xp').style.width=(G.xp%100)+'%';
+  ['hud-lv','hud2-lv'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='LVL '+G.lvl;});
+  document.getElementById('hud-pts').textContent=G.pts;
+}
+
+function startQuest(key){
+  G.quest=key;G.idx=0;G.correct=0;G.score=0;G.answered=false;
+  const q=QUESTS[key];
+  G.qs=[...q.questions].sort(()=>Math.random()-0.5).slice(0,6);
+  const isEng=q.lang==='eng';
+  const banner=document.getElementById('battle-hdr');
+  banner.className='battle-hdr '+(isEng?'bh-eng':'bh-indo');
+  document.getElementById('bh-lbl').className='bh-lbl '+(isEng?'eng':'indo');
+  document.getElementById('bh-lbl').textContent=isEng?'⚔ WORD BATTLE':'⚔ PERTEMPURAN KATA';
+  document.getElementById('bh-nm').textContent=q.name;
+  updateHUD();show('screen-battle');loadQ();
+}
+function retryQuest(){startQuest(G.quest);}
+
+function loadQ(){
+  const q=QUESTS[G.quest];const qu=G.qs[G.idx];const total=G.qs.length;
+  const en=q.enemies[G.idx%q.enemies.length];
+  const isEng=q.lang==='eng';
+  document.getElementById('bh-cnt').textContent=(G.idx+1)+'/'+total;
+  document.getElementById('eb-fig').textContent=en.e;
+  document.getElementById('eb-nm').textContent=en.n;
+  document.getElementById('eb-nm').className='eb-nm '+(isEng?'eng':'indo');
+  document.getElementById('eb-tp').textContent=(isEng?'ENGLISH':'BAHASA')+' VILLAIN';
+  const taunts=isEng?['"Your English is too weak!"','"Wrong again!"','"Give up now!"']:
+    ['"Kamu tidak bisa mengalahkanku!"','"Bahasamu lemah sekali!"','"Menyerah saja!"'];
+  document.getElementById('eb-taunt').textContent=taunts[G.idx%taunts.length];
+  document.getElementById('eb-taunt').className='eb-taunt '+(isEng?'eng':'indo');
+  document.getElementById('eb-hpf').style.width='100%';
+  const qb=document.getElementById('q-board');
+  qb.className='q-board '+(isEng?'qb-eng':'qb-indo');
+  const tag=document.getElementById('qb-tag');
+  tag.textContent=q.tag;tag.className='qb-tag '+(isEng?'eng':'indo');
+  document.getElementById('qb-num').textContent=(isEng?'Question':'Soal')+' '+(G.idx+1);
+  document.getElementById('qb-vis').textContent=qu.v;
+  document.getElementById('qb-txt').textContent=qu.q;
+  const shuffled=qu.opts.map((o,i)=>({t:o,orig:i})).sort(()=>Math.random()-0.5);
+  const letters=['A','B','C','D'];
+  const wrap=document.getElementById('opts-grid');wrap.innerHTML='';
+  shuffled.forEach((opt,i)=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-letter">${letters[i]}</span>${opt.t}`;
+    btn.onclick=()=>answerQ(opt.orig,qu.ans,qu.exp,qu.tip,btn,wrap,shuffled,isEng);
+    wrap.appendChild(btn);
+  });
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('next-btn').classList.add('hidden');
+  G.answered=false;
+}
+
+function answerQ(chosen,correct,exp,tip,btn,wrap,shuffled,isEng){
+  if(G.answered)return;G.answered=true;
+  wrap.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  if(ok){G.correct++;G.score+=100;
+    const xp=Math.round(20*(1+HEROES[G.heroIdx].iq));G.xp+=xp;G.pts+=10;
+    while(G.xp>=G.lvl*100)G.lvl++;
+    btn.classList.add('correct');document.getElementById('eb-hpf').style.width='0%';spawnSparks(true);
+    Music.playCorrect();
+  } else {
+    btn.classList.add('wrong');
+    shuffled.forEach((o,i)=>{if(o.orig===correct)wrap.querySelectorAll('.opt-btn')[i].classList.add('correct');});
+    const dmg=Math.round(20*(1-HEROES[G.heroIdx].iq*0.4));G.hp=Math.max(0,G.hp-dmg);spawnSparks(false);
+    Music.playWrong();
+  }
+  updateHUD();
+  const fb=document.getElementById('feedback');
+  const fbh=document.getElementById('fb-head');
+  fb.className='feedback show '+(ok?'ok':'bad');
+  fbh.className='fb-head '+(ok?'ok':'bad');
+  fbh.innerHTML=ok?(isEng?'✅ Correct! +100 Score':'✅ Benar! +100 Skor'):(isEng?'❌ Wrong! HP Reduced':'❌ Salah! HP Berkurang!');
+  document.getElementById('fb-exp').textContent=exp;
+  document.getElementById('fb-tip').textContent=tip;
+  const nxt=document.getElementById('next-btn');
+  nxt.className='next-btn '+(isEng?'eng-btn':'indo-btn');
+  nxt.textContent=isEng?'Next Question ➡️':'Lanjut ➡️';
+  nxt.classList.remove('hidden');
+}
+
+function nextQ(){
+  G.idx++;
+  if(G.idx>=G.qs.length){G.progress[G.quest]=Math.max(G.progress[G.quest]||0,G.qs.length);showResult();}
+  else loadQ();
+}
+
+function showResult(){
+  const total=G.qs.length,c=G.correct,pct=c/total;
+  const isEng=QUESTS[G.quest].lang==='eng';
+  let ico,title,sub,rank,rc;
+  if(pct===1){ico='🏆';title=isEng?'PERFECT!':'SEMPURNA!';sub=isEng?'All correct! You\'re a language master!':'Semua benar! Kamu penguasa bahasa!';rank=isEng?'🏆 Language Master':'🏆 Master Bahasa';rc='var(--gold)';}
+  else if(pct>=0.8){ico='🌟';title=isEng?'EXCELLENT!':'LUAR BIASA!';sub=isEng?'Almost perfect! Keep it up!':'Hampir sempurna! Terus berlatih!';rank=isEng?'🌟 Expert':'🌟 Ahli Kata';rc='var(--green)';}
+  else if(pct>=0.6){ico='📖';title=isEng?'GOOD JOB!':'BAGUS!';sub=isEng?'You\'re improving!':'Terus tingkatkan!';rank=isEng?'📖 Good Reader':'📖 Siswa Cerdas';rc='var(--eng)';}
+  else{ico='📚';title=isEng?'KEEP TRYING!':'TERUS BERUSAHA!';sub=isEng?'Practice makes perfect!':'Latihan membuat sempurna!';rank=isEng?'📚 Learner':'📚 Pelajar';rc='var(--indo2)';}
+  document.getElementById('res-ico').textContent=ico;
+  document.getElementById('res-title').textContent=title;
+  document.getElementById('res-sub').textContent=sub;
+  document.getElementById('rsv-b').textContent=c+'/'+total;
+  document.getElementById('rsv-s').textContent=G.score;
+  document.getElementById('rsv-r').textContent=pct>=0.8?'A':pct>=0.6?'B':'C';
+  document.getElementById('rsv-r').style.color=rc;
+  const rr=document.getElementById('res-rank');rr.textContent=rank;rr.style.color=rc;rr.style.borderColor=rc;
+  const rb=document.getElementById('rbtn-retry');
+  rb.className='rbtn '+(isEng?'reng':'rindo');
+  rb.textContent=isEng?'🔄 Try Again!':'🔄 Ulangi Quest!';
+  if(pct>=0.6)bigSparks();
+  show('screen-result');
+}
+
+function spawnSparks(ok){
+  const e=ok?['⭐','✨','📚','💫','📖','🌟']:['💪','📖','🔄'];
+  for(let i=0;i<(ok?8:3);i++){setTimeout(()=>{
+    const el=document.createElement('div');el.className='spark';
+    el.textContent=e[Math.floor(Math.random()*e.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.fontSize=(14+Math.random()*14)+'px';
+    el.style.animationDuration=(1+Math.random())+'s';
+    el.style.color=ok?'var(--gold)':'var(--red2)';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),2200);
+  },i*90);}
+}
+function bigSparks(){
+  const e=['⭐','🌟','📚','💫','🏆','✨','📖','🎯','🌈','✏️'];
+  for(let i=0;i<24;i++){setTimeout(()=>{
+    const el=document.createElement('div');el.className='spark';
+    el.textContent=e[Math.floor(Math.random()*e.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.fontSize=(16+Math.random()*18)+'px';
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.color=['var(--gold)','var(--indo2)','var(--eng2)','var(--green)'][Math.floor(Math.random()*4)];
+    document.body.appendChild(el);setTimeout(()=>el.remove(),4500);
+  },i*105);}
+}
+</script>
+</body>
+</html>
