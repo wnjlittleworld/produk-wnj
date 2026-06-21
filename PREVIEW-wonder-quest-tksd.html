@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════
+  WONDER QUEST — Knowledge Adventure for Kids (TK-SD)
+  PREVIEW VERSION — for website promotion
+  © 2026 WNJ Little W🌏rld. All Rights Reserved.
+
+  This educational game, including all code, design, text,
+  questions, and concepts within it, is the property of
+  WNJ Little W🌏rld. Copying, redistributing, modifying, or
+  claiming this work as belonging to another party — in
+  whole or in part — without written permission from
+  WNJ Little W🌏rld is strictly prohibited.
+  ════════════════════════════════════════════════════════
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="WNJ Little W🌏rld">
+<meta name="copyright" content="© 2026 WNJ Little W🌏rld. All Rights Reserved.">
+<title>PREVIEW — WONDER QUEST 🧠 | WNJ Little W🌏rld</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#1a0a2e;--bg2:#0d1a3a;--panel:#1e1040;
+  --indo:#ff6b35;--indo2:#ff9a6b;--indo3:#8b3010;
+  --eng:#00b4d8;--eng2:#48cae4;--eng3:#004a6a;
+  --gold:#ffd700;--gold2:#ffe66d;--gold3:#8b6914;
+  --green:#00cc66;--red:#ff4444;--red2:#ff7777;
+  --text:#f0e8ff;--text2:#7a6aaa;
+  --border:rgba(255,215,0,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;overflow-x:hidden;color:var(--text);}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 20% 20%,rgba(255,107,53,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 80%,rgba(0,180,216,0.08) 0%,transparent 50%);}
+.fstar{position:fixed;pointer-events:none;z-index:0;animation:starFloat linear infinite;opacity:0;}
+@keyframes starFloat{0%{transform:translateY(110vh) rotate(0);opacity:0;}10%{opacity:0.8;}90%{opacity:0.6;}100%{transform:translateY(-30px) rotate(360deg);opacity:0;}}
+#game{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:62px 14px 80px;}
+
+/* MUSIC TOGGLE & BRAND WATERMARK */
+.music-btn{position:fixed;top:14px;right:14px;z-index:50;width:42px;height:42px;border-radius:50%;
+  background:rgba(20,10,40,0.65);border:2px solid var(--border);color:var(--gold);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+  box-shadow:0 4px 14px rgba(0,0,0,0.35);transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);user-select:none;}
+.music-btn:hover{transform:scale(1.08);border-color:var(--gold);}
+.brand-badge{position:fixed;bottom:8px;left:0;right:0;z-index:40;text-align:center;font-size:10px;
+  color:rgba(240,232,255,0.35);font-weight:700;letter-spacing:1px;pointer-events:none;}
+.license-foot{font-size:10px;color:var(--text2);opacity:0.7;margin-top:18px;text-align:center;line-height:1.6;max-width:420px;}
+
+/* ===== PREVIEW MODE ===== */
+.watermark{position:fixed;bottom:10px;left:12px;z-index:40;font-family:'Fredoka One',cursive;
+  font-size:10px;color:rgba(240,232,255,0.22);pointer-events:none;letter-spacing:0.3px;line-height:1.5;text-align:left;}
+
+.pv-banner{background:linear-gradient(135deg,#ff6b9d,#c44dff);border-radius:20px;padding:20px 18px;
+  margin:6px 0 18px;text-align:center;box-shadow:0 8px 30px rgba(200,0,200,0.3);}
+.pv-banner-ico{font-size:2rem;margin-bottom:6px;}
+.pv-banner-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:#fff;margin-bottom:6px;}
+.pv-banner-desc{font-size:0.72rem;color:rgba(255,255,255,0.92);line-height:1.6;margin-bottom:14px;}
+.pv-banner-cta{display:inline-block;background:#fff;color:#c44dff;font-family:'Nunito',sans-serif;
+  font-weight:900;font-size:0.8rem;padding:12px 24px;border-radius:20px;text-decoration:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);}
+
+.qcard-locked{opacity:0.5;filter:grayscale(0.5);position:relative;}
+.qcard-locked::after{content:'🔒';position:absolute;top:12px;right:12px;font-size:20px;
+  filter:none;opacity:1;}
+.qb-locked{background:linear-gradient(135deg,#777,#444)!important;color:#eee!important;}
+
+.pv-modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(10,5,20,0.8);
+  display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.pv-modal-overlay.hidden{display:none;}
+.pv-modal-card{background:linear-gradient(145deg,#241248,#1a0a2e);border:1.5px solid var(--border);
+  border-radius:22px;padding:28px 22px 22px;max-width:320px;text-align:center;
+  box-shadow:0 16px 50px rgba(0,0,0,0.5);}
+.pv-modal-ico{font-size:42px;margin-bottom:8px;}
+.pv-modal-title{font-family:'Fredoka One',cursive;font-size:17px;color:var(--gold);margin-bottom:10px;}
+.pv-modal-desc{font-size:12.5px;color:var(--text);line-height:1.6;margin-bottom:18px;}
+.pv-modal-cta{display:block;background:linear-gradient(135deg,#25D366,#1aa64a);color:#fff;
+  font-weight:800;font-size:13px;padding:12px;border-radius:14px;text-decoration:none;margin-bottom:10px;
+  box-shadow:0 4px 16px rgba(37,211,102,0.35);}
+.pv-modal-close{background:transparent;border:1px solid var(--border);color:var(--text2);
+  font-size:12px;padding:8px 16px;border-radius:12px;cursor:pointer;}
+
+.license-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);}
+.license-logo{font-family:'Fredoka One',cursive;font-size:16px;letter-spacing:0.5px;
+  background:linear-gradient(135deg,var(--gold),var(--eng2),var(--indo2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
+.license-text2{font-size:10px;color:var(--text2);font-weight:600;line-height:1.7;}
+.license-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:5px 12px;margin:8px 0;
+  font-size:10.5px;font-weight:800;color:var(--text2);}
+
+/* TITLE */
+#screen-title{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:96vh;text-align:center;animation:popIn 0.8s cubic-bezier(0.34,1.56,0.64,1);}
+.book-icon{font-size:80px;margin-bottom:12px;filter:drop-shadow(0 0 24px var(--gold));animation:bookBounce 2s ease-in-out infinite;}
+@keyframes bookBounce{0%,100%{transform:rotate(-5deg) scale(1);}50%{transform:rotate(5deg) scale(1.1) translateY(-10px);}}
+.kata-title{font-family:'Fredoka One',cursive;font-size:clamp(32px,8vw,62px);background:linear-gradient(135deg,var(--indo),var(--gold),var(--eng));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;letter-spacing:2px;}
+.kata-sub{font-size:14px;color:var(--text2);letter-spacing:3px;font-weight:800;text-transform:uppercase;margin-bottom:22px;}
+.lang-div{display:flex;align-items:center;gap:14px;width:300px;margin:0 auto 22px;}
+.ld-line{flex:1;height:2px;}
+.ld-line.indo{background:linear-gradient(90deg,transparent,var(--indo));}
+.ld-line.eng{background:linear-gradient(270deg,transparent,var(--eng));}
+.story-box{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;padding:16px 20px;max-width:480px;margin-bottom:28px;}
+.sb-txt{font-size:14px;color:var(--text2);line-height:1.8;font-style:italic;}
+.sb-txt em{color:var(--gold);font-style:normal;font-weight:800;}
+.hero-hdr{font-family:'Fredoka One',cursive;font-size:19px;color:var(--gold);margin-bottom:12px;}
+.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;max-width:540px;margin-bottom:24px;}
+.hcard{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px 10px;cursor:pointer;text-align:center;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);user-select:none;}
+.hcard:hover,.hcard.sel{transform:translateY(-5px) scale(1.03);border-color:var(--gold);box-shadow:0 0 22px rgba(255,215,0,0.3);}
+.hc-e{font-size:42px;display:block;margin-bottom:9px;}
+.hc-n{font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold);margin-bottom:3px;}
+.hc-s{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.hc-stat{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2);margin-bottom:3px;font-weight:700;}
+.hc-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.hc-fill{height:100%;border-radius:2px;}
+.start-btn{font-family:'Fredoka One',cursive;font-size:19px;padding:13px 50px;border:none;border-radius:30px;cursor:pointer;background:linear-gradient(135deg,var(--indo),#8800cc,var(--eng));color:white;box-shadow:0 6px 24px rgba(255,107,53,0.4);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+.start-btn:hover{transform:translateY(-3px) scale(1.04);}
+.start-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+
+/* HUD */
+.hud{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:14px;padding:11px 15px;margin-bottom:11px;display:flex;align-items:center;gap:11px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+.hud-av{font-size:28px;}
+.hud-nm{font-family:'Fredoka One',cursive;font-size:14px;color:var(--gold);}
+.hud-sk{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;}
+.hud-bars{display:flex;flex-direction:column;gap:3px;flex:1;min-width:110px;}
+.hud-br{display:flex;align-items:center;gap:5px;}
+.hud-bl{font-size:9px;color:var(--text2);width:20px;font-weight:800;}
+.hud-bt{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}
+.hud-bf{height:100%;border-radius:3px;transition:width 0.5s;}
+.hp-f{background:linear-gradient(90deg,#8b0000,var(--red2));}
+.xp-f{background:linear-gradient(90deg,var(--gold3),var(--gold));}
+.hud-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.hud-lv{font-family:'Fredoka One',cursive;font-size:11px;background:linear-gradient(135deg,var(--gold3),var(--gold));color:#1a0a00;padding:3px 9px;border-radius:20px;}
+.hud-pts{font-size:11px;color:var(--gold);font-weight:800;}
+
+/* WORLD MAP */
+.world-panel{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:18px;padding:22px 16px;}
+.wp-title{font-family:'Fredoka One',cursive;font-size:21px;color:var(--gold);text-align:center;margin-bottom:4px;}
+.wp-sub{font-size:12px;color:var(--text2);font-weight:700;letter-spacing:2px;text-align:center;margin-bottom:18px;text-transform:uppercase;}
+.lang-tabs{display:flex;gap:9px;margin-bottom:14px;justify-content:center;}
+.lang-tab{font-family:'Fredoka One',cursive;font-size:14px;padding:7px 22px;border-radius:30px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;user-select:none;}
+.lang-tab.indo{color:var(--indo2);border-color:rgba(255,107,53,0.3);}
+.lang-tab.indo.active{background:linear-gradient(135deg,var(--indo3),rgba(139,48,16,0.5));border-color:var(--indo);box-shadow:0 0 14px rgba(255,107,53,0.3);}
+.lang-tab.eng{color:var(--eng2);border-color:rgba(0,180,216,0.3);}
+.lang-tab.eng.active{background:linear-gradient(135deg,var(--eng3),rgba(0,74,106,0.5));border-color:var(--eng);box-shadow:0 0 14px rgba(0,180,216,0.3);}
+.quest-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;}
+.qcard{border-radius:14px;padding:14px 13px;cursor:pointer;border:2px solid transparent;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);user-select:none;}
+.qcard:hover{transform:translateY(-3px);}
+.qi1{background:linear-gradient(145deg,rgba(255,107,53,0.15),rgba(139,48,16,0.25));border-color:rgba(255,107,53,0.3);}
+.qi1:hover{border-color:var(--indo);box-shadow:0 6px 20px rgba(255,107,53,0.22);}
+.qi2{background:linear-gradient(145deg,rgba(255,165,0,0.15),rgba(139,80,0,0.25));border-color:rgba(255,165,0,0.3);}
+.qi2:hover{border-color:#ffa500;box-shadow:0 6px 20px rgba(255,165,0,0.22);}
+.qi3{background:linear-gradient(145deg,rgba(220,50,50,0.15),rgba(100,10,10,0.25));border-color:rgba(220,50,50,0.3);}
+.qi3:hover{border-color:var(--red);box-shadow:0 6px 20px rgba(220,50,50,0.22);}
+.qi4{background:linear-gradient(145deg,rgba(180,0,200,0.15),rgba(80,0,100,0.25));border-color:rgba(180,0,200,0.3);}
+.qi4:hover{border-color:#cc00dd;box-shadow:0 6px 20px rgba(180,0,200,0.22);}
+.qi5{background:linear-gradient(145deg,rgba(255,80,120,0.15),rgba(120,0,50,0.25));border-color:rgba(255,80,120,0.3);}
+.qi5:hover{border-color:#ff5078;box-shadow:0 6px 20px rgba(255,80,120,0.22);}
+.qi6{background:linear-gradient(145deg,rgba(40,0,0,0.5),rgba(20,0,20,0.6));border-color:rgba(220,40,0,0.2);animation:bpulse 2.5s ease-in-out infinite;}
+@keyframes bpulse{0%,100%{border-color:rgba(220,40,0,0.2);}50%{border-color:rgba(220,40,0,0.7);box-shadow:0 0 12px rgba(200,0,0,0.2);}}
+.qe1{background:linear-gradient(145deg,rgba(0,180,216,0.15),rgba(0,74,106,0.25));border-color:rgba(0,180,216,0.3);}
+.qe1:hover{border-color:var(--eng);box-shadow:0 6px 20px rgba(0,180,216,0.22);}
+.qe2{background:linear-gradient(145deg,rgba(0,200,150,0.15),rgba(0,80,60,0.25));border-color:rgba(0,200,150,0.3);}
+.qe2:hover{border-color:#00c896;box-shadow:0 6px 20px rgba(0,200,150,0.22);}
+.qe3{background:linear-gradient(145deg,rgba(80,120,255,0.15),rgba(20,40,120,0.25));border-color:rgba(80,120,255,0.3);}
+.qe3:hover{border-color:#5078ff;box-shadow:0 6px 20px rgba(80,120,255,0.22);}
+.qe4{background:linear-gradient(145deg,rgba(0,220,255,0.15),rgba(0,80,120,0.25));border-color:rgba(0,220,255,0.3);}
+.qe4:hover{border-color:#00dcff;box-shadow:0 6px 20px rgba(0,220,255,0.22);}
+.qe5{background:linear-gradient(145deg,rgba(100,200,255,0.15),rgba(0,60,120,0.25));border-color:rgba(100,200,255,0.3);}
+.qe5:hover{border-color:#64c8ff;box-shadow:0 6px 20px rgba(100,200,255,0.22);}
+.qe6{background:linear-gradient(145deg,rgba(40,0,0,0.5),rgba(20,0,20,0.6));border-color:rgba(0,100,220,0.2);animation:bpulseeng 2.5s ease-in-out infinite;}
+@keyframes bpulseeng{0%,100%{border-color:rgba(0,100,220,0.2);}50%{border-color:rgba(0,100,220,0.7);box-shadow:0 0 12px rgba(0,100,200,0.2);}}
+.qc-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;}
+.qc-ico{font-size:26px;}
+.qc-nm{font-family:'Fredoka One',cursive;font-size:13px;color:var(--text);margin-bottom:2px;}
+.qc-lv{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.qc-desc{font-size:12px;color:var(--text2);line-height:1.4;margin-bottom:7px;}
+.qc-foot{display:flex;align-items:center;justify-content:space-between;}
+.qc-badge{font-size:9px;font-weight:800;padding:2px 9px;border-radius:20px;}
+.qb-open{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.25);}
+.qb-done{background:rgba(0,204,102,0.1);color:var(--green);border:1px solid rgba(0,204,102,0.25);}
+.qb-boss{background:rgba(220,40,0,0.1);color:#ff6040;border:1px solid rgba(220,40,0,0.25);}
+.qb-boss-eng{background:rgba(0,100,220,0.1);color:#4080ff;border:1px solid rgba(0,100,220,0.25);}
+.qc-prog{font-size:10px;color:var(--text2);font-weight:700;}
+
+/* BATTLE */
+.battle-hdr{border-radius:10px;padding:9px 14px;text-align:center;margin-bottom:11px;position:relative;}
+.bh-indo{background:linear-gradient(90deg,rgba(180,50,20,0.5),rgba(80,20,10,0.7),rgba(180,50,20,0.5));border:1px solid rgba(220,80,40,0.4);}
+.bh-eng{background:linear-gradient(90deg,rgba(0,80,160,0.5),rgba(0,30,80,0.7),rgba(0,80,160,0.5));border:1px solid rgba(0,140,220,0.4);}
+.bh-lbl{font-size:9px;letter-spacing:3px;margin-bottom:2px;font-weight:800;text-transform:uppercase;}
+.bh-lbl.indo{color:rgba(255,200,180,0.5);}
+.bh-lbl.eng{color:rgba(180,220,255,0.5);}
+.bh-nm{font-family:'Fredoka One',cursive;font-size:16px;color:var(--gold2);}
+.bh-cnt{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text2);font-weight:700;}
+.enemy-box{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:14px;padding:14px 13px;margin-bottom:11px;display:flex;align-items:flex-start;gap:12px;position:relative;overflow:hidden;}
+.eb-fig{font-size:54px;flex-shrink:0;animation:enemyFloat 2.5s ease-in-out infinite;}
+@keyframes enemyFloat{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+.eb-nm{font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:2px;}
+.eb-nm.indo{color:var(--indo2);}
+.eb-nm.eng{color:var(--eng2);}
+.eb-tp{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.eb-taunt{font-size:13px;color:var(--text);font-style:italic;background:rgba(0,0,0,0.3);border-radius:0 8px 8px 0;padding:6px 10px;margin-bottom:7px;line-height:1.5;}
+.eb-taunt.indo{border-left:3px solid var(--indo);}
+.eb-taunt.eng{border-left:3px solid var(--eng);}
+.eb-hpl{font-size:9px;color:var(--text2);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.eb-hpt{height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.eb-hpf{height:100%;background:linear-gradient(90deg,#8b0000,#ff4444);border-radius:4px;transition:width 0.6s;}
+.q-board{background:rgba(5,3,10,0.98);border:2px solid var(--border);border-radius:14px;padding:22px 16px 16px;margin-bottom:11px;position:relative;overflow:hidden;}
+.q-board::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.qb-indo::before{background:linear-gradient(90deg,transparent,var(--indo),var(--gold),transparent);}
+.qb-eng::before{background:linear-gradient(90deg,transparent,var(--eng),var(--gold),transparent);}
+.qb-tag{display:inline-block;font-size:10px;font-weight:800;padding:2px 11px;border-radius:20px;margin-bottom:9px;letter-spacing:2px;text-transform:uppercase;}
+.qb-tag.indo{background:rgba(255,107,53,0.12);color:var(--indo2);border:1px solid rgba(255,107,53,0.25);}
+.qb-tag.eng{background:rgba(0,180,216,0.12);color:var(--eng2);border:1px solid rgba(0,180,216,0.25);}
+.qb-num{font-family:'Fredoka One',cursive;font-size:12px;color:var(--text2);letter-spacing:1px;margin-bottom:9px;}
+.qb-vis{font-size:58px;display:block;text-align:center;margin-bottom:11px;animation:visPulse 3s ease-in-out infinite;}
+@keyframes visPulse{0%,100%{filter:drop-shadow(0 0 8px rgba(255,215,0,0.2));}50%{filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));}}
+.qb-txt{font-size:clamp(15px,3.5vw,19px);color:var(--text);line-height:1.5;font-weight:800;text-align:center;}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.opt-btn{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 10px;cursor:pointer;display:flex;align-items:flex-start;gap:8px;color:var(--text);font-size:14px;font-weight:700;line-height:1.35;transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);text-align:left;user-select:none;}
+.opt-btn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--gold);background:rgba(255,215,0,0.06);box-shadow:0 5px 14px rgba(255,215,0,0.15);}
+.opt-letter{font-family:'Fredoka One',cursive;font-size:12px;color:var(--gold);background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);border-radius:8px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.opt-btn.correct{border-color:var(--green)!important;background:rgba(0,20,10,0.95)!important;box-shadow:0 0 18px rgba(0,204,102,0.25);}
+.opt-btn.correct .opt-letter{background:rgba(0,204,102,0.15);color:var(--green);border-color:var(--green);}
+.opt-btn.wrong{border-color:var(--red)!important;background:rgba(25,0,0,0.95)!important;}
+.opt-btn.wrong .opt-letter{color:var(--red2);border-color:var(--red);}
+.feedback{border-radius:12px;padding:13px 15px;margin-bottom:11px;display:none;animation:slideUp 0.3s ease;border-left:4px solid;}
+.feedback.show{display:block;}
+.feedback.ok{background:rgba(0,20,10,0.7);border-color:var(--green);}
+.feedback.bad{background:rgba(20,0,0,0.7);border-color:var(--red);}
+.fb-head{font-family:'Fredoka One',cursive;font-size:14px;margin-bottom:5px;display:flex;align-items:center;gap:7px;}
+.fb-head.ok{color:var(--green);}
+.fb-head.bad{color:var(--red2);}
+.fb-exp{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:5px;}
+.fb-tip{font-size:12px;color:var(--gold);font-weight:700;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.12);border-radius:8px;padding:6px 10px;line-height:1.5;}
+.next-btn{width:100%;padding:12px;font-family:'Fredoka One',cursive;font-size:17px;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+.next-btn.indo-btn{background:linear-gradient(135deg,var(--indo),#cc4400);color:white;}
+.next-btn.eng-btn{background:linear-gradient(135deg,var(--eng),#007a9a);color:white;}
+.next-btn:hover{transform:translateY(-2px);}
+.next-btn.hidden{display:none!important;}
+
+/* RESULT */
+#screen-result{text-align:center;padding:42px 14px;animation:popIn 0.8s cubic-bezier(0.34,1.56,0.64,1);}
+.res-panel{background:rgba(255,255,255,0.05);border:2px solid var(--border);border-radius:20px;padding:36px 22px;position:relative;overflow:hidden;}
+.res-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--indo),var(--gold),var(--eng));}
+.res-ico{font-size:78px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 26px var(--gold));animation:bookBounce 2s ease-in-out infinite;}
+.res-title{font-family:'Fredoka One',cursive;font-size:clamp(22px,6vw,40px);background:linear-gradient(135deg,var(--indo),var(--gold),var(--eng));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px;}
+.res-sub{font-size:14px;color:var(--text2);font-weight:700;margin-bottom:22px;}
+.res-stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.rs{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:13px 16px;}
+.rs-v{font-family:'Fredoka One',cursive;font-size:26px;display:block;margin-bottom:3px;}
+.rs-l{font-size:10px;color:var(--text2);font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.res-rank{display:inline-block;margin-bottom:20px;font-family:'Fredoka One',cursive;font-size:15px;padding:9px 22px;border-radius:30px;border:2px solid var(--gold);color:var(--gold);background:rgba(255,215,0,0.08);}
+.res-btns{display:flex;flex-direction:column;gap:9px;}
+.rbtn{padding:12px;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
+.rbtn:hover{transform:translateY(-2px);}
+.rbtn.rindo{background:linear-gradient(135deg,var(--indo),#cc4400);color:white;}
+.rbtn.reng{background:linear-gradient(135deg,var(--eng),#007a9a);color:white;}
+.rbtn.rmap{background:linear-gradient(135deg,var(--gold3),rgba(40,20,0,0.9));color:var(--gold);border:1px solid var(--border);}
+
+.hidden{display:none!important;}
+@keyframes popIn{0%{opacity:0;transform:scale(0.84);}70%{transform:scale(1.03);}100%{opacity:1;transform:scale(1);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.spark{position:fixed;pointer-events:none;z-index:999;animation:spFly linear forwards;}
+@keyframes spFly{0%{transform:translateY(-20px) rotate(0);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.3);border-radius:3px;}
+@media(max-width:480px){.hero-grid{grid-template-columns:1fr 1fr 1fr;}.opts-grid{grid-template-columns:1fr;}.quest-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<button class="music-btn" id="music-toggle" onclick="toggleMusic()" title="Music">🔇</button>
+<div class="watermark">WNJ Little W🌏rld<br>© 2026 · PREVIEW</div>
+<div class="pv-modal-overlay hidden" id="pv-modal" onclick="if(event.target===this)closePreviewModal()">
+  <div class="pv-modal-card">
+    <div class="pv-modal-ico">🔒</div>
+    <div class="pv-modal-title">This Quest is in the Full Version!</div>
+    <div class="pv-modal-desc">Quest <b id="pv-modal-qname">—</b> is only available in the full version of <b>Wonder Quest</b>, with all 12 quests + boss battles + full music & sound effects! 🎵</div>
+    <a class="pv-modal-cta" id="pv-modal-wa" href="#" target="_blank">💬 Get the Full Version via WhatsApp</a>
+    <button class="pv-modal-close" onclick="closePreviewModal()">Close</button>
+  </div>
+</div>
+<div id="game">
+
+<!-- TITLE -->
+<div id="screen-title">
+  <div class="book-icon">🧠</div>
+  <h1 class="kata-title">WONDER QUEST</h1>
+  <p class="kata-sub">Knowledge Adventure for Kids · TK–SD</p>
+  <div class="lang-div">
+    <div class="ld-line indo"></div>
+    <span>🧠</span>
+    <div class="ld-line eng"></div>
+  </div>
+  <div class="story-box">
+    <div class="sb-txt">The <em>Kingdom of Knowledge</em> is lost in a fog of confusion!<br>
+    Complete <em>STEM</em> & <em>World</em> quests to restore wisdom.<br>
+    Every correct answer defeats a monster!</div>
+  </div>
+  <div class="hero-hdr">✦ Choose Your Hero ✦</div>
+  <div class="hero-grid">
+    <div class="hcard" id="h0" onclick="pickHero(0)">
+      <span class="hc-e">🔬</span>
+      <div class="hc-n">Scientist</div>
+      <div class="hc-s">SCIENTIST · WISE</div>
+      <div class="hc-stat">HP<div class="hc-bar"><div class="hc-fill" style="width:60%;background:var(--red2)"></div></div>120</div>
+      <div class="hc-stat">IQ<div class="hc-bar"><div class="hc-fill" style="width:90%;background:var(--gold)"></div></div>+28%</div>
+    </div>
+    <div class="hcard" id="h1" onclick="pickHero(1)">
+      <span class="hc-e">🛡️</span>
+      <div class="hc-n">Knight</div>
+      <div class="hc-s">KNIGHT · STRONG</div>
+      <div class="hc-stat">HP<div class="hc-bar"><div class="hc-fill" style="width:90%;background:var(--red2)"></div></div>180</div>
+      <div class="hc-stat">IQ<div class="hc-bar"><div class="hc-fill" style="width:55%;background:var(--gold)"></div></div>+14%</div>
+    </div>
+    <div class="hcard" id="h2" onclick="pickHero(2)">
+      <span class="hc-e">🧚</span>
+      <div class="hc-n">Star Fairy</div>
+      <div class="hc-s">FAIRY · AGILE</div>
+      <div class="hc-stat">HP<div class="hc-bar"><div class="hc-fill" style="width:75%;background:var(--red2)"></div></div>150</div>
+      <div class="hc-stat">IQ<div class="hc-bar"><div class="hc-fill" style="width:75%;background:var(--gold)"></div></div>+21%</div>
+    </div>
+  </div>
+  <button class="start-btn" id="start-btn" onclick="beginGame()" disabled>🧠 Start Your Quest!</button>
+  <div class="license-footer">
+    <div class="license-logo">WNJ Little W🌏rld</div>
+    <div class="license-text2">© 2026 WNJ Little W🌏rld · All Rights Reserved<br>Wonder Quest — Knowledge Adventure for Kids (PREVIEW)</div>
+    <div class="license-badge"><span>🌏</span> Made with ❤️ by WNJ Little W🌏rld</div>
+    <div class="license-text2">Unauthorized copying or redistribution<br>without written permission from WNJ Little W🌏rld is prohibited.</div>
+  </div>
+</div>
+
+<!-- WORLD MAP -->
+<div id="screen-map" class="hidden">
+  <div class="hud">
+    <div class="hud-av" id="hud-av">📖</div>
+    <div><div class="hud-nm" id="hud-nm">Penulis</div><div class="hud-sk" id="hud-sk">WRITER · WISE</div></div>
+    <div class="hud-bars">
+      <div class="hud-br"><span class="hud-bl">HP</span><div class="hud-bt"><div class="hud-bf hp-f" id="hud-hp" style="width:100%"></div></div></div>
+      <div class="hud-br"><span class="hud-bl">XP</span><div class="hud-bt"><div class="hud-bf xp-f" id="hud-xp" style="width:0%"></div></div></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-lv" id="hud-lv">LVL 1</div>
+      <div class="hud-pts">📜 <span id="hud-pts">0</span></div>
+    </div>
+  </div>
+  <div class="world-panel">
+    <div class="wp-title">🧠 Kingdom of Knowledge</div>
+    <div class="wp-sub">[ Choose Your Quest ]</div>
+    <div class="lang-tabs">
+      <div class="lang-tab indo active" id="tab-stem" onclick="switchTrack('stem')">🔢 STEM Quest</div>
+      <div class="lang-tab eng" id="tab-world" onclick="switchTrack('world')">🌍 World Quest</div>
+    </div>
+    <div class="pv-banner">
+      <div class="pv-banner-ico">🔓</div>
+      <div class="pv-banner-title">This is a PREVIEW — 1 of 6 quests per track unlocked!</div>
+      <div class="pv-banner-desc">
+        The full version includes <b>12 quests</b> + 2 Boss Battles:<br>
+        🔢 Numbers · ➕ Addition · 🔬 Science · 🫀 Health · 🌦️ Weather (STEM)<br>
+        🦁 Animals · 🌳 Habitats · 🗺️ Geography · 🚀 Space · 🌐 Culture (World)<br>
+        — plus full music & sound effects! 🎵
+      </div>
+      <a class="pv-banner-cta" href="https://wa.me/6289630486382?text=Hi%20WNJ%20Little%20World!%20I%27d%20like%20to%20buy%20the%20full%20version%20of%20Wonder%20Quest%20%F0%9F%A7%A0" target="_blank">💬 Get the Full Version via WhatsApp</a>
+    </div>
+    <div class="quest-grid" id="quest-grid"></div>
+  </div>
+</div>
+
+<!-- BATTLE -->
+<div id="screen-battle" class="hidden">
+  <div class="hud" style="padding:8px 13px;margin-bottom:9px;">
+    <div class="hud-av" id="hud2-av">🔬</div>
+    <div><div class="hud-nm" id="hud2-nm">Scientist</div></div>
+    <div class="hud-bars" style="min-width:100px;">
+      <div class="hud-br"><span class="hud-bl">HP</span><div class="hud-bt"><div class="hud-bf hp-f" id="hud2-hp" style="width:100%"></div></div></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-lv" id="hud2-lv">LVL 1</div>
+      <button onclick="goWorld()" style="background:rgba(255,215,0,0.07);border:1px solid var(--border);color:var(--text2);font-size:10px;padding:3px 8px;border-radius:20px;cursor:pointer;font-weight:700;">MAP</button>
+    </div>
+  </div>
+  <div class="battle-hdr" id="battle-hdr">
+    <div class="bh-lbl" id="bh-lbl">⚔ KNOWLEDGE BATTLE</div>
+    <div class="bh-nm" id="bh-nm">Quest</div>
+    <div class="bh-cnt" id="bh-cnt">1/6</div>
+  </div>
+  <div class="enemy-box">
+    <div class="eb-fig" id="eb-fig">👹</div>
+    <div>
+      <div class="eb-nm" id="eb-nm">The Confusion Thief</div>
+      <div class="eb-tp" id="eb-tp">VILLAIN</div>
+      <div class="eb-taunt" id="eb-taunt">"You can't defeat me!"</div>
+      <div class="eb-hpl">Enemy HP</div>
+      <div class="eb-hpt"><div class="eb-hpf" id="eb-hpf" style="width:100%"></div></div>
+    </div>
+  </div>
+  <div class="q-board" id="q-board">
+    <span class="qb-tag" id="qb-tag">TOPIC</span>
+    <div class="qb-num" id="qb-num">Question 1</div>
+    <span class="qb-vis" id="qb-vis">🧠</span>
+    <div class="qb-txt" id="qb-txt">Loading...</div>
+  </div>
+  <div class="opts-grid" id="opts-grid"></div>
+  <div class="feedback" id="feedback">
+    <div class="fb-head" id="fb-head"></div>
+    <div class="fb-exp" id="fb-exp"></div>
+    <div class="fb-tip" id="fb-tip"></div>
+  </div>
+  <button class="next-btn hidden" id="next-btn" onclick="nextQ()">Next ➡️</button>
+</div>
+
+<!-- RESULT -->
+<div id="screen-result" class="hidden">
+  <div class="res-panel">
+    <span class="res-ico" id="res-ico">🏆</span>
+    <div class="res-title" id="res-title">Quest Complete!</div>
+    <div class="res-sub" id="res-sub">Great job!</div>
+    <div class="res-stats">
+      <div class="rs"><span class="rs-v" id="rsv-b" style="color:var(--green)">0</span><span class="rs-l">Correct</span></div>
+      <div class="rs"><span class="rs-v" id="rsv-s" style="color:var(--gold)">0</span><span class="rs-l">Score</span></div>
+      <div class="rs"><span class="rs-v" id="rsv-r" style="color:var(--eng)">B</span><span class="rs-l">Rank</span></div>
+    </div>
+    <div class="res-rank" id="res-rank">📖 Learner</div>
+    <div class="res-btns">
+      <button class="rbtn" id="rbtn-retry" onclick="retryQuest()">🔄 Retry Quest!</button>
+      <button class="rbtn rmap" onclick="goWorld()">🗺️ World Map</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  const e=['🧠','✨','⭐','🔬','🌟','🚀','🎯','💫','🔢','🌈'];
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');el.className='fstar';
+    el.textContent=e[Math.floor(Math.random()*e.length)];
+    el.style.left=Math.random()*100+'vw';
+    const d=8+Math.random()*14;
+    el.style.animationDuration=d+'s';el.style.animationDelay=(Math.random()*d)+'s';
+    el.style.fontSize=(14+Math.random()*14)+'px';
+    document.body.appendChild(el);
+  }
+})();
+
+/* ===== COPYRIGHT NOTICE ===== */
+console.log('%cWONDER QUEST','font-size:18px;font-weight:bold;color:#ffd700;');
+console.log('© 2026 WNJ Little World. All Rights Reserved. Unauthorized copying or redistribution of this game is prohibited.');
+
+/* ===== MUSIC ENGINE (musik latar ceria & petualangan, dibuat dengan Web Audio API, tanpa file luar) ===== */
+const Music=(function(){
+  let ctx=null,master=null,sfxGain=null,enabled=false,timer=null;
+  const N={C3:130.81,D3:146.83,E3:164.81,F3:174.61,G3:196.00,A3:220.00,B3:246.94,
+    C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392.00,A4:440.00,B4:493.88,
+    C5:523.25,D5:587.33,E5:659.25,F5:698.46,G5:783.99,A5:880.00,B5:987.77,
+    C6:1046.50,D6:1174.66};
+  const EI=0.165; // panjang not seperdelapan -> tempo ceria & bersemangat
+  // melodi: arpeggio naik-turun riang (C-F-G-C), terasa seperti petualangan
+  const melody=[
+    ['C5',1],['E5',1],['G5',1],['E5',1],['C5',1],['E5',1],['G5',1],['E5',1],
+    ['F5',1],['A5',1],['C6',1],['A5',1],['F5',1],['A5',1],['C6',1],['A5',1],
+    ['G5',1],['B5',1],['D6',1],['B5',1],['G5',1],['B5',1],['D6',1],['B5',1],
+    ['C6',2],['G5',1],['E5',1],['C5',2],['G4',2],
+  ];
+  const bass=[
+    ['C3',2],['G3',2],['C3',2],['G3',2],
+    ['F3',2],['C3',2],['F3',2],['C3',2],
+    ['G3',2],['D3',2],['G3',2],['D3',2],
+    ['C3',4],['G3',4],
+  ];
+  function ensureCtx(){
+    if(!ctx){
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+      sfxGain=ctx.createGain();sfxGain.gain.value=0.9;sfxGain.connect(ctx.destination);
+    }
+    if(ctx.state==='suspended')ctx.resume();
+  }
+  function tone(freq,start,dur,type,peak){
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(master);
+    const a=0.012,r=Math.min(dur*0.35,0.1);
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.linearRampToValueAtTime(peak,start+a);
+    g.gain.setValueAtTime(peak,Math.max(start+a,start+dur-r));
+    g.gain.linearRampToValueAtTime(0.0001,start+dur);
+    o.start(start);o.stop(start+dur+0.02);
+  }
+  function scheduleLoop(){
+    const startAt=ctx.currentTime+0.05;
+    let t=startAt;
+    melody.forEach(([note,len])=>{tone(N[note],t,len*EI*0.9,'square',0.06);t+=len*EI;});
+    let tb=startAt;
+    bass.forEach(([note,len])=>{tone(N[note],tb,len*EI*0.95,'triangle',0.075);tb+=len*EI;});
+    const totalBeats=melody.reduce((s,[,l])=>s+l,0);
+    timer=setTimeout(scheduleLoop,totalBeats*EI*1000-40);
+  }
+  function start(){
+    ensureCtx();enabled=true;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0.8,ctx.currentTime+0.5);
+    if(!timer)scheduleLoop();
+  }
+  function stop(){
+    enabled=false;
+    if(ctx){master.gain.cancelScheduledValues(ctx.currentTime);master.gain.linearRampToValueAtTime(0,ctx.currentTime+0.25);}
+    if(timer){clearTimeout(timer);timer=null;}
+  }
+  function sfxTone(freq,start,dur,type,peak){
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.type=type;o.frequency.value=freq;
+    o.connect(g);g.connect(sfxGain);
+    const a=0.006,r=Math.min(dur*0.4,0.07);
+    g.gain.setValueAtTime(0.0001,start);
+    g.gain.linearRampToValueAtTime(peak,start+a);
+    g.gain.setValueAtTime(peak,Math.max(start+a,start+dur-r));
+    g.gain.linearRampToValueAtTime(0.0001,start+dur);
+    o.start(start);o.stop(start+dur+0.02);
+  }
+  function playCorrect(){
+    ensureCtx();
+    const seq=[['C5',0.09],['E5',0.09],['G5',0.09],['C6',0.22]];
+    let t=ctx.currentTime;
+    seq.forEach(([note,dur])=>{sfxTone(N[note],t,dur,'square',0.18);t+=dur*0.82;});
+  }
+  function playWrong(){
+    ensureCtx();
+    const t=ctx.currentTime;
+    sfxTone(587.33,t,0.14,'square',0.26);
+    sfxTone(391.99,t+0.13,0.26,'square',0.26);
+  }
+  function toggle(){enabled?stop():start();return enabled;}
+  return {toggle,isEnabled:()=>enabled,playCorrect,playWrong};
+})();
+
+function toggleMusic(){
+  const on=Music.toggle();
+  document.getElementById('music-toggle').textContent=on?'🔊':'🔇';
+}
+
+function beginGame(){
+  if(!Music.isEnabled())toggleMusic();
+  goWorld();
+}
+
+const HEROES=[
+  {e:'🔬',n:'Scientist',sk:'SCIENTIST · WISE',hp:120,iq:0.28,pts:80},
+  {e:'🛡️',n:'Knight',sk:'KNIGHT · STRONG',hp:180,iq:0.14,pts:60},
+  {e:'🧚',n:'Star Fairy',sk:'FAIRY · AGILE',hp:150,iq:0.21,pts:100},
+];
+const RANKS=['BEGINNER','LEARNER','SMART STUDENT','EXPERT','MASTER OF WISDOM'];
+
+const QUESTS={
+  // ===== STEM QUEST =====
+  numbers:{track:'stem',name:'🔢 Numbers & Shapes',cls:'qi1',ico:'🔢',lv:'PRE-K-K · EASY',desc:'Learn to count and recognize shapes!',tag:'NUMBERS',
+    enemies:[{e:'👹',n:'Count Confuser'},{e:'🐛',n:'Mixed-Up Bug'},{e:'🦕',n:'Forgetful Dino'},{e:'👺',n:'Shape Shifter'},{e:'🐙',n:'Chaos Octopus'},{e:'💀',n:'Number Nemesis'}],
+    questions:[
+      {v:'🔢',q:'How many apples are there? 🍎🍎🍎',opts:['2','3','4','5'],ans:1,exp:'There are 3 apples! Let\'s count: 1, 2, 3!',tip:'💡 Counting helps us know "how many" of something there is!'},
+      {v:'🔺',q:'What shape has 3 sides?',opts:['Circle','Square','Triangle','Rectangle'],ans:2,exp:'A TRIANGLE has exactly 3 sides and 3 corners!',tip:'💡 Tri- means "three" — like a tricycle has 3 wheels!'},
+      {v:'🔢',q:'What number comes after 7?',opts:['6','8','9','5'],ans:1,exp:'8 comes right after 7 when we count: ...6, 7, 8, 9...',tip:'💡 Counting forward means the numbers get bigger by 1 each time!'},
+      {v:'⭕',q:'Which shape is round with no corners?',opts:['Square','Triangle','Circle','Star'],ans:2,exp:'A CIRCLE is perfectly round and has no corners or straight sides!',tip:'💡 Wheels, the sun, and clocks are all shaped like circles!'},
+      {v:'🔢',q:'Which number is the BIGGEST?',opts:['4','9','2','7'],ans:1,exp:'9 is the biggest number in this group!',tip:'💡 The further along we count, the bigger the number gets!'},
+      {v:'🟦',q:'A shape with 4 equal sides is called a...',opts:['Triangle','Square','Circle','Oval'],ans:1,exp:'A SQUARE has 4 sides that are all the same length!',tip:'💡 A square\'s 4 corners are all perfect right angles!'},
+    ]
+  },
+  addition:{track:'stem',name:'➕ Addition Adventure',cls:'qi2',ico:'➕',lv:'GRADE 1-2 · EASY',desc:'Master addition and subtraction!',tag:'MATH',
+    enemies:[{e:'👹',n:'Sum Stealer'},{e:'🐛',n:'Minus Monster'},{e:'🦕',n:'Equation Eater'},{e:'👺',n:'Wrong Answer King'},{e:'🐙',n:'Math Muddle'},{e:'💀',n:'Calculation Crusher'}],
+    questions:[
+      {v:'➕',q:'What is 3 + 2?',opts:['4','5','6','7'],ans:1,exp:'3 + 2 = 5! Try counting on your fingers!',tip:'💡 Addition means putting groups together to find the total!'},
+      {v:'➖',q:'What is 8 - 3?',opts:['4','5','6','3'],ans:1,exp:'8 - 3 = 5! Subtraction means taking away.',tip:'💡 Subtraction is the opposite of addition — it makes numbers smaller!'},
+      {v:'➕',q:'What is 6 + 4?',opts:['9','10','11','8'],ans:1,exp:'6 + 4 = 10! Numbers that add up to 10 are special friends!',tip:'💡 "Making 10" is a great trick: 6+4, 7+3, 8+2 all equal 10!'},
+      {v:'🔢',q:'Which sign means "take away"?',opts:['+','-','=','x'],ans:1,exp:'The minus sign (-) means subtraction, or "take away"!',tip:'💡 Plus (+) means add, minus (-) means subtract!'},
+      {v:'➖',q:'What is 10 - 7?',opts:['2','3','4','5'],ans:1,exp:'10 - 7 = 3! Count backwards from 10: 9, 8, 7... that\'s 3 steps!',tip:'💡 You can check subtraction by adding back: 3 + 7 = 10!'},
+      {v:'➕',q:'If you have 5 candies and get 5 more, how many do you have?',opts:['9','10','11','8'],ans:1,exp:'5 + 5 = 10 candies! Doubling 5 gives you 10.',tip:'💡 "Doubles" like 5+5 or 4+4 are fast to remember!'},
+    ]
+  },
+  science:{track:'stem',name:'🔬 Science Lab',cls:'qi3',ico:'🔬',lv:'GRADE 2-3 · MEDIUM',desc:'Discover states of matter and simple science!',tag:'SCIENCE',
+    enemies:[{e:'👹',n:'Mixed-Up Molecule'},{e:'🐛',n:'Confused Bug'},{e:'🦕',n:'Ancient Mistake'},{e:'👺',n:'Reaction Wrecker'},{e:'🐙',n:'Lab Chaos'},{e:'💀',n:'Science Saboteur'}],
+    questions:[
+      {v:'🧊',q:'What happens to ice when it gets warm?',opts:['It turns into gas instantly','It melts into water','It gets harder','Nothing happens'],ans:1,exp:'Ice MELTS into water when it warms up — a solid turning into a liquid!',tip:'💡 The 3 states of matter are solid, liquid, and gas!'},
+      {v:'☀️',q:'What gives plants energy to grow?',opts:['Moonlight','Sunlight','Darkness','Snow'],ans:1,exp:'Plants use SUNLIGHT through a process called photosynthesis to grow!',tip:'💡 Plants also need water and air (carbon dioxide) to make their food!'},
+      {v:'🧪',q:'What do we call water in its gas form?',opts:['Ice','Steam/Vapor','Snow','Liquid'],ans:1,exp:'Water becomes STEAM or VAPOR when it turns into a gas, like when it boils!',tip:'💡 Water can be solid (ice), liquid (water), or gas (steam)!'},
+      {v:'🧲',q:'What can a magnet attract?',opts:['Wood','Plastic','Metal like iron','Paper'],ans:2,exp:'Magnets attract metals like IRON and steel — not wood, plastic, or paper!',tip:'💡 The pulling force of a magnet is called magnetism!'},
+      {v:'🌱',q:'What do seeds need to grow into plants?',opts:['Only sunlight','Water, sunlight, and soil','Only ice','Only darkness'],ans:1,exp:'Seeds need WATER, SUNLIGHT, and SOIL to grow into healthy plants!',tip:'💡 A tiny seed already has everything it needs, it just needs the right conditions!'},
+      {v:'⚗️',q:'When you mix two things and they form something new, that\'s called a...',opts:['Solid','Reaction','Shadow','Sound'],ans:1,exp:'That\'s called a REACTION — like baking soda and vinegar fizzing together!',tip:'💡 Scientists do experiments to see how things react with each other!'},
+    ]
+  },
+  body:{track:'stem',name:'🫀 Body & Health',cls:'qi4',ico:'🫀',lv:'GRADE 2-4 · MEDIUM',desc:'Learn about your body and healthy habits!',tag:'HEALTH',
+    enemies:[{e:'👹',n:'Germy Goblin'},{e:'🐛',n:'Sneaky Sickness'},{e:'🦕',n:'Tired Titan'},{e:'👺',n:'Junk Food King'},{e:'🐙',n:'Sleepy Chaos'},{e:'💀',n:'Health Hazard'}],
+    questions:[
+      {v:'🫀',q:'Which organ pumps blood through your body?',opts:['Brain','Heart','Stomach','Lungs'],ans:1,exp:'The HEART pumps blood to every part of your body!',tip:'💡 Your heart beats about 100,000 times every single day!'},
+      {v:'🫁',q:'Which body part helps you breathe?',opts:['Lungs','Bones','Skin','Hair'],ans:0,exp:'Your LUNGS take in oxygen from the air when you breathe!',tip:'💡 You have two lungs, and they expand like balloons when you breathe in!'},
+      {v:'🦴',q:'What gives your body its shape and support?',opts:['Muscles','Skin','Bones (Skeleton)','Blood'],ans:2,exp:'Your BONES form your skeleton, which supports and shapes your whole body!',tip:'💡 Adults have 206 bones, but babies are born with even more!'},
+      {v:'🪥',q:'What is the BEST habit to keep your teeth healthy?',opts:['Eating lots of candy','Brushing your teeth twice a day','Never drinking water','Skipping the dentist'],ans:1,exp:'Brushing your TEETH twice a day helps remove germs and keeps cavities away!',tip:'💡 Don\'t forget to floss and visit the dentist regularly too!'},
+      {v:'🥦',q:'Which food group helps your body grow strong and healthy?',opts:['Candy and soda','Fruits and vegetables','Only chips','Only ice cream'],ans:1,exp:'FRUITS and VEGETABLES are packed with vitamins that help your body grow strong!',tip:'💡 Try to eat a "rainbow" of colorful fruits and veggies every day!'},
+      {v:'😴',q:'Why is sleep important for your body?',opts:['It wastes time','It helps your body rest and grow','It makes you weaker','It is not important'],ans:1,exp:'SLEEP helps your body rest, repair itself, and grow — especially your brain!',tip:'💡 Kids need about 9-12 hours of sleep every night to stay healthy!'},
+    ]
+  },
+  weather:{track:'stem',name:'🌦️ Weather & Seasons',cls:'qi5',ico:'🌦️',lv:'GRADE 3-5 · MEDIUM',desc:'Explore weather, seasons, and the water cycle!',tag:'WEATHER',
+    enemies:[{e:'👹',n:'Storm Stirrer'},{e:'🐛',n:'Cloudy Confuser'},{e:'🦕',n:'Ancient Drizzle'},{e:'👺',n:'Season Switcher'},{e:'🐙',n:'Weather Whirl'},{e:'💀',n:'Climate Chaos'}],
+    questions:[
+      {v:'☔',q:'What falls from clouds when it rains?',opts:['Sunlight','Water droplets','Sand','Leaves'],ans:1,exp:'Rain is made of WATER DROPLETS that fall from clouds!',tip:'💡 Clouds form when water vapor in the air cools into tiny droplets!'},
+      {v:'🌞',q:'Which season is usually the hottest?',opts:['Winter','Summer','Fall/Autumn','Spring'],ans:1,exp:'SUMMER is usually the hottest season because the sun\'s rays are stronger!',tip:'💡 The four seasons are spring, summer, fall (autumn), and winter!'},
+      {v:'❄️',q:'What is snow made of?',opts:['Frozen water crystals','Cotton','Sand','Sugar'],ans:0,exp:'Snow is made of tiny FROZEN WATER CRYSTALS that fall from cold clouds!',tip:'💡 No two snowflakes are exactly alike — each one has a unique pattern!'},
+      {v:'🌡️',q:'What instrument measures temperature?',opts:['Thermometer','Ruler','Clock','Scale'],ans:0,exp:'A THERMOMETER measures how hot or cold something is!',tip:'💡 Temperature can be measured in Celsius (°C) or Fahrenheit (°F)!'},
+      {v:'🍂',q:'In which season do leaves usually fall from trees?',opts:['Summer','Winter','Fall/Autumn','Spring'],ans:2,exp:'Leaves usually fall in FALL (Autumn) as trees prepare for winter!',tip:'💡 That\'s why Fall is also called "Autumn" — leaves change color and fall!'},
+      {v:'💧',q:'What is the journey of water from clouds to rivers and back called?',opts:['Water cycle','Food chain','Rock cycle','Light cycle'],ans:0,exp:'This is the WATER CYCLE — water evaporates, forms clouds, falls as rain, and flows back!',tip:'💡 The water cycle has been recycling the same water on Earth for millions of years!'},
+    ]
+  },
+  bossStem:{track:'stem',name:'🏆 BOSS: STEM Champion',cls:'qi6',ico:'🏆',lv:'ALL GRADES · FINAL STEM',desc:'Final STEM test — everything you\'ve learned!',tag:'FINAL STEM',
+    enemies:[{e:'🏆',n:'STEM CHAMPION'},{e:'💀',n:'OMEGA SCIENTIST'},{e:'🌑',n:'MATH VOID'},{e:'🔥',n:'SCIENCE FIRE'},{e:'⚡',n:'LOGIC STORM'},{e:'☠️',n:'KNOWLEDGE LORD'}],
+    questions:[
+      {v:'🔢',q:'What is 7 + 8?',opts:['14','15','16','13'],ans:1,exp:'7 + 8 = 15!',tip:'💡 Trick: 7+8 is the same as 7+7+1 = 14+1 = 15!'},
+      {v:'🌍',q:'What is the name of the planet we live on?',opts:['Mars','Earth','Venus','Jupiter'],ans:1,exp:'We live on EARTH, the third planet from the Sun!',tip:'💡 Earth is the only known planet with life — thanks to water and air!'},
+      {v:'🧪',q:'What are the three states of matter?',opts:['Hot, warm, cold','Solid, liquid, gas','Big, medium, small','Fast, slow, still'],ans:1,exp:'The three states of matter are SOLID, LIQUID, and GAS!',tip:'💡 Water can be all three: ice (solid), water (liquid), steam (gas)!'},
+      {v:'➗',q:'What is 12 ÷ 3?',opts:['3','4','5','6'],ans:1,exp:'12 ÷ 3 = 4, because 3 groups of 4 make 12!',tip:'💡 Division means sharing a number into equal groups!'},
+      {v:'🫀',q:'Which body system carries blood around your body?',opts:['Digestive system','Circulatory system','Skeletal system','Nervous system'],ans:1,exp:'The CIRCULATORY SYSTEM (heart + blood vessels) carries blood around your body!',tip:'💡 Your circulatory system delivers oxygen and nutrients to every cell!'},
+      {v:'🌦️',q:'What causes the seasons to change on Earth?',opts:['Earth getting closer to the Sun','Earth\'s tilt as it orbits the Sun','The Moon\'s gravity','Ocean currents only'],ans:1,exp:'Earth\'s TILT as it orbits the Sun causes different seasons throughout the year!',tip:'💡 When your part of Earth tilts toward the Sun, you get summer!'},
+    ]
+  },
+
+  // ===== WORLD QUEST =====
+  animals:{track:'world',name:'🦁 Animal Kingdom',cls:'qe1',ico:'🦁',lv:'PRE-K-K · EASY',desc:'Meet amazing animals from around the world!',tag:'ANIMALS',
+    enemies:[{e:'👹',n:'Lost Cub'},{e:'🐛',n:'Confused Caterpillar'},{e:'🦕',n:'Sleepy Dino'},{e:'👺',n:'Wild Trickster'},{e:'🐙',n:'Tangled Octopus'},{e:'💀',n:'Animal Outlaw'}],
+    questions:[
+      {v:'🐱',q:'What sound does a cat make?',opts:['Woof','Meow','Moo','Quack'],ans:1,exp:'A cat says "MEOW"!',tip:'💡 Different animals make different sounds — that\'s called onomatopoeia!'},
+      {v:'🦁',q:'Which animal is known as the "King of the Jungle"?',opts:['Elephant','Lion','Monkey','Zebra'],ans:1,exp:'The LION is often called the "King of the Jungle" because of its mighty roar!',tip:'💡 Lions actually live mostly in grasslands, not jungles!'},
+      {v:'🐘',q:'Which is the largest land animal in the world?',opts:['Elephant','Horse','Lion','Giraffe'],ans:0,exp:'The ELEPHANT is the largest land animal on Earth!',tip:'💡 An adult elephant can weigh as much as 7,000 kg!'},
+      {v:'🐦',q:'Which animal can fly using its wings?',opts:['Fish','Bird','Snake','Turtle'],ans:1,exp:'BIRDS use their wings to fly through the sky!',tip:'💡 Not all birds can fly though — penguins and ostriches can\'t!'},
+      {v:'🐟',q:'Where do fish usually live?',opts:['In trees','In water','In the sky','In caves only'],ans:1,exp:'Fish live in WATER — rivers, lakes, and oceans!',tip:'💡 Fish breathe using gills, which let them get oxygen from water!'},
+      {v:'🐸',q:'What is a baby frog called?',opts:['Puppy','Cub','Tadpole','Kitten'],ans:2,exp:'A baby frog is called a TADPOLE before it grows legs!',tip:'💡 Tadpoles live in water and breathe with gills, just like fish!'},
+    ]
+  },
+  habitats:{track:'world',name:'🌳 Habitats & Nature',cls:'qe2',ico:'🌳',lv:'GRADE 1-2 · EASY',desc:'Learn where animals and plants live!',tag:'NATURE',
+    enemies:[{e:'👹',n:'Lost Habitat Ghost'},{e:'🐛',n:'Wandering Bug'},{e:'🦕',n:'Habitat Hog'},{e:'👺',n:'Nature Nuisance'},{e:'🐙',n:'Eco Chaos'},{e:'💀',n:'Habitat Hijacker'}],
+    questions:[
+      {v:'🐧',q:'Where do penguins mostly live?',opts:['Desert','Cold, icy places','Rainforest','Mountains only'],ans:1,exp:'Penguins live in COLD, ICY places like Antarctica!',tip:'💡 Penguins have thick feathers and fat to keep them warm in freezing weather!'},
+      {v:'🐪',q:'Which animal is well-suited to live in the hot desert?',opts:['Polar bear','Penguin','Camel','Whale'],ans:2,exp:'CAMELS are perfectly suited for deserts — they can go days without water!',tip:'💡 A camel\'s hump stores fat, not water, giving it energy!'},
+      {v:'🌳',q:'What do we call a home full of tall trees and lots of rain?',opts:['Desert','Rainforest','Glacier','Ocean'],ans:1,exp:'A RAINFOREST is a thick forest that gets lots of rain and has many plants and animals!',tip:'💡 Rainforests are home to more than half of the world\'s animal and plant species!'},
+      {v:'🐻',q:'What do we call the natural home of an animal?',opts:['Habitat','Hobby','Holiday','Harvest'],ans:0,exp:'A HABITAT is the natural home where an animal lives and finds food!',tip:'💡 Different animals need different habitats — fish need water, birds need trees!'},
+      {v:'🌊',q:'Which habitat is full of salty water and coral reefs?',opts:['Desert','Ocean','Forest','Mountain'],ans:1,exp:'The OCEAN is full of salty water, coral reefs, and amazing sea creatures!',tip:'💡 The ocean covers more than 70% of Earth\'s surface!'},
+      {v:'🦋',q:'Why are bees and butterflies important to plants?',opts:['They eat all the leaves','They help pollinate flowers','They scare away animals','They have no effect'],ans:1,exp:'Bees and butterflies help POLLINATE flowers, helping plants make seeds and fruit!',tip:'💡 Without pollinators like bees, many plants couldn\'t reproduce!'},
+    ]
+  },
+  world:{track:'world',name:'🗺️ World & Continents',cls:'qe3',ico:'🗺️',lv:'GRADE 2-4 · MEDIUM',desc:'Explore continents, oceans, and famous places!',tag:'GEOGRAPHY',
+    enemies:[{e:'👹',n:'Map Mixer'},{e:'🐛',n:'Lost Traveler Bug'},{e:'🦕',n:'Ancient Wanderer'},{e:'👺',n:'Globe Goblin'},{e:'🐙',n:'Continent Chaos'},{e:'💀',n:'Geography Ghost'}],
+    questions:[
+      {v:'🗺️',q:'How many continents are there on Earth?',opts:['5','6','7','8'],ans:2,exp:'There are 7 continents: Asia, Africa, North America, South America, Antarctica, Europe, and Australia!',tip:'💡 Asia is the largest continent, and Australia is the smallest!'},
+      {v:'🏔️',q:'What is the tallest mountain in the world?',opts:['Mount Fuji','Mount Everest','Mount Kilimanjaro','Mount Rainier'],ans:1,exp:'MOUNT EVEREST in the Himalayas is the tallest mountain on Earth!',tip:'💡 Mount Everest is about 8,849 meters tall — almost 9 km high!'},
+      {v:'🌊',q:'What is the largest ocean on Earth?',opts:['Atlantic Ocean','Indian Ocean','Pacific Ocean','Arctic Ocean'],ans:2,exp:'The PACIFIC OCEAN is the largest and deepest ocean on Earth!',tip:'💡 The Pacific Ocean covers about a third of the Earth\'s surface!'},
+      {v:'🏜️',q:'Which is the largest hot desert in the world?',opts:['Gobi Desert','Sahara Desert','Mojave Desert','Kalahari Desert'],ans:1,exp:'The SAHARA DESERT in Africa is the largest hot desert in the world!',tip:'💡 The Sahara is almost as big as the entire United States!'},
+      {v:'🌎',q:'Which continent is Indonesia part of?',opts:['Africa','Asia','Europe','Australia'],ans:1,exp:'Indonesia is part of ASIA, located in Southeast Asia!',tip:'💡 Indonesia is made up of more than 17,000 islands!'},
+      {v:'🧊',q:'Which continent is covered almost entirely by ice?',opts:['Africa','Antarctica','Asia','Europe'],ans:1,exp:'ANTARCTICA is covered almost entirely by thick ice and snow!',tip:'💡 Antarctica is the coldest, windiest, and driest continent on Earth!'},
+    ]
+  },
+  space:{track:'world',name:'🚀 Space Explorer',cls:'qe4',ico:'🚀',lv:'GRADE 3-5 · MEDIUM',desc:'Journey through the solar system and beyond!',tag:'SPACE',
+    enemies:[{e:'👹',n:'Asteroid Annoyer'},{e:'🐛',n:'Space Bug'},{e:'🦕',n:'Cosmic Dino'},{e:'👺',n:'Meteor Menace'},{e:'🐙',n:'Galactic Chaos'},{e:'💀',n:'Void Voyager'}],
+    questions:[
+      {v:'☀️',q:'What is at the center of our solar system?',opts:['Earth','The Moon','The Sun','Mars'],ans:2,exp:'The SUN is at the center of our solar system, and all planets orbit around it!',tip:'💡 The Sun is actually a giant star made mostly of hydrogen and helium!'},
+      {v:'🌕',q:'What is the name of Earth\'s natural satellite?',opts:['Mars','The Moon','Venus','A comet'],ans:1,exp:'THE MOON is Earth\'s natural satellite — it orbits around our planet!',tip:'💡 It takes about 27 days for the Moon to orbit the Earth once!'},
+      {v:'🪐',q:'Which planet is famous for its big rings?',opts:['Mercury','Saturn','Earth','Mars'],ans:1,exp:'SATURN is famous for its beautiful rings made of ice and rock!',tip:'💡 Saturn\'s rings are so wide they could fit many Earths side by side!'},
+      {v:'🔴',q:'Which planet is known as the "Red Planet"?',opts:['Venus','Mars','Jupiter','Neptune'],ans:1,exp:'MARS is called the "Red Planet" because of its rusty, red-colored soil!',tip:'💡 Scientists explore Mars with rovers to search for signs of past water!'},
+      {v:'🚀',q:'What do we call a person who travels into space?',opts:['Pilot','Astronaut','Diver','Explorer'],ans:1,exp:'A person who travels into space is called an ASTRONAUT!',tip:'💡 The first person to travel into space was Yuri Gagarin in 1961!'},
+      {v:'🌌',q:'What do we call a huge group of billions of stars?',opts:['A planet','A galaxy','A comet','A moon'],ans:1,exp:'A GALAXY is a huge group of billions of stars, planets, and dust held together by gravity!',tip:'💡 We live in a galaxy called the Milky Way!'},
+    ]
+  },
+  community:{track:'world',name:'🌐 Culture & Community',cls:'qe5',ico:'🌐',lv:'GRADE 3-5 · MEDIUM',desc:'Discover communities, helpers, and cultures!',tag:'COMMUNITY',
+    enemies:[{e:'👹',n:'Rude Goblin'},{e:'🐛',n:'Gossip Bug'},{e:'🦕',n:'Grumpy Giant'},{e:'👺',n:'Unkind Trickster'},{e:'🐙',n:'Community Chaos'},{e:'💀',n:'Discord Demon'}],
+    questions:[
+      {v:'👩‍🚒',q:'Who helps put out fires and rescue people in emergencies?',opts:['Teacher','Firefighter','Chef','Farmer'],ans:1,exp:'FIREFIGHTERS help put out fires and rescue people during emergencies!',tip:'💡 Firefighters also teach communities about fire safety!'},
+      {v:'👩‍⚕️',q:'Who helps take care of sick people and keep us healthy?',opts:['Doctor','Pilot','Artist','Driver'],ans:0,exp:'DOCTORS help take care of sick people and keep our community healthy!',tip:'💡 Nurses, dentists, and doctors all work together to keep us well!'},
+      {v:'🏛️',q:'What do we call the special rules a country follows to be governed?',opts:['Recipes','Laws','Songs','Games'],ans:1,exp:'LAWS are the rules a country follows to keep people safe and treated fairly!',tip:'💡 Laws help communities work together peacefully!'},
+      {v:'🌐',q:'What do we call the traditions, food, and language shared by a group of people?',opts:['Weather','Culture','Geography','Climate'],ans:1,exp:'CULTURE includes the traditions, food, language, and customs shared by a group of people!',tip:'💡 The world has thousands of different cultures, each one special and unique!'},
+      {v:'🤝',q:'Why is it important to respect people from different cultures?',opts:['It is not important','Because everyone deserves kindness and respect','Only some people deserve respect','To make fun of differences'],ans:1,exp:'Everyone deserves kindness and respect, no matter where they come from!',tip:'💡 Learning about other cultures helps us appreciate our differences!'},
+      {v:'🏫',q:'What is a place where children go to learn together?',opts:['Hospital','School','Market','Airport'],ans:1,exp:'A SCHOOL is a place where children go to learn together with teachers!',tip:'💡 Schools help children learn skills they\'ll use their whole lives!'},
+    ]
+  },
+  bossWorld:{track:'world',name:'🏆 BOSS: World Champion',cls:'qe6',ico:'🏆',lv:'ALL GRADES · FINAL WORLD',desc:'Final World test — everything you\'ve learned!',tag:'FINAL WORLD',
+    enemies:[{e:'🏆',n:'WORLD CHAMPION'},{e:'💀',n:'OMEGA EXPLORER'},{e:'🌑',n:'GEOGRAPHY VOID'},{e:'🔥',n:'SPACE FIRE'},{e:'⚡',n:'NATURE STORM'},{e:'☠️',n:'DISCOVERY LORD'}],
+    questions:[
+      {v:'🌍',q:'What is the name of the planet we live on?',opts:['Mars','Jupiter','Earth','Venus'],ans:2,exp:'We live on EARTH, the only planet known to have life!',tip:'💡 Earth is the third planet from the Sun!'},
+      {v:'🗻',q:'Which continent has the most countries?',opts:['Asia','Africa','Europe','South America'],ans:1,exp:'AFRICA has the most countries — 54 in total!',tip:'💡 Africa is also the second-largest continent after Asia!'},
+      {v:'🐋',q:'What is the largest animal on Earth?',opts:['Elephant','Blue Whale','Giraffe','Shark'],ans:1,exp:'The BLUE WHALE is the largest animal to have ever lived on Earth!',tip:'💡 A blue whale can grow up to 30 meters long — longer than 3 school buses!'},
+      {v:'🪐',q:'How many planets are in our solar system?',opts:['7','8','9','10'],ans:1,exp:'There are 8 planets in our solar system!',tip:'💡 They are: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune!'},
+      {v:'🌐',q:'What do we call people working together to help their neighborhood?',opts:['Competition','Community','Confusion','Collection'],ans:1,exp:'A COMMUNITY is a group of people who live and work together, helping one another!',tip:'💡 Being a good community member means being kind and helpful to others!'},
+      {v:'🧭',q:'What tool helps you find direction (North, South, East, West)?',opts:['Telescope','Compass','Microscope','Thermometer'],ans:1,exp:'A COMPASS always points North, helping you find your direction!',tip:'💡 Old explorers used compasses to navigate the seas before GPS existed!'},
+    ]
+  },
+};
+
+
+let G={
+  heroIdx:-1,hp:120,maxHp:120,xp:0,lvl:1,pts:0,
+  track:'stem',quest:null,qs:[],idx:0,correct:0,score:0,answered:false,
+  progress:{numbers:0,addition:0,science:0,body:0,weather:0,bossStem:0,
+    animals:0,habitats:0,world:0,space:0,community:0,bossWorld:0},
+};
+
+const STEM_ORDER=['numbers','addition','science','body','weather','bossStem'];
+const WORLD_ORDER=['animals','habitats','world','space','community','bossWorld'];
+
+/* ===== PREVIEW MODE: only the first quest per track is unlocked ===== */
+const PREVIEW_LOCKED=new Set([...STEM_ORDER.slice(1),...WORLD_ORDER.slice(1)]);
+const WA_LINK='https://wa.me/6289630486382?text='+encodeURIComponent("Hi WNJ Little World! I'd like to buy the full version of Wonder Quest 🧠");
+
+function openPreviewModal(key){
+  const q=QUESTS[key];
+  document.getElementById('pv-modal-qname').textContent=q.name;
+  document.getElementById('pv-modal-wa').href=WA_LINK;
+  document.getElementById('pv-modal').classList.remove('hidden');
+}
+function closePreviewModal(){document.getElementById('pv-modal').classList.add('hidden');}
+
+function show(id){
+  ['screen-title','screen-map','screen-battle','screen-result'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function pickHero(i){
+  document.querySelectorAll('.hcard').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('h'+i).classList.add('sel');
+  G.heroIdx=i;const h=HEROES[i];G.hp=h.hp;G.maxHp=h.hp;G.pts=h.pts;
+  document.getElementById('start-btn').disabled=false;
+}
+
+function goWorld(){updateHUD();renderQuestGrid();show('screen-map');}
+
+function switchTrack(track){
+  G.track=track;
+  document.getElementById('tab-stem').classList.toggle('active',track==='stem');
+  document.getElementById('tab-world').classList.toggle('active',track==='world');
+  renderQuestGrid();
+}
+
+function renderQuestGrid(){
+  const order=G.track==='stem'?STEM_ORDER:WORLD_ORDER;
+  const grid=document.getElementById('quest-grid');
+  grid.innerHTML='';
+  order.forEach(key=>{
+    const q=QUESTS[key];
+    const total=6;const p=G.progress[key]||0;
+    const isBoss=key.startsWith('boss');
+    const locked=PREVIEW_LOCKED.has(key);
+    const badgeCls=locked?'qb-locked':(p>=total?'qb-done':(isBoss?(q.track==='world'?'qb-boss-eng':'qb-boss'):'qb-open'));
+    const badgeTxt=locked?'🔒 Full Ver.':(p>=total?'✅ Done!':(isBoss?(q.track==='world'?'🏆 BOSS WORLD':'👑 BOSS STEM'):'⚔ Start!'));
+    const div=document.createElement('div');
+    div.className='qcard '+q.cls+(locked?' qcard-locked':'');
+    div.innerHTML=`<div class="qc-top"><span class="qc-ico">${q.ico}</span>
+      <div><div class="qc-nm">${q.name}</div><div class="qc-lv">${q.lv}</div></div></div>
+      <div class="qc-desc">${q.desc}</div>
+      <div class="qc-foot"><span class="qc-badge ${badgeCls}">${badgeTxt}</span><span class="qc-prog">${locked?'🔒':p+'/'+total}</span></div>`;
+    div.onclick=locked?()=>openPreviewModal(key):()=>startQuest(key);
+    grid.appendChild(div);
+  });
+}
+
+function updateHUD(){
+  if(G.heroIdx<0)return;
+  const h=HEROES[G.heroIdx];
+  ['hud-av','hud2-av'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=h.e;});
+  ['hud-nm','hud2-nm'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=h.n;});
+  document.getElementById('hud-sk').textContent=h.sk;
+  const hpP=Math.max(0,(G.hp/G.maxHp)*100);
+  ['hud-hp','hud2-hp'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.width=hpP+'%';});
+  document.getElementById('hud-xp').style.width=(G.xp%100)+'%';
+  ['hud-lv','hud2-lv'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='LVL '+G.lvl;});
+  document.getElementById('hud-pts').textContent=G.pts;
+}
+
+function startQuest(key){
+  G.quest=key;G.idx=0;G.correct=0;G.score=0;G.answered=false;
+  const q=QUESTS[key];
+  G.qs=[...q.questions].sort(()=>Math.random()-0.5).slice(0,6);
+  const isWorld=q.track==='world';
+  const banner=document.getElementById('battle-hdr');
+  banner.className='battle-hdr '+(isWorld?'bh-eng':'bh-indo');
+  document.getElementById('bh-lbl').className='bh-lbl '+(isWorld?'eng':'indo');
+  document.getElementById('bh-lbl').textContent=isWorld?'🌍 WORLD BATTLE':'🔢 STEM BATTLE';
+  document.getElementById('bh-nm').textContent=q.name;
+  updateHUD();show('screen-battle');loadQ();
+}
+function retryQuest(){startQuest(G.quest);}
+
+function loadQ(){
+  const q=QUESTS[G.quest];const qu=G.qs[G.idx];const total=G.qs.length;
+  const en=q.enemies[G.idx%q.enemies.length];
+  const isWorld=q.track==='world';
+  document.getElementById('bh-cnt').textContent=(G.idx+1)+'/'+total;
+  document.getElementById('eb-fig').textContent=en.e;
+  document.getElementById('eb-nm').textContent=en.n;
+  document.getElementById('eb-nm').className='eb-nm '+(isWorld?'eng':'indo');
+  document.getElementById('eb-tp').textContent=(isWorld?'WORLD':'STEM')+' VILLAIN';
+  const taunts=isWorld?['"You can\'t out-explore me!"','"Wrong again!"','"Give up now!"']:
+    ['"You can\'t out-smart me!"','"That\'s not even close!"','"Give up now!"'];
+  document.getElementById('eb-taunt').textContent=taunts[G.idx%taunts.length];
+  document.getElementById('eb-taunt').className='eb-taunt '+(isWorld?'eng':'indo');
+  document.getElementById('eb-hpf').style.width='100%';
+  const qb=document.getElementById('q-board');
+  qb.className='q-board '+(isWorld?'qb-eng':'qb-indo');
+  const tag=document.getElementById('qb-tag');
+  tag.textContent=q.tag;tag.className='qb-tag '+(isWorld?'eng':'indo');
+  document.getElementById('qb-num').textContent='Question '+(G.idx+1);
+  document.getElementById('qb-vis').textContent=qu.v;
+  document.getElementById('qb-txt').textContent=qu.q;
+  const shuffled=qu.opts.map((o,i)=>({t:o,orig:i})).sort(()=>Math.random()-0.5);
+  const letters=['A','B','C','D'];
+  const wrap=document.getElementById('opts-grid');wrap.innerHTML='';
+  shuffled.forEach((opt,i)=>{
+    const btn=document.createElement('button');btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-letter">${letters[i]}</span>${opt.t}`;
+    btn.onclick=()=>answerQ(opt.orig,qu.ans,qu.exp,qu.tip,btn,wrap,shuffled,isWorld);
+    wrap.appendChild(btn);
+  });
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('next-btn').classList.add('hidden');
+  G.answered=false;
+}
+
+function answerQ(chosen,correct,exp,tip,btn,wrap,shuffled,isWorld){
+  if(G.answered)return;G.answered=true;
+  wrap.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  if(ok){G.correct++;G.score+=100;
+    const xp=Math.round(20*(1+HEROES[G.heroIdx].iq));G.xp+=xp;G.pts+=10;
+    while(G.xp>=G.lvl*100)G.lvl++;
+    btn.classList.add('correct');document.getElementById('eb-hpf').style.width='0%';spawnSparks(true);
+    Music.playCorrect();
+  } else {
+    btn.classList.add('wrong');
+    shuffled.forEach((o,i)=>{if(o.orig===correct)wrap.querySelectorAll('.opt-btn')[i].classList.add('correct');});
+    const dmg=Math.round(20*(1-HEROES[G.heroIdx].iq*0.4));G.hp=Math.max(0,G.hp-dmg);spawnSparks(false);
+    Music.playWrong();
+  }
+  updateHUD();
+  const fb=document.getElementById('feedback');
+  const fbh=document.getElementById('fb-head');
+  fb.className='feedback show '+(ok?'ok':'bad');
+  fbh.className='fb-head '+(ok?'ok':'bad');
+  fbh.innerHTML=ok?'✅ Correct! +100 Score':'❌ Wrong! HP Reduced';
+  document.getElementById('fb-exp').textContent=exp;
+  document.getElementById('fb-tip').textContent=tip;
+  const nxt=document.getElementById('next-btn');
+  nxt.className='next-btn '+(isWorld?'eng-btn':'indo-btn');
+  nxt.textContent='Next Question ➡️';
+  nxt.classList.remove('hidden');
+}
+
+function nextQ(){
+  G.idx++;
+  if(G.idx>=G.qs.length){G.progress[G.quest]=Math.max(G.progress[G.quest]||0,G.qs.length);showResult();}
+  else loadQ();
+}
+
+function showResult(){
+  const total=G.qs.length,c=G.correct,pct=c/total;
+  const isWorld=QUESTS[G.quest].track==='world';
+  let ico,title,sub,rank,rc;
+  if(pct===1){ico='🏆';title='PERFECT!';sub='All correct! You\'re a true genius!';rank='🏆 Knowledge Master';rc='var(--gold)';}
+  else if(pct>=0.8){ico='🌟';title='EXCELLENT!';sub='Almost perfect! Keep it up!';rank='🌟 Expert';rc='var(--green)';}
+  else if(pct>=0.6){ico='📖';title='GOOD JOB!';sub='You\'re improving!';rank='📖 Smart Learner';rc='var(--eng)';}
+  else{ico='📚';title='KEEP TRYING!';sub='Practice makes perfect!';rank='📚 Learner';rc='var(--indo2)';}
+  document.getElementById('res-ico').textContent=ico;
+  document.getElementById('res-title').textContent=title;
+  document.getElementById('res-sub').textContent=sub;
+  document.getElementById('rsv-b').textContent=c+'/'+total;
+  document.getElementById('rsv-s').textContent=G.score;
+  document.getElementById('rsv-r').textContent=pct>=0.8?'A':pct>=0.6?'B':'C';
+  document.getElementById('rsv-r').style.color=rc;
+  const rr=document.getElementById('res-rank');rr.textContent=rank;rr.style.color=rc;rr.style.borderColor=rc;
+  const rb=document.getElementById('rbtn-retry');
+  rb.className='rbtn '+(isWorld?'reng':'rindo');
+  rb.textContent='🔄 Try Again!';
+  if(pct>=0.6)bigSparks();
+  show('screen-result');
+}
+
+function spawnSparks(ok){
+  const e=ok?['⭐','✨','🧠','💫','🌟','🎉']:['💪','🔄','🧠'];
+  for(let i=0;i<(ok?8:3);i++){setTimeout(()=>{
+    const el=document.createElement('div');el.className='spark';
+    el.textContent=e[Math.floor(Math.random()*e.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.fontSize=(14+Math.random()*14)+'px';
+    el.style.animationDuration=(1+Math.random())+'s';
+    el.style.color=ok?'var(--gold)':'var(--red2)';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),2200);
+  },i*90);}
+}
+function bigSparks(){
+  const e=['⭐','🌟','🧠','💫','🏆','✨','🚀','🎯','🌈','🔬'];
+  for(let i=0;i<24;i++){setTimeout(()=>{
+    const el=document.createElement('div');el.className='spark';
+    el.textContent=e[Math.floor(Math.random()*e.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.fontSize=(16+Math.random()*18)+'px';
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.color=['var(--gold)','var(--indo2)','var(--eng2)','var(--green)'][Math.floor(Math.random()*4)];
+    document.body.appendChild(el);setTimeout(()=>el.remove(),4500);
+  },i*105);}
+}
+</script>
+</body>
+</html>
