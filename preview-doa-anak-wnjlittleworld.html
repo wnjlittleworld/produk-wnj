@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Islamic Prayer Flashcards – Preview · WNJ Little World</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Lateef:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  min-height: 100%;
+  font-family: 'Nunito', sans-serif;
+  background: radial-gradient(ellipse at top, #1a1a6e 0%, #0a0a2e 60%, #020210 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* ── STARS & AMBIENCE ── */
+.stars-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.star-dot  { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--dur,3s) ease-in-out infinite var(--delay,0s); }
+@keyframes twinkle { 0%,100%{opacity:.15;transform:scale(1)} 50%{opacity:.9;transform:scale(1.4)} }
+
+.aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.aurora-blob {
+  position: absolute; border-radius: 50%; filter: blur(80px);
+  opacity: .13; animation: drift var(--dur,20s) ease-in-out infinite alternate var(--delay,0s);
+}
+@keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,30px) scale(1.1)} }
+
+.moon {
+  position: fixed; top: 14px; right: 14px; width: 44px; height: 44px;
+  background: radial-gradient(circle at 35% 35%, #ffd166, #ffaa00);
+  border-radius: 50%; z-index: 5;
+  box-shadow: 0 0 30px rgba(255,209,102,.55);
+  animation: moonGlow 4s ease-in-out infinite;
+}
+@keyframes moonGlow { 0%,100%{box-shadow:0 0 30px rgba(255,209,102,.5)} 50%{box-shadow:0 0 70px rgba(255,209,102,.85)} }
+
+/* ── FLOATERS ── */
+.floaters { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.floater  {
+  position: absolute; font-size: var(--size,1.5rem);
+  animation: floatUp var(--dur,12s) linear infinite var(--delay,0s);
+  opacity: 0;
+}
+@keyframes floatUp {
+  0%{transform:translateY(110vh) rotate(0);opacity:0}
+  10%{opacity:.6} 90%{opacity:.4}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+
+/* ── WRAPPER ── */
+.wrapper {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 440px;
+  padding: 0 18px 100px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 20px;
+}
+
+/* ── BADGE ── */
+.preview-badge {
+  margin-top: 28px;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,209,102,.1); border: 1px solid rgba(255,209,102,.3);
+  border-radius: 50px; padding: 5px 16px;
+  font-size: .68rem; font-weight: 800; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #ffd166;
+}
+
+/* ── APP TITLE ── */
+.app-title-wrap { text-align: center; }
+.app-emoji { font-size: 2.8rem; display: block; animation: sway 4s ease-in-out infinite; margin-bottom: 6px; }
+@keyframes sway { 0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} }
+.app-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.5rem, 6vw, 2.1rem);
+  color: #ffd166;
+  text-shadow: 0 0 28px rgba(255,209,102,.55);
+  line-height: 1.1; margin-bottom: 5px;
+}
+.app-sub {
+  color: rgba(255,255,255,.45);
+  font-size: .8rem; font-weight: 700;
+  letter-spacing: .4px;
+}
+
+/* ── ARABIC SAMPLE ── */
+.arabic-preview {
+  font-family: 'Lateef', serif;
+  font-size: 2rem;
+  direction: rtl;
+  color: rgba(255,209,102,.75);
+  text-shadow: 0 2px 16px rgba(255,209,102,.2);
+  text-align: center;
+  line-height: 2;
+  animation: fadeGlow 3s ease-in-out infinite;
+}
+@keyframes fadeGlow { 0%,100%{opacity:.7} 50%{opacity:1;text-shadow:0 2px 24px rgba(255,209,102,.45)} }
+
+/* ── STORY BOX (matches screenshot style) ── */
+.story-box {
+  width: 100%;
+  border: 1.5px solid rgba(255,209,102,.22);
+  border-radius: 20px;
+  padding: 20px 22px;
+  background: rgba(10, 10, 50, .55);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  position: relative;
+}
+.story-box::before {
+  content: '✦'; position: absolute; top: 12px; left: 18px;
+  color: rgba(255,209,102,.3); font-size: .9rem;
+}
+.story-box::after {
+  content: '✦'; position: absolute; bottom: 12px; right: 18px;
+  color: rgba(255,209,102,.3); font-size: .9rem;
+}
+.story-text {
+  color: rgba(255,255,255,.72);
+  font-size: .88rem; font-weight: 600;
+  line-height: 1.75; font-style: italic;
+}
+.story-text strong {
+  color: #ffd166; font-style: normal; font-weight: 800;
+}
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.25rem; color: #ffd166;
+  text-align: center;
+  text-shadow: 0 0 16px rgba(255,209,102,.3);
+  letter-spacing: .5px;
+}
+
+/* ── MODE CARDS (mirrors "Choose Your Hero" from screenshot) ── */
+.mode-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; width: 100%;
+}
+.mode-card {
+  background: rgba(255,255,255,.06);
+  border: 2px solid rgba(255,255,255,.12);
+  border-radius: 20px; padding: 18px 10px 14px;
+  text-align: center; cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.mode-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,209,102,.06), transparent);
+  opacity: 0; transition: opacity .25s;
+}
+.mode-card:hover::before, .mode-card.selected::before { opacity: 1; }
+.mode-card:hover, .mode-card.selected {
+  border-color: rgba(255,209,102,.55);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(0,0,0,.4), 0 0 0 1px rgba(255,209,102,.2);
+}
+.mode-card.selected { background: rgba(255,209,102,.1); }
+.mode-emoji { font-size: 2.2rem; display: block; }
+.mode-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: .95rem; color: #ffd166;
+}
+.mode-tags {
+  color: rgba(255,255,255,.4);
+  font-size: .6rem; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase;
+  line-height: 1.6;
+}
+.mode-stat {
+  width: 100%; display: flex; flex-direction: column; gap: 4px;
+  margin-top: 4px;
+}
+.stat-row {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .62rem; font-weight: 800;
+}
+.stat-lbl { color: rgba(255,255,255,.55); width: 22px; }
+.stat-bar-bg {
+  flex: 1; height: 5px;
+  background: rgba(255,255,255,.1); border-radius: 4px; overflow: hidden;
+}
+.stat-bar-fill { height: 100%; border-radius: 4px; }
+.stat-bar-fill.red  { background: #ff6b6b; }
+.stat-bar-fill.yel  { background: #ffd166; }
+.stat-val { color: rgba(255,255,255,.6); width: 28px; text-align: right; }
+
+/* ── CTA BUTTON ── */
+.cta-btn {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 50px; border: none; cursor: pointer;
+  background: linear-gradient(135deg, #c94b4b, #8b5cf6, #06b6d4);
+  background-size: 200% 200%;
+  animation: btnShimmer 4s ease-in-out infinite;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.2rem; color: rgba(255,255,255,.85);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.4);
+  transition: transform .2s, box-shadow .2s;
+  text-shadow: 0 1px 8px rgba(0,0,0,.3);
+}
+.cta-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 40px rgba(0,0,0,.5); }
+.cta-btn:active { transform: scale(.97); }
+@keyframes btnShimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+}
+
+/* ── BRAND FOOTER (exact style from screenshot) ── */
+.brand-footer {
+  width: 100%; text-align: center;
+  padding: 4px 0 0;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.brand-logo-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  border-radius: 50px;
+  padding: 2px 0 6px;
+}
+.brand-logo-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.35rem;
+  letter-spacing: .5px;
+}
+/* Gradient letters spelling "WNJ Little World" */
+.wnjgreen { color: #43d47a; }
+.wnjwhite { color: #ffffff; }
+.wnjblue  { color: #4cc9f0; }
+.earth-emoji { font-size: 1.2rem; vertical-align: middle; margin: 0 1px; }
+
+.brand-copyright {
+  color: rgba(255,255,255,.55);
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .2px;
+}
+.brand-tagline-sub {
+  color: rgba(255,255,255,.35);
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .3px;
+}
+
+.brand-made-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50px; padding: 6px 18px;
+  font-size: .75rem; font-weight: 800;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .3px;
+}
+.heart { color: #ff6b6b; }
+
+.brand-license-text {
+  color: rgba(255,255,255,.25);
+  font-size: .62rem; font-weight: 600;
+  line-height: 1.7; text-align: center;
+  padding: 0 12px;
+}
+
+/* ── STICKY FOOTER WATERMARK ── */
+.watermark {
+  position: fixed; bottom: 10px; left: 14px; z-index: 10;
+  color: rgba(255,255,255,.22);
+  font-size: .6rem; font-weight: 800;
+  letter-spacing: .3px; line-height: 1.5;
+}
+.watermark span { display: block; }
+
+/* ── SELECTED INDICATOR ── */
+.check-badge {
+  position: absolute; top: 8px; right: 8px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #ffd166; color: #0a0a2e;
+  font-size: .75rem; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0);
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.mode-card.selected .check-badge { opacity: 1; transform: scale(1); }
+
+/* ── STATS COUNT ── */
+.stat-counters {
+  display: flex; gap: 16px; justify-content: center;
+  flex-wrap: wrap;
+}
+.stat-counter {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.stat-number {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.4rem; color: #ffd166;
+  text-shadow: 0 0 12px rgba(255,209,102,.4);
+}
+.stat-number.green { color: #06d6a0; }
+.stat-number.blue  { color: #4cc9f0; }
+.stat-label-sm {
+  color: rgba(255,255,255,.4);
+  font-size: .6rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .8px;
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENCE -->
+<div class="stars-bg" id="stars"></div>
+<div class="floaters" id="floaters"></div>
+<div class="aurora">
+  <div class="aurora-blob" style="width:450px;height:450px;background:#3b5bdb;top:-120px;left:-150px;--dur:22s;--delay:0s;"></div>
+  <div class="aurora-blob" style="width:380px;height:380px;background:#7048e8;top:35%;right:-120px;--dur:26s;--delay:-9s;"></div>
+  <div class="aurora-blob" style="width:300px;height:300px;background:#1c7ed6;bottom:25%;left:5%;--dur:20s;--delay:-5s;"></div>
+</div>
+<div class="moon"></div>
+
+<div class="wrapper">
+
+  <!-- PREVIEW BADGE -->
+  <div class="preview-badge">🌙 PREVIEW · KIDS EDITION</div>
+
+  <!-- APP TITLE -->
+  <div class="app-title-wrap">
+    <span class="app-emoji">🤲</span>
+    <div class="app-title">Islamic Prayer Flashcards</div>
+    <div class="app-sub">Learn Daily Du'a with Your Little One</div>
+  </div>
+
+  <!-- ARABIC SAMPLE -->
+  <div class="arabic-preview">رَبَّنَا هَبۡ لَنَا مِنۡ أَزۡوَٰجِنَا</div>
+
+  <!-- STORY BOX -->
+  <div class="story-box">
+    <p class="story-text">
+      The little learner's journey begins here!<br>
+      <strong>26 beautiful du'a</strong> from the <strong>Qur'an & Sunnah</strong><br>
+      await to be memorized.<br>
+      Every card flipped is a step closer to<br>
+      <strong>Allah's blessings</strong> 🌟
+    </p>
+  </div>
+
+  <!-- STAT COUNTERS -->
+  <div class="stat-counters">
+    <div class="stat-counter">
+      <div class="stat-number">26</div>
+      <div class="stat-label-sm">Prayers</div>
+    </div>
+    <div class="stat-counter">
+      <div class="stat-number green">4</div>
+      <div class="stat-label-sm">Modes</div>
+    </div>
+    <div class="stat-counter">
+      <div class="stat-number blue">∞</div>
+      <div class="stat-label-sm">Reviews</div>
+    </div>
+  </div>
+
+  <!-- CHOOSE MODE -->
+  <div class="section-title">✦ Choose Your Mode ✦</div>
+
+  <div class="mode-grid">
+
+    <!-- FLASHCARD -->
+    <div class="mode-card selected" onclick="selectMode(this)">
+      <div class="check-badge">✓</div>
+      <span class="mode-emoji">📇</span>
+      <div class="mode-name">Flash Cards</div>
+      <div class="mode-tags">FLIP · LEARN</div>
+      <div class="mode-stat">
+        <div class="stat-row">
+          <span class="stat-lbl">⚡</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill red" style="width:55%"></div></div>
+          <span class="stat-val">EZ</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-lbl">⭐</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill yel" style="width:90%"></div></div>
+          <span class="stat-val">+85%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="mode-card" onclick="selectMode(this)">
+      <div class="check-badge">✓</div>
+      <span class="mode-emoji">🎮</span>
+      <div class="mode-name">Quiz</div>
+      <div class="mode-tags">TEST · WIN</div>
+      <div class="mode-stat">
+        <div class="stat-row">
+          <span class="stat-lbl">⚡</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill red" style="width:75%"></div></div>
+          <span class="stat-val">MED</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-lbl">⭐</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill yel" style="width:65%"></div></div>
+          <span class="stat-val">+60%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="mode-card" onclick="selectMode(this)">
+      <div class="check-badge">✓</div>
+      <span class="mode-emoji">🔍</span>
+      <div class="mode-name">Search</div>
+      <div class="mode-tags">FIND · READ</div>
+      <div class="mode-stat">
+        <div class="stat-row">
+          <span class="stat-lbl">⚡</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill red" style="width:35%"></div></div>
+          <span class="stat-val">CHILL</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-lbl">⭐</span>
+          <div class="stat-bar-bg"><div class="stat-bar-fill yel" style="width:50%"></div></div>
+          <span class="stat-val">+40%</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <button class="cta-btn" onclick="startApp()">
+    🤲 Start Learning Now!
+  </button>
+
+  <!-- DIVIDER -->
+  <div class="divider"></div>
+
+  <!-- BRAND FOOTER (matching screenshot exactly) -->
+  <div class="brand-footer">
+    <div class="brand-logo-pill">
+      <span class="brand-logo-name">
+        <span class="wnjgreen">WNJ</span>
+        <span class="wnjwhite"> Little </span><span class="wnjgreen">W</span><span class="earth-emoji">🌍</span><span class="wnjgreen">rld</span>
+      </span>
+    </div>
+
+    <div class="brand-copyright">© 2026 WNJ Little W🌍rld · All Rights Reserved</div>
+    <div class="brand-tagline-sub">Islamic Prayer Flashcards for Kids (PREVIEW)</div>
+
+    <div class="brand-made-pill">
+      🌍 Made with <span class="heart">❤️</span> by WNJ Little W🌍rld
+    </div>
+
+    <div class="brand-license-text">
+      Unauthorized copying or redistribution<br>
+      without written permission from WNJ Little W🌍rld is prohibited.
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- BOTTOM-LEFT WATERMARK -->
+<div class="watermark">
+  <span>WNJ Little W🌍rld</span>
+  <span>© 2026 · PREVIEW</span>
+</div>
+
+<script>
+// ── Stars ──
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 80; i++) {
+  const s = document.createElement('div');
+  s.className = 'star-dot';
+  const sz = Math.random() * 2.5 + 0.8;
+  s.style.cssText = `
+    width:${sz}px;height:${sz}px;
+    left:${Math.random()*100}%;
+    top:${Math.random()*100}%;
+    --dur:${2+Math.random()*4}s;
+    --delay:-${Math.random()*5}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// ── Floaters ──
+const FLOATERS = ['☪️','🌙','⭐','✨','🤲','📖','🕌','🌟'];
+const floatersEl = document.getElementById('floaters');
+for (let i = 0; i < 10; i++) {
+  const f = document.createElement('div');
+  f.className = 'floater';
+  f.textContent = FLOATERS[i % FLOATERS.length];
+  f.style.cssText = `
+    left:${Math.random()*95}%;
+    --size:${1.2+Math.random()*1.2}rem;
+    --dur:${12+Math.random()*14}s;
+    --delay:-${Math.random()*16}s;
+  `;
+  floatersEl.appendChild(f);
+}
+
+// ── Mode select ──
+function selectMode(card) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+// ── CTA → just link concept (in real app would navigate) ──
+function startApp() {
+  const btn = document.querySelector('.cta-btn');
+  btn.textContent = '✅ Opening App…';
+  btn.style.background = 'linear-gradient(135deg,#06d6a0,#4cc9f0)';
+  setTimeout(() => {
+    btn.innerHTML = '🤲 Start Learning Now!';
+    btn.style.background = '';
+  }, 1800);
+}
+</script>
+</body>
+</html>
