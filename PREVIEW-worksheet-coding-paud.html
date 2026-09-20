@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PREVIEW — Worksheet Coding Anak PAUD 🌈 | WNJ Little World</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --yellow: #FFD93D;
+    --blue: #6BCFFF;
+    --green: #6BCB77;
+    --purple: #C77DFF;
+    --orange: #FF9A3C;
+    --bg: #FFF9F0;
+    --dark: #2D2D2D;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  @media print {
+    body { background: white; }
+    .no-print { display: none; }
+    .page { page-break-after: always; box-shadow: none !important; margin: 0 !important; border-radius: 0 !important; }
+  }
+
+  body.print-cert-only .header,
+  body.print-cert-only .progress-wrap,
+  body.print-cert-only .pages > .page:not(#sertifikat) {
+    display: none !important;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+    padding: 18px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '⭐🌟💫✨🌟⭐';
+    position: absolute; top: 10px; left: 0; right: 0;
+    font-size: 24px; opacity: 0.3; letter-spacing: 20px;
+    animation: sparkle 3s infinite;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+
+  .header h1 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(28px, 5vw, 52px);
+    color: white;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 1;
+  }
+
+  .header p {
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+    margin-top: 8px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stars {
+    font-size: 30px;
+    display: inline-block;
+    animation: bounce 1s infinite alternate;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+  }
+
+  /* NAV BAR */
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px;
+    background: white;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    padding: 8px 18px;
+    border: 3px solid transparent;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-btn:hover { transform: scale(1.08); }
+  .nb1 { background: var(--pink); color: white; }
+  .nb2 { background: var(--blue); color: white; }
+  .nb3 { background: var(--green); color: white; }
+  .nb4 { background: var(--orange); color: white; }
+  .nb5 { background: var(--purple); color: white; }
+  .print-btn { background: var(--dark); color: white; }
+
+  /* PAGES */
+  .pages { padding: 20px 16px; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+  .page {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    border: 4px solid transparent;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page1 { border-color: var(--pink); }
+  .page2 { border-color: var(--blue); }
+  .page3 { border-color: var(--green); }
+  .page4 { border-color: var(--orange); }
+  .page5 { border-color: var(--purple); }
+
+  .page-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 15px;
+    color: white;
+    margin-bottom: 14px;
+  }
+
+  .badge1 { background: var(--pink); }
+  .badge2 { background: var(--blue); }
+  .badge3 { background: var(--green); }
+  .badge4 { background: var(--orange); }
+  .badge5 { background: var(--purple); }
+
+  .page h2 {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(22px, 4vw, 34px);
+    margin-bottom: 6px;
+    color: var(--dark);
+  }
+
+  .page .subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+
+  /* NAME SECTION */
+  .name-section {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding: 16px;
+    background: #FFF9F0;
+    border-radius: 16px;
+    border: 2px dashed #ddd;
+  }
+
+  .name-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .name-field label {
+    font-weight: 800;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .name-line {
+    flex: 1;
+    border: none;
+    border-bottom: 2.5px solid #ccc;
+    background: transparent;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 4px;
+    outline: none;
+  }
+
+  /* SECTION 1 - SEQUENCE */
+  .sequence-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .seq-label {
+    font-weight: 900;
+    font-size: 15px;
+    width: 90px;
+    color: var(--pink);
+  }
+
+  .seq-box {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .arrow-card {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 900;
+    border: 3px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    position: relative;
+  }
+
+  .arrow-card:hover { transform: scale(1.1) rotate(5deg); }
+
+  .arrow-card.up    { background: #FFE5EE; border-color: var(--pink);   color: var(--pink); }
+  .arrow-card.down  { background: #E5F9FF; border-color: var(--blue);   color: var(--blue); }
+  .arrow-card.left  { background: #E5FFE9; border-color: var(--green);  color: var(--green); }
+  .arrow-card.right { background: #FFF5E5; border-color: var(--orange); color: var(--orange); }
+  .arrow-card.blank {
+    background: white;
+    border-color: #ddd;
+    border-style: dashed;
+    font-size: 20px;
+    color: #ccc;
+  }
+
+  /* GRID */
+  .grid-wrapper {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .grid-table {
+    border-collapse: collapse;
+    flex: 0 0 auto;
+  }
+
+  .grid-table td {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #e0e0e0;
+    text-align: center;
+    font-size: 22px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .grid-table td.start { background: #E5FFE9; border-color: var(--green); }
+  .grid-table td.end   { background: #FFE5EE; border-color: var(--pink); }
+  .grid-table td.wall  { background: #f0f0f0; color: #ccc; cursor: default; }
+  .grid-table td.path  { background: #FFF3CD; }
+  .grid-table td:hover:not(.wall):not(.start):not(.end) { background: #FFF3CD; }
+
+  .grid-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .legend-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 2px solid;
+    flex-shrink: 0;
+  }
+
+  /* MATCHING */
+  .match-grid {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .match-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .match-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .match-box {
+    width: 80px;
+    height: 70px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid;
+    font-size: 28px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .match-box:hover { transform: scale(1.05); }
+  .match-box span { font-size: 11px; font-weight: 700; margin-top: 2px; }
+
+  .match-line {
+    width: 60px;
+    border-bottom: 3px dashed #ddd;
+    flex-shrink: 0;
+  }
+
+  .match-answer {
+    width: 80px;
+    height: 70px;
+    border-radius: 18px;
+    border: 3px dashed #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    background: #fafafa;
+    transition: all 0.2s;
+  }
+
+  .match-answer.filled { border-color: var(--green); border-style: solid; background: #E5FFE9; }
+
+  /* PATTERN */
+  .pattern-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .pat-label {
+    font-weight: 900;
+    font-size: 14px;
+    width: 30px;
+    color: #888;
+  }
+
+  .pattern-shape {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border-radius: 14px;
+    border: 3px solid;
+    animation: pop 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ps-red    { background: #FFE5E5; border-color: #FF6B6B; }
+  .ps-blue   { background: #E5F0FF; border-color: #4B9EFF; }
+  .ps-green  { background: #E5FFE9; border-color: var(--green); }
+  .ps-yellow { background: #FFFDE5; border-color: var(--yellow); }
+
+  .pattern-blank {
+    width: 52px; height: 52px;
+    border: 3px dashed #ccc;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .pattern-blank:hover { border-color: var(--purple); background: #F5EEFF; }
+
+  @keyframes pop {
+    0% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+  }
+
+  /* COLORING */
+  .color-scene {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .robot-svg {
+    width: 200px;
+    height: auto;
+    cursor: pointer;
+  }
+
+  .color-palette {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .color-swatch {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .color-swatch:hover, .color-swatch.active {
+    transform: scale(1.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-color: #333;
+  }
+
+  .color-instruction {
+    font-size: 13px;
+    color: #888;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  /* DRAG DROP */
+  .drag-area {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .drag-card {
+    padding: 12px 20px;
+    background: white;
+    border: 3px solid var(--purple);
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: grab;
+    transition: all 0.2s;
+    text-align: center;
+    min-width: 80px;
+    background: #F5EEFF;
+    user-select: none;
+  }
+
+  .drag-card:hover { transform: scale(1.1) rotate(-3deg); box-shadow: 0 5px 15px rgba(199,125,255,0.3); }
+  .drag-card.dragging { opacity: 0.4; }
+
+  .drop-targets {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .drop-target {
+    min-width: 90px;
+    min-height: 70px;
+    border: 3px dashed #ccc;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: all 0.2s;
+    text-align: center;
+    background: #fafafa;
+    font-size: 13px;
+    font-weight: 700;
+    color: #aaa;
+  }
+
+  .drop-target .target-label { font-size: 11px; color: #999; margin-top: 4px; }
+  .drop-target.over { border-color: var(--purple); background: #F5EEFF; }
+  .drop-target.filled { border-style: solid; border-color: var(--green); background: #E5FFE9; color: var(--dark); }
+  .drop-target.filled .answer-emoji { font-size: 22px; }
+
+  /* STICKER REWARD */
+  .reward-section {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #FFF5FB, #F5EEFF);
+    border-radius: 20px;
+    border: 3px dashed var(--purple);
+  }
+
+  .reward-title {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 22px;
+    color: var(--purple);
+    margin-bottom: 14px;
+  }
+
+  .sticker-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .sticker-slot {
+    width: 60px;
+    height: 60px;
+    border: 3px dashed #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+  }
+
+  .sticker-slot:hover { border-color: var(--yellow); background: #FFFDE5; transform: scale(1.1); }
+  .sticker-slot.earned { border-color: var(--yellow); border-style: solid; animation: wiggle 0.5s; }
+
+  @keyframes wiggle {
+    0%,100%{transform:rotate(0)}
+    25%{transform:rotate(-10deg) scale(1.2)}
+    75%{transform:rotate(10deg) scale(1.2)}
+  }
+
+  /* RESET BTN */
+  .reset-btn {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 8px 20px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #666;
+  }
+
+  .reset-btn:hover { background: #e0e0e0; }
+
+  /* SCORE BAR */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, var(--yellow), #FFB347);
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+
+  .score-emoji { font-size: 28px; }
+  .score-text { font-weight: 900; font-size: 16px; color: white; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+
+  /* CHECKBOX ITEMS */
+  .check-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .check-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: #fafafa;
+    border-radius: 14px;
+    border: 2px solid #eee;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .check-list li:hover { border-color: var(--green); background: #E5FFE9; }
+  .check-list li.checked { border-color: var(--green); background: #E5FFE9; }
+
+  .check-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-size: 14px;
+  }
+
+  .checked .check-circle {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: #aaa;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .confetti {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  .conf-piece {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    animation: confettiDrop 3s ease-out forwards;
+  }
+
+  @keyframes confettiDrop {
+    0%   { transform: translate(0, -20px) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--tx), 100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-wrap {
+    max-width: 860px;
+    margin: 14px auto 0;
+    padding: 0 20px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 800;
+    color: #888;
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    width: 100%;
+    height: 14px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue));
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+  .progress-dots {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .progress-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ddd;
+    font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .progress-dot.done { background: var(--green); border-color: var(--green); color: white; }
+
+  /* ===== COVER PAGE ===== */
+  .cover-page {
+    background: linear-gradient(160deg, #FFF9F0, #FFF0F7);
+    border-radius: 24px;
+    padding: 24px 22px;
+    text-align: center;
+    border: 4px dashed var(--purple);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-badge {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: clamp(30px,6vw,54px);
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .cover-sub { color: #888; font-weight: 700; font-size: 15px; margin-bottom: 24px; }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 12px;
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    border-radius: 14px;
+    padding: 12px 14px;
+    border: 2px solid #eee;
+    font-weight: 800;
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--dark);
+    transition: all 0.2s;
+  }
+  .toc-item:hover { transform: translateX(4px); border-color: var(--purple); }
+  .toc-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 14px; flex-shrink: 0;
+  }
+
+  /* ===== PARENT GUIDE ===== */
+  .guide-item {
+    display: flex; gap: 14px;
+    padding: 14px; background: #fafafa; border-radius: 14px; border: 2px solid #eee;
+    margin-bottom: 10px;
+  }
+  .guide-num {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 900; font-size: 14px;
+  }
+  .guide-item h4 { font-size: 14px; margin-bottom: 4px; }
+  .guide-item p { font-size: 13px; color: #777; font-weight: 600; line-height: 1.5; }
+
+  /* ===== DIFFICULTY TOGGLE ===== */
+  .diff-toggle {
+    display: inline-flex;
+    background: #fafafa;
+    border-radius: 50px;
+    padding: 4px;
+    border: 2px solid #eee;
+    gap: 4px;
+  }
+  .diff-btn {
+    border: none;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    background: transparent;
+    color: #999;
+    transition: all 0.2s;
+  }
+  .diff-btn.active { background: var(--pink); color: white; }
+
+  /* ===== CERTIFICATE ===== */
+  .cert-page {
+    background: linear-gradient(160deg, #FFFDF5, #FFF9F0);
+    border: 6px double var(--yellow);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+  }
+  .cert-page::before {
+    content: '⭐'; position: absolute; top: 14px; left: 20px; font-size: 22px; opacity: 0.5;
+  }
+  .cert-page::after {
+    content: '⭐'; position: absolute; top: 14px; right: 20px; font-size: 22px; opacity: 0.5;
+  }
+  .cert-title { font-family: 'Bubblegum Sans', cursive; font-size: clamp(24px,4.5vw,40px); color: var(--dark); }
+  .cert-sub { font-size: 13px; color: #999; font-weight: 800; letter-spacing: 2px; margin-top: 4px; }
+  .cert-name-line {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 28px;
+    border: none;
+    border-bottom: 3px solid var(--purple);
+    display: inline-block;
+    min-width: 320px;
+    max-width: 90%;
+    padding: 8px 20px;
+    margin: 22px 0 6px;
+    color: var(--purple);
+    background: transparent;
+    text-align: center;
+    outline: none;
+  }
+  .cert-desc { font-size: 14px; color: #777; font-weight: 700; max-width: 460px; margin: 10px auto 0; line-height: 1.6; }
+  .cert-stars { font-size: 26px; margin: 18px 0; letter-spacing: 6px; }
+  .cert-footer { display: flex; justify-content: space-around; margin-top: 30px; flex-wrap: wrap; gap: 20px; }
+  .cert-sign { font-size: 12px; font-weight: 800; color: #999; }
+  .cert-sign .line { width: 160px; border-bottom: 2px solid #ccc; height: 34px; margin-bottom: 6px; }
+  .cert-print-btn { background: var(--yellow); color: var(--dark); }
+
+  /* ===== WATERMARK (print) ===== */
+  @media print {
+    .page::after {
+      content: '✦ WNJ Little World';
+      position: absolute;
+      bottom: 10px; right: 18px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #ccc;
+      letter-spacing: 1px;
+    }
+    #wnj-overlay { display: none !important; }
+  }
+
+  /* ===== THEME SWITCH ===== */
+  .theme-switch {
+    display: flex; gap: 6px; justify-content: center; margin-top: 10px;
+  }
+  .theme-dot {
+    width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+    border: 3px solid white; box-shadow: 0 0 0 2px #ddd;
+    transition: all .2s;
+  }
+  .theme-dot.active { box-shadow: 0 0 0 2px var(--dark); }
+
+  /* PREVIEW WATERMARK */
+  .wnj-watermark {
+    position: fixed;
+    bottom: 14px;
+    left: 12px;
+    z-index: 9998;
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 11px;
+    color: rgba(0,0,0,0.18);
+    pointer-events: none;
+    line-height: 1.4;
+    text-align: left;
+  }
+  @media print { .wnj-watermark { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="wnj-watermark">✦ WNJ Little World<br>PREVIEW © 2026</div>
+
+<div class="confetti" id="confetti"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="stars">🤖</div>
+  <h1>Aku Bisa Coding! 🎉</h1>
+  <p>Worksheet Coding Seru untuk Anak PAUD (Usia 4–6 Tahun) — 🔒 Versi PREVIEW</p>
+</div>
+
+<!-- NAV -->
+<div class="nav no-print">
+  <a href="#cover" class="nav-btn" style="background:var(--dark);color:white;">🏠 Cover</a>
+  <a href="#sek1" class="nav-btn nb1">🔴 Urutan</a>
+  <a href="#sek2" class="nav-btn nb2">🔵 Peta Jalan</a>
+  <span class="nav-btn" style="background:#eee;color:#999;cursor:default;">🔒 6 Kegiatan Lainnya</span>
+</div>
+
+<div class="progress-wrap no-print">
+  <div class="progress-label"><span>📊 Progres Belajar</span><span id="progress-count">0/8 selesai</span></div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-dots" id="progress-dots"></div>
+</div>
+
+<div class="pages">
+
+  <!-- COVER / DAFTAR ISI -->
+  <div class="page cover-page" id="cover">
+    <div class="stars" style="margin-bottom:6px;">🤖✨</div>
+    <div class="cover-badge">Aku Bisa Coding!</div>
+    <div class="cover-sub">Buku Aktivitas Coding untuk Anak PAUD (Usia 4–6 Tahun) — WNJ Little World</div>
+    <div class="toc-grid">
+      <a href="#sek1" class="toc-item"><span class="toc-num" style="background:var(--pink)">1</span> Urutkan Perintahnya 🤖</a>
+      <a href="#sek2" class="toc-item"><span class="toc-num" style="background:var(--blue)">2</span> Peta Jalan Robot 🗺️</a>
+      <div class="toc-item" style="grid-column:1/-1;opacity:0.5;cursor:default;justify-content:center;">🔒 6 kegiatan lainnya + Sertifikat + Panduan — di versi lengkap</div>
+    </div>
+    <div style="margin-top:16px; font-size:12px; color:#999; font-weight:700;">🎨 Ganti tema warna:</div>
+    <div class="theme-switch">
+      <div class="theme-dot active" style="background:#FF6B9D" onclick="setTheme('default', this)" title="Pelangi"></div>
+      <div class="theme-dot" style="background:#2E86DE" onclick="setTheme('space', this)" title="Luar Angkasa"></div>
+      <div class="theme-dot" style="background:#00B4A6" onclick="setTheme('ocean', this)" title="Laut"></div>
+    </div>
+  </div>
+
+  <!-- HALAMAN 1: URUTAN PERINTAH -->
+  <div class="page page1" id="sek1">
+    <span class="page-badge badge1">🔴 Kegiatan 1</span>
+    <h2>Urutkan Perintahnya! 🤖</h2>
+    <p class="subtitle">Bantu robot berjalan ke rumah dengan mengurutkan tanda panah yang benar ya!</p>
+
+    <div class="name-section">
+      <div class="name-field"><label>Nama:</label><input class="name-line" type="text" placeholder="Tulis namamu..."></div>
+      <div class="name-field"><label>Tanggal:</label><input class="name-line" type="text" placeholder=".../.../..."></div>
+      <div class="name-field"><label>⭐ Nilai:</label><input class="name-line" type="text" placeholder=""></div>
+    </div>
+
+    <div style="margin-bottom:14px; padding:10px 14px; background:#FFF0F5; border-radius:14px; border:2px dashed var(--pink); font-size:13px;">
+      <strong style="color:var(--pink)">🎯</strong> Klik panah, susun langkah robot ke rumah 🏠
+    </div>
+
+    <div style="margin-bottom:20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+      <strong style="font-size:13px; color:#888;">Level:</strong>
+      <div class="diff-toggle">
+        <button class="diff-btn active" id="diff-easy" onclick="setDifficulty('easy')">🟢 Mudah (3 langkah)</button>
+        <button class="diff-btn" id="diff-medium" onclick="setDifficulty('medium')">🔴 Menengah (5 langkah)</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <strong style="font-size:15px; color:var(--dark)">📦 Pilih Tanda Panah:</strong>
+      <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+        <div class="arrow-card up"    onclick="addArrow('⬆️','up')"   title="Maju">⬆️</div>
+        <div class="arrow-card down"  onclick="addArrow('⬇️','down')" title="Mundur">⬇️</div>
+        <div class="arrow-card left"  onclick="addArrow('⬅️','left')" title="Kiri">⬅️</div>
+        <div class="arrow-card right" onclick="addArrow('➡️','right')" title="Kanan">➡️</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px; font-weight:900; font-size:15px;">🤖 Program Robot (klik kotak untuk hapus):</div>
+    <div id="programSlots" style="display:flex; gap:8px; flex-wrap:wrap; min-height:70px; padding:12px; background:#fafafa; border-radius:16px; border:2px dashed #ddd;">
+      <div class="arrow-card blank" onclick="addArrow('','blank')" id="slot-0">❓</div>
+      <div class="arrow-card blank" onclick="addArrow('','blank')" id="slot-1">❓</div>
+      <div class="arrow-card blank" onclick="addArrow('','blank')" id="slot-2">❓</div>
+      <div class="arrow-card blank" onclick="addArrow('','blank')" id="slot-3">❓</div>
+      <div class="arrow-card blank" onclick="addArrow('','blank')" id="slot-4">❓</div>
+    </div>
+
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button class="reset-btn" onclick="resetSlots()">🔄 Ulangi</button>
+      <button class="nav-btn nb1" style="border:none;" onclick="checkSequence()">✅ Cek Jawabanku!</button>
+    </div>
+
+    <div id="seq-result" style="margin-top:14px; display:none;"></div>
+  </div>
+
+  <!-- HALAMAN 2: PETA GRID -->
+  <div class="page page2" id="sek2">
+    <span class="page-badge badge2">🔵 Kegiatan 2</span>
+    <h2>Bantu Robot Menemukan Jalan! 🗺️</h2>
+    <p class="subtitle">Warnai kotak-kotak yang bisa dilalui robot untuk sampai ke bintang ⭐</p>
+
+    <div class="grid-wrapper">
+      <div>
+        <table class="grid-table" id="gridTable">
+          <tr>
+            <td class="wall">🌳</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td class="wall">🌳</td>
+          </tr>
+          <tr>
+            <td class="start">🤖</td><td onclick="toggleCell(this)">⬜</td><td class="wall">🌳</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td>
+          </tr>
+          <tr>
+            <td class="wall">🌳</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td class="wall">🌳</td>
+          </tr>
+          <tr>
+            <td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td class="wall">🌳</td><td onclick="toggleCell(this)">⬜</td><td class="end">⭐</td>
+          </tr>
+          <tr>
+            <td class="wall">🌳</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td onclick="toggleCell(this)">⬜</td><td class="wall">🌳</td>
+          </tr>
+        </table>
+        <button class="reset-btn" onclick="resetGrid()" style="margin-top:10px;">🔄 Hapus Jalur</button>
+      </div>
+
+      <div class="grid-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#E5FFE9; border-color:var(--green)">🤖</div>
+          <span>Robot mulai di sini</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#FFE5EE; border-color:var(--pink)">⭐</div>
+          <span>Tujuan robot</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#f0f0f0; border-color:#ddd">🌳</div>
+          <span>Pohon — tidak bisa lewat!</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#FFF3CD; border-color:var(--yellow)">🟡</div>
+          <span>Klik kotak untuk buat jalan</span>
+        </div>
+        <div style="margin-top:10px; padding:10px 12px; background:#E5F9FF; border-radius:12px; border:2px solid var(--blue); font-size:12.5px;">
+          💡 Robot cuma bisa lewat atas/bawah/kiri/kanan, ga boleh nabrak pohon!
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px; padding:14px; background:#fafafa; border-radius:16px; border:2px dashed #ddd;">
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:13px; font-weight:700; color:#888;">✏️ Total langkah robot:</span>
+        <div style="flex:1; min-width:100px; border-bottom:2px solid #ddd; min-height:26px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW LOCK BANNER -->
+  <div class="page" style="border-color:#C77DFF; text-align:center;">
+    <div style="font-size:2.4rem; margin-bottom:6px;">🔒</div>
+    <div style="font-family:'Bubblegum Sans', cursive; font-size:1.3rem; color:var(--dark); margin-bottom:6px;">
+      Versi PREVIEW — 2 dari 8 Kegiatan
+    </div>
+    <div style="font-size:0.85rem; color:#888; font-weight:700; margin-bottom:18px;">
+      6 kegiatan lain + 🏆 Sertifikat + 📘 Panduan Orang Tua ada di versi lengkap ✨
+    </div>
+    <a href="https://wa.me/6289630486382?text=Halo%20kak%20WNJ%20Little%20World!%20Saya%20mau%20beli%20Worksheet%20Coding%20PAUD%20versi%20lengkap%20%F0%9F%A4%96"
+       target="_blank"
+       style="display:inline-block; background:linear-gradient(135deg,var(--pink),var(--purple)); color:#fff; font-family:'Nunito',sans-serif; font-size:0.9rem; font-weight:900; padding:14px 28px; border-radius:50px; text-decoration:none; box-shadow:0 6px 20px rgba(199,125,255,0.35);">
+      💬 Beli Versi Lengkap via WhatsApp
+    </a>
+  </div>
+
+</div>
+
+<!-- LICENSE FOOTER -->
+<div class="footer" style="padding-bottom:6px;">
+  <div style="font-family:'Bubblegum Sans', cursive; font-size:16px; background:linear-gradient(135deg,var(--pink),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:4px;">
+    ✦ WNJ Little World
+  </div>
+  © 2026 WNJ Little World · Worksheet Coding Anak PAUD — Versi PREVIEW<br>
+  Dilarang memperbanyak atau mendistribusikan tanpa izin tertulis dari WNJ Little World.
+</div>
+
+<div class="footer">
+  🤖 Worksheet Coding PAUD — Dibuat dengan ❤️ untuk anak-anak Indonesia &nbsp;|&nbsp; Cetak untuk digunakan di kelas atau di rumah!
+</div>
+
+<script>
+// =========== SEQUENCE ACTIVITY ===========
+let arrowQueue = [];
+const correctAnswer = ['⬆️','⬆️','➡️','➡️','⬆️'];
+
+function addArrow(emoji, dir) {
+  const max = difficulty === 'easy' ? 3 : 5;
+  if (arrowQueue.length >= max) return;
+  arrowQueue.push({ emoji, dir });
+  renderSlots();
+  soundClick();
+}
+
+function renderSlots() {
+  for (let i = 0; i < 5; i++) {
+    const slot = document.getElementById('slot-' + i);
+    if (arrowQueue[i]) {
+      const d = arrowQueue[i];
+      slot.textContent = d.emoji;
+      slot.className = 'arrow-card ' + d.dir;
+      slot.onclick = () => removeArrow(i);
+    } else {
+      slot.textContent = '❓';
+      slot.className = 'arrow-card blank';
+      slot.onclick = null;
+    }
+  }
+}
+
+function removeArrow(i) {
+  arrowQueue.splice(i, 1);
+  renderSlots();
+}
+
+function resetSlots() {
+  arrowQueue = [];
+  renderSlots();
+  document.getElementById('seq-result').style.display = 'none';
+}
+
+function checkSequence() {
+  const result = document.getElementById('seq-result');
+  result.style.display = 'block';
+  const filled = arrowQueue.map(a => a.emoji).filter(e => e);
+  const total = difficulty === 'easy' ? 3 : 5;
+  if (filled.length < total) {
+    result.innerHTML = '<div style="padding:12px 16px; background:#FFE5EE; border-radius:14px; border:2px solid var(--pink); font-weight:800; font-size:14px;">⚠️ Isi semua ' + total + ' kotak dulu ya!</div>';
+  } else {
+    shootConfetti();
+    soundCorrect();
+    markDone('sek1');
+    result.innerHTML = '<div style="padding:12px 16px; background:#E5FFE9; border-radius:14px; border:2px solid var(--green); font-weight:800; font-size:14px;">🎉 Bagus banget! Kamu sudah membuat program robot! Robot akan bergerak: ' + filled.join(' ') + '</div>';
+  }
+}
+
+// =========== GRID ACTIVITY ===========
+function toggleCell(td) {
+  if (td.classList.contains('path')) {
+    td.classList.remove('path');
+    td.textContent = '⬜';
+  } else {
+    td.classList.add('path');
+    td.textContent = '🟡';
+    soundClick();
+    markDone('sek2');
+  }
+}
+
+function resetGrid() {
+  document.querySelectorAll('#gridTable td').forEach(td => {
+    if (!td.classList.contains('wall') && !td.classList.contains('start') && !td.classList.contains('end')) {
+      td.classList.remove('path');
+      td.textContent = '⬜';
+    }
+  });
+}
+
+// =========== MATCH ACTIVITY ===========
+let selectedLeft = null;
+let matchResults = {};
+
+function selectLeft(el, val) {
+  document.querySelectorAll('#leftCol .match-box').forEach(b => b.style.outline = 'none');
+  selectedLeft = val;
+  el.style.outline = '3px solid var(--purple)';
+  el.style.outlineOffset = '3px';
+  if (selectedLeft) {
+    checkMatch();
+  }
+}
+
+function selectRight(el, val) {
+  if (!selectedLeft) {
+    el.style.background = '#FFE5EE';
+    setTimeout(() => el.style.background = '#fafafa', 500);
+    return;
+  }
+
+  if (selectedLeft === val) {
+    el.classList.add('filled');
+    el.innerHTML = '<span class="answer-emoji">' + el.textContent + '</span><br><span style="font-size:11px;color:var(--green);font-weight:900;">✓ Benar!</span>';
+    matchResults[val] = true;
+    shootConfetti(5);
+    soundCorrect();
+    if (Object.keys(matchResults).length >= 5) markDone('sek3');
+  } else {
+    el.style.background = '#FFE5EE';
+    el.style.borderColor = 'var(--pink)';
+    soundWrong();
+    setTimeout(() => {
+      el.style.background = '#fafafa';
+      el.style.borderColor = '#ddd';
+    }, 800);
+  }
+
+  document.querySelectorAll('#leftCol .match-box').forEach(b => b.style.outline = 'none');
+  selectedLeft = null;
+}
+
+function checkMatch() {}
+
+function resetMatch() {
+  matchResults = {};
+  selectedLeft = null;
+  document.querySelectorAll('#leftCol .match-box').forEach(b => {
+    b.style.outline = 'none';
+  });
+  document.querySelectorAll('#rightCol .match-answer').forEach(b => {
+    b.classList.remove('filled');
+    b.innerHTML = b.getAttribute('data-val') === 'kanan' ? '➡️🐛' :
+                  b.getAttribute('data-val') === 'maju' ? '🚀⬆️' :
+                  b.getAttribute('data-val') === 'berhenti' ? '🔴🛑' :
+                  b.getAttribute('data-val') === 'kiri' ? '🐢⬅️' : '🐌⬇️';
+  });
+  document.getElementById('match-result').style.display = 'none';
+}
+
+// =========== PATTERN ACTIVITY ===========
+let patternsFilled = 0;
+function fillPattern(el, emoji, cls, isNum) {
+  el.textContent = emoji;
+  el.className = 'pattern-shape ' + cls;
+  if (isNum) el.style.fontSize = '22px';
+  el.style.fontWeight = '900';
+  el.onclick = null;
+  shootConfetti(3);
+  soundCorrect();
+  patternsFilled++;
+  if (patternsFilled >= 4) markDone('sek4');
+}
+
+// =========== COLOR ACTIVITY ===========
+let currentColor = '#FF6B9D';
+
+function setColor(color, el) {
+  currentColor = color;
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function paintPart(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.fill = currentColor;
+    shootConfetti(2);
+    soundClick();
+    markDone('sek5');
+  }
+}
+
+// =========== STICKER ACTIVITY ===========
+function earnSticker(el, emoji) {
+  el.textContent = emoji;
+  el.classList.add('earned');
+  shootConfetti(15);
+}
+
+// =========== DEBUG ACTIVITY ===========
+function debugClick(el, num) {
+  document.getElementById('debug' + num + '-fix').style.display = 'block';
+}
+
+let debugSolved = { 1: false, 2: false };
+function checkDebugDone() { if (debugSolved[1] && debugSolved[2]) markDone('sek6'); }
+
+function debugClick2(el) {
+  el.style.display = 'none';
+  document.getElementById('debug2-result').innerHTML = '<div style="padding:12px 16px; background:#E5FFE9; border-radius:14px; border:2px solid var(--green); font-weight:800; font-size:14px;">🎉 Betul! Perintah ⬇️ tidak perlu ada — robot sudah bisa sampai ke ⭐ tanpa itu! Kamu jago debug!</div>';
+  shootConfetti(20);
+  soundCorrect();
+  debugSolved[2] = true;
+  checkDebugDone();
+}
+
+function fixBug(num, emoji, name, btn) {
+  const result = document.getElementById('debug' + num + '-result');
+  const badEl = document.getElementById('bug' + num + '-bad');
+  if (emoji === '⬆️') {
+    badEl.textContent = emoji;
+    badEl.className = 'arrow-card up';
+    badEl.style.cssText = 'cursor:default;';
+    document.getElementById('debug' + num + '-fix').style.display = 'none';
+    result.innerHTML = '<div style="padding:12px 16px; background:#E5FFE9; border-radius:14px; border:2px solid var(--green); font-weight:800; font-size:14px;">🎉 Benar banget! Harusnya ⬆️ (MAJU) bukan ⬇️! Robot sudah bisa sampai ke 🏠 sekarang!</div>';
+    shootConfetti(20);
+    soundCorrect();
+    debugSolved[1] = true;
+    checkDebugDone();
+  } else {
+    result.innerHTML = '<div style="padding:12px 16px; background:#FFE5EE; border-radius:14px; border:2px solid var(--pink); font-weight:800; font-size:14px;">🤔 Hmm, coba lagi! Ingat, robot mau ke atas menuju 🏠...</div>';
+    soundWrong();
+  }
+}
+
+// =========== LOOP ACTIVITY ===========
+let loopArrow = { emoji: '⬆️', dir: 'up' };
+let loopCount = 2;
+
+function selectLoopArrow(emoji, dir, el) {
+  loopArrow = { emoji, dir };
+  document.querySelectorAll('#sek7 .arrow-card').forEach(b => b.style.outline = 'none');
+  el.style.outline = '3px solid #1ABC9C';
+  el.style.outlineOffset = '3px';
+}
+
+function setLoopCount(n) {
+  loopCount = n;
+  [2,3,4,5].forEach(i => {
+    const btn = document.getElementById('lc' + i);
+    if (!btn) return;
+    btn.style.borderColor = i === n ? '#1ABC9C' : '#ddd';
+    btn.style.background = i === n ? '#E8FDF5' : 'white';
+  });
+}
+
+function runLoop() {
+  const out = document.getElementById('loop-output');
+  out.innerHTML = '';
+  out.style.color = 'var(--dark)';
+  const label = document.createElement('div');
+  label.style.cssText = 'font-size:13px; color:#1ABC9C; font-weight:900; margin-right:8px; white-space:nowrap; align-self:center;';
+  label.textContent = '🔁 × ' + loopCount + ':';
+  out.appendChild(label);
+  for (let i = 0; i < loopCount; i++) {
+    setTimeout(() => {
+      const card = document.createElement('div');
+      card.className = 'arrow-card ' + loopArrow.dir;
+      card.style.cssText = 'width:44px; height:44px; font-size:20px; cursor:default;';
+      card.textContent = loopArrow.emoji;
+      out.appendChild(card);
+      if (i === loopCount - 1) {
+        setTimeout(() => {
+          const done = document.createElement('div');
+          done.style.cssText = 'font-size:13px; color:#1ABC9C; font-weight:900; margin-left:8px; align-self:center;';
+          done.textContent = '✅ Selesai!';
+          out.appendChild(done);
+          shootConfetti(12);
+          soundCorrect();
+          markDone('sek7');
+        }, 200);
+      }
+    }, i * 300);
+  }
+}
+
+// =========== QUIZ ACTIVITY ===========
+const quizData = [
+  { q: '🤖 Robot bisa bergerak ke atas, bawah, kiri, dan kanan.', ans: true, explain: 'Betul! Robot bisa bergerak ke 4 arah: atas ⬆️, bawah ⬇️, kiri ⬅️, kanan ➡️' },
+  { q: '🔴 Tanda STOP artinya robot harus bergerak lebih cepat.', ans: false, explain: 'Salah! Tanda STOP 🛑 artinya robot harus BERHENTI, bukan lebih cepat!' },
+  { q: '🔁 Loop artinya mengulang perintah yang sama berkali-kali.', ans: true, explain: 'Betul! Loop = pengulangan. Contoh: ULANGI ➡️ 3 kali!' },
+  { q: '🐛 Bug dalam coding artinya ada kesalahan dalam program.', ans: true, explain: 'Betul! Bug adalah kesalahan program yang perlu diperbaiki!' },
+  { q: '🗺️ Robot boleh melewati pohon 🌳 dalam peta.', ans: false, explain: 'Salah! Robot tidak boleh melewati pohon — pohon adalah rintangan!' },
+  { q: '⬆️⬆️⬆️ sama dengan ULANGI ⬆️ sebanyak 3 kali.', ans: true, explain: 'Betul! Itu cara loop bekerja — menghemat penulisan perintah berulang!' },
+  { q: '🎨 Dalam coding kita bisa membuat program yang mewarnai gambar.', ans: true, explain: 'Betul! Coding bisa dipakai untuk banyak hal, termasuk mewarnai dan menggambar!' },
+];
+
+let quizState = [];
+
+function initQuiz() {
+  quizState = quizData.map(q => ({ ...q, answered: false, correct: null }));
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-container');
+  if (!container) return;
+  container.innerHTML = '';
+  quizState.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'padding:16px; background:#fafafa; border-radius:16px; border:2px solid #eee; transition:all 0.3s;';
+    if (item.answered) {
+      div.style.borderColor = item.correct ? 'var(--green)' : '#E74C3C';
+      div.style.background = item.correct ? '#E5FFE9' : '#FFF0F0';
+    }
+    div.innerHTML = `
+      <div style="font-weight:800; font-size:15px; margin-bottom:12px;">${i+1}. ${item.q}</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button onclick="answerQuiz(${i},true)" style="padding:10px 22px; border-radius:50px; border:3px solid var(--green); background:${item.answered && item.ans===true && item.correct ? 'var(--green)' : 'white'}; color:${item.answered && item.ans===true && item.correct ? 'white' : 'var(--green)'}; font-family:'Nunito',sans-serif; font-weight:900; font-size:14px; cursor:${item.answered?'default':'pointer'};" ${item.answered?'disabled':''}>✅ BENAR</button>
+        <button onclick="answerQuiz(${i},false)" style="padding:10px 22px; border-radius:50px; border:3px solid #E74C3C; background:${item.answered && item.ans===false && !item.correct ? '#E74C3C' : 'white'}; color:${item.answered && item.ans===false && !item.correct ? 'white' : '#E74C3C'}; font-family:'Nunito',sans-serif; font-weight:900; font-size:14px; cursor:${item.answered?'default':'pointer'};" ${item.answered?'disabled':''}>❌ SALAH</button>
+      </div>
+      ${item.answered ? `<div style="margin-top:10px; font-size:13px; font-weight:700; color:${item.correct ? 'var(--green)' : '#E74C3C'};">${item.correct ? '🎉 ' : '💡 '}${item.explain}</div>` : ''}
+    `;
+    container.appendChild(div);
+  });
+  const allDone = quizState.every(q => q.answered);
+  const scoreEl = document.getElementById('quiz-score');
+  if (allDone) {
+    const correct = quizState.filter(q => q.correct).length;
+    const total = quizState.length;
+    const emoji = correct === total ? '🏆' : correct >= Math.ceil(total * 0.7) ? '⭐' : '💪';
+    document.getElementById('quiz-score-text').innerHTML = `${emoji} Kamu benar <strong>${correct}</strong> dari <strong>${total}</strong> soal! ${correct === total ? 'SEMPURNA! Kamu jenius! 🧠' : correct >= Math.ceil(total*0.7) ? 'Hebat sekali! Terus semangat! 💪' : 'Jangan menyerah, coba lagi ya! 🌈'}`;
+    scoreEl.style.display = 'block';
+    if (correct >= Math.ceil(total * 0.7)) shootConfetti(40);
+    markDone('sek8');
+  } else {
+    if (scoreEl) scoreEl.style.display = 'none';
+  }
+}
+
+function answerQuiz(index, userAns) {
+  if (quizState[index].answered) return;
+  quizState[index].answered = true;
+  quizState[index].correct = (userAns === quizState[index].ans);
+  if (quizState[index].correct) { shootConfetti(8); soundCorrect(); } else { soundWrong(); }
+  renderQuiz();
+}
+
+function resetQuiz() { initQuiz(); }
+
+// Init quiz on load
+document.addEventListener('DOMContentLoaded', initQuiz);
+
+// =========== SOUND EFFECTS ===========
+let audioCtx = null;
+function playTone(freqs, type='sine', dur=0.12) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    freqs.forEach((f, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = f;
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime + i * dur);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (i + 1) * dur);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + i * dur);
+      osc.stop(audioCtx.currentTime + (i + 1) * dur);
+    });
+  } catch (e) { /* audio unavailable, silently ignore */ }
+}
+function soundCorrect() { playTone([523, 659, 784], 'triangle', 0.11); }
+function soundWrong() { playTone([220, 180], 'sawtooth', 0.14); }
+function soundClick() { playTone([440], 'square', 0.05); }
+function soundComplete() { playTone([523, 659, 784, 1046], 'triangle', 0.13); }
+
+// =========== PROGRESS TRACKER ===========
+const SECTIONS = ['sek1','sek2'];
+let progress = {};
+
+function loadProgress() {
+  try {
+    progress = JSON.parse(localStorage.getItem('wnj-progress') || '{}');
+  } catch (e) { progress = {}; }
+  renderProgress();
+}
+
+function markDone(sectionId) {
+  if (progress[sectionId]) return;
+  progress[sectionId] = true;
+  try { localStorage.setItem('wnj-progress', JSON.stringify(progress)); } catch (e) {}
+  renderProgress();
+}
+
+function renderProgress() {
+  const dotsWrap = document.getElementById('progress-dots');
+  const fill = document.getElementById('progress-fill');
+  const count = document.getElementById('progress-count');
+  if (!dotsWrap || !fill || !count) return;
+  dotsWrap.innerHTML = '';
+  let done = 0;
+  SECTIONS.forEach((id, i) => {
+    const dot = document.createElement('a');
+    dot.href = '#' + id;
+    dot.className = 'progress-dot' + (progress[id] ? ' done' : '');
+    dot.textContent = progress[id] ? '✓' : (i + 1);
+    dotsWrap.appendChild(dot);
+    if (progress[id]) done++;
+  });
+  fill.style.width = (done / SECTIONS.length * 100) + '%';
+  count.textContent = done + '/' + SECTIONS.length + ' selesai';
+  if (done === SECTIONS.length) soundComplete();
+}
+
+function resetProgress() {
+  progress = {};
+  try { localStorage.removeItem('wnj-progress'); } catch (e) {}
+  renderProgress();
+}
+
+document.addEventListener('DOMContentLoaded', loadProgress);
+
+// =========== DIFFICULTY (Kegiatan 1) ===========
+let difficulty = 'easy';
+function initDifficulty() {
+  for (let i = 3; i < 5; i++) {
+    const slot = document.getElementById('slot-' + i);
+    if (slot) slot.style.display = 'none';
+  }
+}
+document.addEventListener('DOMContentLoaded', initDifficulty);
+function setDifficulty(level) {
+  difficulty = level;
+  document.getElementById('diff-easy').classList.toggle('active', level === 'easy');
+  document.getElementById('diff-medium').classList.toggle('active', level === 'medium');
+  const total = level === 'easy' ? 3 : 5;
+  for (let i = 0; i < 5; i++) {
+    const slot = document.getElementById('slot-' + i);
+    if (slot) slot.style.display = i < total ? 'flex' : 'none';
+  }
+  resetSlots();
+  soundClick();
+}
+
+// =========== THEME SWITCHER ===========
+const THEMES = {
+  default: { pink:'#FF6B9D', yellow:'#FFD93D', blue:'#6BCFFF', green:'#6BCB77', purple:'#C77DFF', orange:'#FF9A3C' },
+  space:   { pink:'#A855F7', yellow:'#FFD93D', blue:'#2E86DE', green:'#00CEC9', purple:'#6C5CE7', orange:'#FD9644' },
+  ocean:   { pink:'#FF7EB6', yellow:'#FFE066', blue:'#0EA5E9', green:'#00B4A6', purple:'#7C83FD', orange:'#FF9F68' }
+};
+function setTheme(name, el) {
+  const t = THEMES[name] || THEMES.default;
+  const root = document.documentElement.style;
+  Object.keys(t).forEach(k => root.setProperty('--' + k, t[k]));
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+  if (el) el.classList.add('active');
+  soundClick();
+}
+
+// =========== PRINT CERTIFICATE ONLY ===========
+function printCert() {
+  document.body.classList.add('print-cert-only');
+  window.print();
+  setTimeout(() => document.body.classList.remove('print-cert-only'), 500);
+}
+
+// =========== CONFETTI ===========
+function shootConfetti(count = 30) {
+  const container = document.getElementById('confetti');
+  const colors = ['#FF6B9D','#FFD93D','#6BCFFF','#6BCB77','#C77DFF','#FF9A3C','#FF6B6B'];
+  const shapes = ['●','■','▲','★','♥'];
+
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'conf-piece';
+      piece.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.top = '-20px';
+      piece.style.color = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.fontSize = (12 + Math.random() * 10) + 'px';
+      piece.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+      container.appendChild(piece);
+      setTimeout(() => piece.remove(), 3000);
+    }, i * 60);
+  }
+}
+</script>
+
+<!-- ======= WNJ LITTLE WORLD LICENSE POPUP ======= -->
+<style>
+#wnj-overlay {
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(0,0,0,0.72);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(6px);
+  animation: wnj-fadein 0.4s ease;
+}
+@keyframes wnj-fadein { from{opacity:0} to{opacity:1} }
+
+#wnj-card {
+  background: white;
+  border-radius: 28px;
+  padding: 30px 24px 24px;
+  max-width: 360px; width: 100%;
+  border: 3px solid #FFD93D;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  text-align: center;
+  animation: wnj-popup 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  position: relative; overflow: hidden;
+}
+@keyframes wnj-popup { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+
+#wnj-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(135deg,#FF6B9D,#A855F7);
+}
+
+.wnj-brand {
+  font-family: 'Nunito', 'Quicksand', sans-serif;
+  font-size: 22px; font-weight: 900;
+  background: linear-gradient(135deg,#FF6B9D,#A855F7);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2px;
+}
+
+.wnj-diamond {
+  font-size: 18px; margin-right: 4px;
+}
+
+.wnj-tagline {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  color: #aaa; text-transform: uppercase; margin-bottom: 16px;
+}
+
+.wnj-title {
+  font-size: 16px; font-weight: 900; color: #222;
+  margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+
+.wnj-subtitle {
+  font-size: 12px; font-weight: 600; color: #888;
+  margin-bottom: 14px; line-height: 1.5;
+}
+
+.wnj-box {
+  background: rgba(255,217,61,0.12);
+  border: 2px solid #FFD93D;
+  border-radius: 16px; padding: 14px 16px;
+  margin-bottom: 16px; text-align: left;
+}
+
+.wnj-rule {
+  font-size: 13px; font-weight: 700; color: #333;
+  margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;
+  line-height: 1.4;
+}
+.wnj-rule:last-child { margin-bottom: 0; }
+
+.wnj-copy {
+  font-size: 11px; color: #bbb; font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.wnj-btn {
+  display: block; width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg,#FF6B9D,#A855F7);
+  color: white; font-weight: 900; font-size: 15px;
+  border: none; border-radius: 50px;
+  cursor: pointer; font-family: 'Nunito', sans-serif;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+  transition: all 0.2s;
+}
+.wnj-btn:hover { transform: scale(1.03); filter: brightness(1.08); }
+.wnj-btn:active { transform: scale(0.97); }
+
+.wnj-deco {
+  position: absolute; font-size: 80px; opacity: 0.04;
+  top: -10px; right: -10px; pointer-events: none;
+  transform: rotate(15deg);
+}
+</style>
+
+<div id="wnj-overlay">
+  <div id="wnj-card">
+    <div class="wnj-deco">📚</div>
+    <div class="wnj-brand"><span class="wnj-diamond">✦</span> WNJ Little World</div>
+    <div class="wnj-tagline">DIGITAL EDUCATION SERIES</div>
+    <div class="wnj-title">🔐 Lisensi Penggunaan</div>
+    <div class="wnj-subtitle">Produk ini dilindungi hak cipta dan hanya boleh<br>digunakan sesuai ketentuan berikut:</div>
+    <div class="wnj-box">
+      <div class="wnj-rule"><span>✅</span><span>Boleh digunakan untuk pribadi &amp; pembelajaran</span></div>
+      <div class="wnj-rule"><span>✅</span><span>Boleh digunakan di kelas / homeschool</span></div>
+      <div class="wnj-rule"><span>❌</span><span>Dilarang menyebarkan / membagikan file ini</span></div>
+      <div class="wnj-rule"><span>❌</span><span>Dilarang menjual ulang atau mengklaim sebagai karya sendiri</span></div>
+    </div>
+    <div class="wnj-copy">© 2026 WNJ Little World</div>
+    <button class="wnj-btn" onclick="document.getElementById('wnj-overlay').style.display='none'">
+      ✅ Saya Mengerti &amp; Setuju
+    </button>
+  </div>
+</div>
+<!-- ======= END LICENSE POPUP ======= -->
+
+</body>
+</html>
